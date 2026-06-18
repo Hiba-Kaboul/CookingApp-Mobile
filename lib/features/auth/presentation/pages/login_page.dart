@@ -6,23 +6,21 @@ import '../widgets/auth_header_image.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_buttons_row.dart';
-import 'login_page.dart';
+import 'register_page.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final _nameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -35,8 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
-        title: Text(AppStrings.registerTitle,
-            style: AppTextStyles.appBarTitle),
+        title: Text(AppStrings.loginTitle, style: AppTextStyles.appBarTitle),
         leading: const Icon(Icons.search, color: AppColors.buttonText),
         actions: const [
           Padding(
@@ -52,25 +49,14 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AuthHeaderImage(
-                  imagePath: 'assets/images/Space for Branding.png'),
+              const AuthHeaderImage(imagePath: 'assets/images/Image Header_margin.png'),
               const SizedBox(height: 24),
 
               // العنوان
-              Text(AppStrings.createAccount, style: AppTextStyles.heading),
+              Text(AppStrings.welcomeBack, style: AppTextStyles.heading),
               const SizedBox(height: 6),
-              Text(AppStrings.createAccountSub,
-                  style: AppTextStyles.subHeading),
+              Text(AppStrings.welcomeSub, style: AppTextStyles.subHeading),
               const SizedBox(height: 24),
-
-              // حقل الاسم
-              CustomTextField(
-                label: AppStrings.fullName,
-                hint: AppStrings.fullNameHint,
-                suffixIcon: Icons.person_outline,
-                controller: _nameController,
-              ),
-              const SizedBox(height: 16),
 
               // حقل الإيميل
               CustomTextField(
@@ -89,11 +75,24 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _passwordController,
                 isPassword: true,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 8),
 
-              // زر إنشاء الحساب
+              // نسيت كلمة المرور
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    AppStrings.forgotPassword,
+                    style: AppTextStyles.link,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // زر تسجيل الدخول
               PrimaryButton(
-                text: AppStrings.registerButton,
+                text: AppStrings.loginButton,
                 onPressed: () {},
               ),
               const SizedBox(height: 24),
@@ -102,21 +101,21 @@ class _RegisterPageState extends State<RegisterPage> {
               const SocialButtonsRow(),
               const SizedBox(height: 24),
 
-              // رابط تسجيل الدخول
+              // رابط إنشاء حساب
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppStrings.hasAccount,
+                    Text(AppStrings.noAccount,
                         style: AppTextStyles.subHeading),
                     GestureDetector(
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const LoginPage(),
+                          builder: (_) => const RegisterPage(),
                         ),
                       ),
-                      child: Text(AppStrings.loginNow,
+                      child: Text(AppStrings.registerNow,
                           style: AppTextStyles.link),
                     ),
                   ],

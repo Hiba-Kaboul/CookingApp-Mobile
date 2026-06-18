@@ -17,4 +17,29 @@ class AppStrings {
   // Onboarding 3
   static const String onboarding3Title    = 'انضم إلى عائلة هواة الطبخ';
   static const String onboarding3Subtitle = ' شارك وصفاتك الخاصة، وتبادل الخبرات مع مجتمع شغوف بحب الطبخ تقدر ما تحب ';
+  
+    // Login
+  static const String loginTitle = 'تسجيل الدخول';
+  static const String welcomeBack = 'مرحباً بعودتك 👋';
+  static const String welcomeSub = 'سعداء برؤيتك مرة أخرى في مطبخنا';
+  static const String email = 'البريد الإلكتروني';
+  static const String emailHint = 'elamàle@email.com';
+  static const String password = 'كلمة المرور';
+  static const String forgotPassword = 'نسيت كلمة المرور؟';
+  static const String loginButton = 'تسجيل الدخول';
+  static const String orContinueWith = 'أو سجل عبر';
+  static const String noAccount = 'ليس لديك حساب؟ ';
+  static const String registerNow = 'سجل الآن';
+
+  // Register
+  static const String registerTitle = 'إنشاء حساب';
+  static const String createAccount = 'إنشاء حساب جديد';
+  static const String createAccountSub =
+      'انضم إلى مجتمع عشاق الطبخ وشاركنا الوصفات';
+  static const String fullName = 'الاسم الكامل';
+  static const String fullNameHint = 'مثال: أحمد محمد';
+  static const String registerButton = 'إنشاء الحساب';
+  static const String hasAccount = 'لديك حساب؟ ';
+  static const String loginNow = 'تسجيل الدخول';
+  static const String orWith = 'أو عبر';
 }

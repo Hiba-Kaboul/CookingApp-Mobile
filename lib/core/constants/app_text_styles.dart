@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project2/core/constants/app_colors.dart';
 
+
+
 class AppTextStyles {
   AppTextStyles._();
 
@@ -31,5 +33,45 @@ class AppTextStyles {
   fontWeight: FontWeight.w400,
   color: AppColors.textLight,
  );
+
+ static const TextStyle heading = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textDark,
+  );
+
+  static const TextStyle subHeading = TextStyle(
+    fontSize: 13,
+    color: AppColors.textLight,
+  );
+
+  static const TextStyle label = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textDark,
+  );
+
+  static const TextStyle hint = TextStyle(
+    fontSize: 13,
+    color: AppColors.hintText,
+  );
+
+  static const TextStyle button = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    color: AppColors.buttonText,
+  );
+
+  static const TextStyle link = TextStyle(
+    fontSize: 13,
+    color: AppColors.primary,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const TextStyle appBarTitle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: AppColors.buttonText,
+  );
 
 }
