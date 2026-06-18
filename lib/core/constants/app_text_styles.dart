@@ -5,16 +5,18 @@ class AppTextStyles {
   AppTextStyles._();
 
   static const String  _fontFamily ='IBMPlexSansArabic';
+  static const String  _fontFamily2 ='PlayfairDisplay';
+  static const String  _fontFamily3 ='Cairo';
  
  static const TextStyle header = TextStyle(
-  fontFamily: _fontFamily,
-  fontSize:  28,
-  fontWeight: FontWeight.w700,
+  fontFamily: _fontFamily2,
+  fontSize:  26,
+  fontWeight: FontWeight.w800,
   color: AppColors.textDark,
   height: 35/28
  );
  static const TextStyle text16_400L = TextStyle(
-  fontFamily: _fontFamily,
+  fontFamily: _fontFamily3,
   fontSize:  16,
   fontWeight: FontWeight.w400,
   color: AppColors.textLight,

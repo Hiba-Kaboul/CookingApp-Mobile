@@ -85,6 +85,18 @@ flutter:
         weight: 600
       - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
         weight: 700
+
+  - family: PlayfairDisplay
+    fonts:
+
+      - asset: assets/fonts/PlayfairDisplay-BoldItalic.ttf    
+        weight: 900 
+
+  - family: Cairo
+    fonts:
+
+      - asset: assets/fonts/Cairo-Bold.ttf  
+        weight: 900 
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

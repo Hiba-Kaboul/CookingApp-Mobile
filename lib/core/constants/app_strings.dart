@@ -6,7 +6,7 @@ class AppStrings {
   static const String getStarted = 'ابدأ الآن';
 
   // Onboarding 1
-  static const String onboarding1Title    = 'عالم من النكهات بين يديك';
+  static const String onboarding1Title    = 'عالم من النكهات بين يديك where';
   static const String onboarding1Subtitle = ' اكتشف آلاف الوصفات المختارة بعناية لتناسب ذوقك الفريد وتلهم إبداعك في المطبخ';
 
   // Onboarding 2
