@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project2/features/auth/presentation/pages/otp_page.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
@@ -35,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
-        title: Text(AppStrings.registerTitle,
+        title:const Text(AppStrings.registerTitle,
             style: AppTextStyles.appBarTitle),
         leading: const Icon(Icons.search, color: AppColors.buttonText),
         actions: const [
@@ -57,9 +58,9 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 24),
 
               // العنوان
-              Text(AppStrings.createAccount, style: AppTextStyles.heading),
+            const  Text(AppStrings.createAccount, style: AppTextStyles.heading),
               const SizedBox(height: 6),
-              Text(AppStrings.createAccountSub,
+           const   Text(AppStrings.createAccountSub,
                   style: AppTextStyles.subHeading),
               const SizedBox(height: 24),
 
@@ -94,7 +95,9 @@ class _RegisterPageState extends State<RegisterPage> {
               // زر إنشاء الحساب
               PrimaryButton(
                 text: AppStrings.registerButton,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder:(context) => OtpPage(),));
+                },
               ),
               const SizedBox(height: 24),
 
@@ -107,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppStrings.hasAccount,
+                 const   Text(AppStrings.hasAccount,
                         style: AppTextStyles.subHeading),
                     GestureDetector(
                       onTap: () => Navigator.push(
@@ -116,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           builder: (_) => const LoginPage(),
                         ),
                       ),
-                      child: Text(AppStrings.loginNow,
+                      child:const Text(AppStrings.loginNow,
                           style: AppTextStyles.link),
                     ),
                   ],

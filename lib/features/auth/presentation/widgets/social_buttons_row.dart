@@ -9,7 +9,7 @@ class SocialButtonsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+      const  Row(
           children: [
             const Expanded(child: Divider(color: AppColors.inputBorder)),
             Padding(

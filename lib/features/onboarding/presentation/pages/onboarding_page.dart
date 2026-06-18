@@ -6,9 +6,6 @@ import 'package:project2/features/onboarding/presentation/bloc/onboarding_event.
 import 'package:project2/features/onboarding/presentation/bloc/onboarding_state.dart';
 import 'package:project2/features/onboarding/presentation/widgets/onboarding_page_view.dart';
 
-import '../widgets/onboarding_page_view.dart';
-
-
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
 

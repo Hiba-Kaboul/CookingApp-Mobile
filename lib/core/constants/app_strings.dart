@@ -42,4 +42,10 @@ class AppStrings {
   static const String hasAccount = 'لديك حساب؟ ';
   static const String loginNow = 'تسجيل الدخول';
   static const String orWith = 'أو عبر';
+
+  // OTP
+static const String otpTitle = 'رمز التحقق';
+static const String otpSubtitle ='أدخل الرمز المكون من 6 أرقام للتحقق من حسابك';
+static const String resendCode = 'إعادة إرسال الرمز';
+static const String verify = 'تحقق';
 }

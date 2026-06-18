@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
-        title: Text(AppStrings.loginTitle, style: AppTextStyles.appBarTitle),
+        title:const Text(AppStrings.loginTitle, style: AppTextStyles.appBarTitle),
         leading: const Icon(Icons.search, color: AppColors.buttonText),
         actions: const [
           Padding(
@@ -53,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 24),
 
               // العنوان
-              Text(AppStrings.welcomeBack, style: AppTextStyles.heading),
+           const   Text(AppStrings.welcomeBack, style: AppTextStyles.heading),
               const SizedBox(height: 6),
-              Text(AppStrings.welcomeSub, style: AppTextStyles.subHeading),
+           const   Text(AppStrings.welcomeSub, style: AppTextStyles.subHeading),
               const SizedBox(height: 24),
 
               // حقل الإيميل
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerLeft,
                 child: TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     AppStrings.forgotPassword,
                     style: AppTextStyles.link,
                   ),
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppStrings.noAccount,
+                  const  Text(AppStrings.noAccount,
                         style: AppTextStyles.subHeading),
                     GestureDetector(
                       onTap: () => Navigator.push(
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (_) => const RegisterPage(),
                         ),
                       ),
-                      child: Text(AppStrings.registerNow,
+                      child:const Text(AppStrings.registerNow,
                           style: AppTextStyles.link),
                     ),
                   ],

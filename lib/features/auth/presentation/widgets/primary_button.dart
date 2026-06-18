@@ -4,7 +4,7 @@ import '../../../../core/constants/app_text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const PrimaryButton({
     super.key,
@@ -21,12 +21,16 @@ class PrimaryButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
+          disabledBackgroundColor: AppColors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 0,
         ),
-        child: Text(text, style: AppTextStyles.button),
+        child: Text(
+          text,
+          style: AppTextStyles.button,
+        ),
       ),
     );
   }
