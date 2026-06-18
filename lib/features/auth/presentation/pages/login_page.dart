@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../main_navigation/presentation/pages/main_navigation_page.dart';
 import '../widgets/auth_header_image.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
@@ -33,7 +34,8 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
-        title:const Text(AppStrings.loginTitle, style: AppTextStyles.appBarTitle),
+        title:
+            const Text(AppStrings.loginTitle, style: AppTextStyles.appBarTitle),
         leading: const Icon(Icons.search, color: AppColors.buttonText),
         actions: const [
           Padding(
@@ -49,13 +51,15 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AuthHeaderImage(imagePath: 'assets/images/Image Header_margin.png'),
+              const AuthHeaderImage(
+                  imagePath: 'assets/images/Image Header_margin.png'),
               const SizedBox(height: 24),
 
               // العنوان
-           const   Text(AppStrings.welcomeBack, style: AppTextStyles.heading),
+              const Text(AppStrings.welcomeBack, style: AppTextStyles.heading),
               const SizedBox(height: 6),
-           const   Text(AppStrings.welcomeSub, style: AppTextStyles.subHeading),
+              const Text(AppStrings.welcomeSub,
+                  style: AppTextStyles.subHeading),
               const SizedBox(height: 24),
 
               // حقل الإيميل
@@ -93,7 +97,14 @@ class _LoginPageState extends State<LoginPage> {
               // زر تسجيل الدخول
               PrimaryButton(
                 text: AppStrings.loginButton,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MainNavigationPage(),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 24),
 
@@ -106,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  const  Text(AppStrings.noAccount,
+                    const Text(AppStrings.noAccount,
                         style: AppTextStyles.subHeading),
                     GestureDetector(
                       onTap: () => Navigator.push(
@@ -115,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (_) => const RegisterPage(),
                         ),
                       ),
-                      child:const Text(AppStrings.registerNow,
+                      child: const Text(AppStrings.registerNow,
                           style: AppTextStyles.link),
                     ),
                   ],
