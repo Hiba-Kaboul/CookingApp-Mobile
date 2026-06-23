@@ -8,15 +8,17 @@ class CustomTextField extends StatefulWidget {
   final IconData suffixIcon;
   final bool isPassword;
   final TextEditingController controller;
-
-  const CustomTextField({
-    super.key,
-    required this.label,
-    required this.hint,
-    required this.suffixIcon,
-    required this.controller,
-    this.isPassword = false,
-  });
+  final Color backgroundColor;
+  final TextStyle? hintStyle;
+  const CustomTextField(
+      {super.key,
+      required this.label,
+      required this.hint,
+      required this.suffixIcon,
+      required this.controller,
+      this.isPassword = false,
+      this.backgroundColor = AppColors.buttonText,
+      this.hintStyle});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -30,7 +32,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(widget.label, style: AppTextStyles.label),
+        Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              widget.label,
+              textAlign: TextAlign.right,
+              style: AppTextStyles.label,
+            ),
+          ),
         const SizedBox(height: 6),
         TextField(
           controller: widget.controller,
@@ -39,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           textDirection: TextDirection.rtl,
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: AppTextStyles.hint,
+            hintStyle: widget.hintStyle ?? AppTextStyles.hint,
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
@@ -49,21 +58,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     ),
                     onPressed: () => setState(() => _obscure = !_obscure),
                   )
-                : Icon(widget.suffixIcon,
-                    color: AppColors.grey, size: 20),
+                : Icon(widget.suffixIcon, color: AppColors.grey, size: 20),
             filled: true,
-            fillColor: AppColors.buttonText,
+            fillColor: widget.backgroundColor,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  const BorderSide(color: AppColors.inputBorder),
+              borderSide: const BorderSide(color: AppColors.inputBorder),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  const BorderSide(color: AppColors.inputBorder),
+              borderSide: const BorderSide(color: AppColors.inputBorder),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

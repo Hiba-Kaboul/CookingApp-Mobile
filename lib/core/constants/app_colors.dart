@@ -20,4 +20,7 @@ class AppColors {
   static const Color otpGradientBottom = Color(0xFFF4D27B);
 
   static const Color otpCardBackground = Color(0xFFF9ECE8);
+  static const Color ResetPasswordBackgroundTextField =
+      Color.fromARGB(255, 248, 214, 203);
+  static const Color ResetPasswordTextField = Color(0xFFFFF1ED);
 }

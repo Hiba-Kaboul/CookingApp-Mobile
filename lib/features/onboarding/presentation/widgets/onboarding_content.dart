@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project2/core/constants/app_colors.dart';
 import 'package:project2/core/constants/app_text_styles.dart';
+import 'package:project2/core/utils/token_storage.dart';
 import 'package:project2/features/onboarding/data/models/onboarding_model.dart';
 import '../../../auth/presentation/pages/register_page.dart';
 import 'dot_indicator.dart';
@@ -51,10 +52,15 @@ class OnboardingContent extends StatelessWidget {
           OnboardingButton(
             label: currentIndex == totalPages - 1 ? 'ابدأ الآن' : 'التالي',
             onTap: currentIndex == totalPages - 1
-                ? () => Navigator.pushReplacement(
+                ? () async {
+                    await TokenStorage.setOnboardingSeen();
+                    if (!context.mounted) return;
+
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (_) => const RegisterPage()),
-                    )
+                    );
+                  }
                 : onNext,
           ),
           const SizedBox(height: 16),
