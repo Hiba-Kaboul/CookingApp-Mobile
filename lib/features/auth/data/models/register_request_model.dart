@@ -1,8 +1,8 @@
 class RegisterRequestModel {
-  final String name;
-  final String email;
-  final String password;
-  final String passwordConfirmation;
+  final String? name;
+  final String? email;
+  final String? password;
+  final String? passwordConfirmation;
 
   RegisterRequestModel({
     required this.name,

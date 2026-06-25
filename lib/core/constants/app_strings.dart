@@ -72,4 +72,7 @@ class AppStrings {
   static const String otpVerifyButton = 'تحقق';
   static const String otpNotReceived = 'لم يصلك الرمز؟ ';
   static const String otpResend = 'إعادة إرسال الرمز';
+  static const String info = ': المعلومات الشخصية   ';
+  static const String bio =": البايو ";
+  
 }

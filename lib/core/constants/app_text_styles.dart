@@ -71,6 +71,11 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.buttonText,
   );
+  static const TextStyle names = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textDark,
+  );
   static const TextStyle passwordtitle = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 20,

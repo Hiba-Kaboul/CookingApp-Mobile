@@ -51,7 +51,7 @@ class ProfileHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(name, style: AppTextStyles.heading),
+              Text(name, style: AppTextStyles.names),
               const SizedBox(height: 4),
               Text(subtitle, style: AppTextStyles.subHeading),
             ],

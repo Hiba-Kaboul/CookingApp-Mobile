@@ -43,26 +43,33 @@ class VerifyEmailUser {
   final int id;
   final String name;
   final String email;
-  final String role;
-  final bool verified;
+  final String? avatar;
+  final String? bio;
+  final int postsCount;
+  final String? emailVerifiedAt;
   final String createdAt;
 
   VerifyEmailUser({
     required this.id,
     required this.name,
     required this.email,
-    required this.role,
-    required this.verified,
+    this.avatar,
+    this.bio,
+    required this.postsCount,
+    this.emailVerifiedAt,
     required this.createdAt,
   });
 
-  factory VerifyEmailUser.fromJson(Map<String, dynamic> json) =>
-      VerifyEmailUser(
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        role: json['role'],
-        verified: json['verified'],
-        createdAt: json['created_at'],
-      );
+  factory VerifyEmailUser.fromJson(Map<String, dynamic> json) {
+    return VerifyEmailUser(
+      id: json['id'],
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      avatar: json['avatar'],
+      bio: json['bio'],
+      postsCount: json['posts_count'] ?? 0,
+      emailVerifiedAt: json['email_verified_at'],
+      createdAt: json['created_at'] ?? '',
+    );
+  }
 }

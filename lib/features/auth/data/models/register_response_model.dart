@@ -21,26 +21,33 @@ class RegisterUserData {
   final int id;
   final String name;
   final String email;
-  final String role;
-  final bool verified;
+  final String? avatar;
+  final String? bio;
+  final int postsCount;
+  final String? emailVerifiedAt;
   final String createdAt;
 
   RegisterUserData({
     required this.id,
     required this.name,
     required this.email,
-    required this.role,
-    required this.verified,
+    this.avatar,
+    this.bio,
+    required this.postsCount,
+    this.emailVerifiedAt,
     required this.createdAt,
   });
 
-  factory RegisterUserData.fromJson(Map<String, dynamic> json) =>
-      RegisterUserData(
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        role: json['role'],
-        verified: json['verified'],
-        createdAt: json['created_at'],
-      );
+  factory RegisterUserData.fromJson(Map<String, dynamic> json) {
+    return RegisterUserData(
+      id: json['id'],
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      avatar: json['avatar'],
+      bio: json['bio'],
+      postsCount: json['posts_count'] ?? 0,
+      emailVerifiedAt: json['email_verified_at'],
+      createdAt: json['created_at'] ?? '',
+    );
+  }
 }

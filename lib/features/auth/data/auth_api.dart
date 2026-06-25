@@ -37,8 +37,10 @@ class AuthApi {
     );
 
     final json = jsonDecode(response.body);
-
+    print(json);
     if (response.statusCode == 201) {
+      print('REGISTER RESPONSE:');
+      print(json);
       return RegisterResponseModel.fromJson(json);
     } else {
       throw Exception(json['message'] ?? 'حدث خطأ أثناء إنشاء الحساب');
@@ -50,14 +52,17 @@ class AuthApi {
     required String email,
     required String code,
   }) async {
+    print('EMAIL = $email');
+    print('CODE = $code');
     final request = VerifyEmailRequestModel(email: email, code: code);
-
+    print(jsonEncode(request.toMap()));
     final response = await http.post(
       Uri.parse('$baseUrl/auth/verify-email'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(request.toJson()),
+      body: request.toJson(),
+      // body: jsonEncode(request.toJson()),
     );
-
+    print(response.body);
     final json = jsonDecode(response.body);
 
     if (response.statusCode == 200) {

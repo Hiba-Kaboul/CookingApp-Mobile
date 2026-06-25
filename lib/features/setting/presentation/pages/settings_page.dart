@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/core/constants/app_colors.dart';
 import 'package:project2/core/constants/app_text_styles.dart';
-import 'package:project2/features/auth/data/auth_api.dart';
+import 'package:project2/features/profile/presentation/pages/profile_page.dart';
+import '../../../profile/data/api/edit_profile_api.dart';
+import '../../../profile/presentation/bloc/edit_profile_bloc.dart';
+import '../../../profile/presentation/pages/profile_editing_page.dart';
+import '../../data/api/settings_api.dart';
+import '../bloc/settings_bloc.dart';
+import '../bloc/settings_event.dart';
+import '../bloc/settings_state.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/settings_section_title.dart';
 import '../widgets/settings_switch_tile.dart';
 import '../widgets/settings_tile.dart';
 import '../../../../core/utils/token_storage.dart';
+import '../../../auth/data/auth_api.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -19,9 +28,18 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool appNotifications = true;
   bool newsletter = false;
-  int currentNavIndex = 4;
   bool _isLoggingOut = false;
+
   final AuthApi _authApi = AuthApi();
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<SettingsBloc>().add(
+          GetProfileEvent(),
+        );
+  }
 
   Future<void> _handleLogout(BuildContext context) async {
     final confirm = await showDialog<bool>(
@@ -55,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
       if (token != null && token.isNotEmpty) {
         await _authApi.logout(token: token);
       }
-    } catch (e) {
+    } catch (_) {
     } finally {
       await TokenStorage.clearSession();
 
@@ -77,146 +95,192 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.primary,
-        elevation: 0,
         centerTitle: true,
-        title: const Text('الإعدادات', style: AppTextStyles.appBarTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
+        title: const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'الإعدادات',
+              style: AppTextStyles.appBarTitle,
+            ),
+          ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-        children: [
-          ProfileHeader(
-            name: ' ميسي  ',
-            subtitle: 'افضل لاعب بالتاريخ',
-            imageUrl:
-                'https://tse1.mm.bing.net/th/id/OIP.w7bL5m8OjpukFlr91wdRUAHaQD?rs=1&pid=ImgDetMain&o=7&rm=3',
-            onEditTap: () {},
-          ),
-          const SizedBox(height: 20),
-          const SettingsSectionTitle(title: 'الحساب'),
-          _card([
-            SettingsTile(
-              title: 'المعلومات الشخصية',
-              icon: Icons.person_outline,
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder:(context) => ,))
-              },
-            ),
-            const Divider(height: 1, color: AppColors.inputBorder),
-            SettingsTile(
-              title: 'الأمان وكلمة المرور',
-              icon: Icons.lock_outline,
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder:(context) => ,))
-              },
-            ),
-          ]),
-          const SizedBox(height: 20),
-          const SettingsSectionTitle(title: 'التفضيلات'),
-          _card([
-            SettingsTile(
-              title: 'اللغة',
-              icon: Icons.language,
-              showChevron: false,
-              trailingBadge: _languageBadge(),
-              onTap: () {},
-            ),
-            const Divider(height: 1, color: AppColors.inputBorder),
-            SettingsTile(
-              title: 'المظهر',
-              icon: Icons.palette_outlined,
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder:(context) => ,))
-              },
-            ),
-          ]),
-          const SizedBox(height: 20),
-          const SettingsSectionTitle(title: 'الإشعارات'),
-          _card([
-            SettingsSwitchTile(
-              title: 'إشعارات التطبيق',
-              icon: Icons.notifications_none,
-              value: appNotifications,
-              onChanged: (v) => setState(() => appNotifications = v),
-            ),
-            const Divider(height: 1, color: AppColors.inputBorder),
-            // SettingsSwitchTile(
-            //   title: 'النشرة البريدية',
-            //   icon: Icons.mail_outline,
-            //   value: newsletter,
-            //   onChanged: (v) => setState(() => newsletter = v),
-            // ),
-          ]),
-          const SizedBox(height: 20),
-          const SettingsSectionTitle(title: 'عام'),
-          _card([
-            SettingsTile(
-              title: ' حول التطبيق',
-              icon: Icons.help_outline,
-              onTap: () {},
-            ),
-            const Divider(height: 1, color: AppColors.inputBorder),
-            // SettingsTile(
-            //   title: 'FlavorX',
-            //   icon: Icons.info_outline,
-            //   onTap: () {},
-            // ),
-          ]),
-          const SizedBox(height: 24),
-          _card([
-            SettingsTile(
-              title: 'تسجيل الخروج',
-              icon: Icons.logout,
-              showChevron: false,
-              isDestructive: true,
-              onTap: () => _handleLogout(context),
-            ),
-          ], borderColor: AppColors.primary.withOpacity(0.3)),
-        ],
+      body: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          if (state is SettingsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is SettingsError) {
+            return Center(
+              child: Text(state.message),
+            );
+          }
+
+          if (state is SettingsLoaded) {
+            final user = state.profile;
+
+            return ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              children: [
+                ProfileHeader(
+                  name: user.name,
+                  // email : user.email,
+                  subtitle: user.email ?? '',
+                  imageUrl: user.avatar ?? '',
+                  onEditTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                              value: context.read<SettingsBloc>(),
+                            ),
+                            BlocProvider(
+                              create: (_) => EditProfileBloc(EditProfileApi()),
+                            ),
+                          ],
+                          child: ProfileEditingPage(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const SettingsSectionTitle(
+                  title: 'الحساب',
+                ),
+                _card([
+                  SettingsTile(
+                    title: 'المعلومات الشخصية',
+                    icon: Icons.person_outline,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          // 2. توفير الـ Bloc للصفحة المطلوبة
+                          builder: (context) => BlocProvider(
+                            create: (_) => SettingsBloc(SettingsApi())
+                              ..add(
+                                  GetProfileEvent()), // لا تنسَ إطلاق الحدث لجلب البيانات
+                            child: const ProfilePage(),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(height: 1),
+                  SettingsTile(
+                    title: 'الأمان وكلمة المرور',
+                    icon: Icons.lock_outline,
+                    onTap: () {},
+                  ),
+                ]),
+                const SizedBox(height: 20),
+                const SettingsSectionTitle(
+                  title: 'التفضيلات',
+                ),
+                _card([
+                  SettingsTile(
+                    title: 'اللغة',
+                    icon: Icons.language,
+                    showChevron: false,
+                    trailingBadge: _badge(
+                      user.language.label,
+                    ),
+                    onTap: () {},
+                  ),
+                  const Divider(height: 1),
+                  SettingsTile(
+                    title: 'المظهر',
+                    icon: Icons.palette_outlined,
+                    trailingBadge: _badge(
+                      user.theme.label,
+                    ),
+                    onTap: () {},
+                  ),
+                ]),
+                const SizedBox(height: 20),
+                const SettingsSectionTitle(
+                  title: 'الإشعارات',
+                ),
+                _card([
+                  SettingsSwitchTile(
+                    title: 'إشعارات التطبيق',
+                    icon: Icons.notifications_none,
+                    value: appNotifications,
+                    onChanged: (v) {
+                      setState(() {
+                        appNotifications = v;
+                      });
+                    },
+                  ),
+                ]),
+                const SizedBox(height: 20),
+                const SettingsSectionTitle(
+                  title: 'عام',
+                ),
+                _card([
+                  SettingsTile(
+                    title: 'حول التطبيق',
+                    icon: Icons.help_outline,
+                    onTap: () {},
+                  ),
+                ]),
+                const SizedBox(height: 24),
+                _card([
+                  SettingsTile(
+                    title: 'تسجيل الخروج',
+                    icon: Icons.logout,
+                    showChevron: false,
+                    isDestructive: true,
+                    onTap: () => _handleLogout(context),
+                  ),
+                ]),
+              ],
+            );
+          }
+
+          return const SizedBox();
+        },
       ),
     );
   }
 
-  Widget _languageBadge() {
+  Widget _badge(String text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
         color: const Color(0xFFD7E89A),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        'العربية',
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
 
-  Widget _card(List<Widget> children, {Color? borderColor}) {
+  Widget _card(List<Widget> children) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: borderColor != null ? Border.all(color: borderColor) : null,
-        boxShadow: borderColor == null
-            ? [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-            : null,
       ),
-      child: Column(children: children),
+      child: Column(
+        children: children,
+      ),
     );
   }
 }
