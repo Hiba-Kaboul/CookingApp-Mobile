@@ -178,7 +178,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 24),
 
                     // أزرار السوشيال
-                    const SocialButtonsRow(),
+                    SocialButtonsRow(
+                      onGooglePressed: () {
+                        context.read<AuthBloc>().add(GoogleSignInSubmitted());
+                      },
+                    ),
                     const SizedBox(height: 24),
 
                     // رابط تسجيل الدخول

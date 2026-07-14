@@ -6,6 +6,7 @@ import 'package:project2/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:project2/features/auth/presentation/bloc/auth_event.dart';
 import 'package:project2/features/auth/presentation/bloc/auth_state.dart';
 import 'package:project2/features/auth/presentation/pages/otp_page_forget.dart';
+import 'package:project2/features/auth/presentation/pages/reset_password_page.dart';
 
 import '../../../../core/constants/app_text_styles.dart';
 import '../widgets/custom_text_field.dart';
@@ -54,7 +55,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => OtpPageForget(email: state.email),
+                        builder: (_) => ResetPasswordPage(email: state.email),
                       ),
                     );
                   } else if (state is AuthFailure) {
@@ -106,7 +107,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ? const CircularProgressIndicator(
                               color: AppColors.primary)
                           : PrimaryButton(
-                              text: AppStrings.sendCode,
+                              text: AppStrings.changepassword,
                               onPressed: () {
                                 if (_emailController.text.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(

@@ -64,3 +64,26 @@ class ResetPasswordSubmitted extends AuthEvent {
     required this.passwordConfirmation,
   });
 }
+
+class ResetPasswordWithOtpSubmitted extends AuthEvent {
+  final String email;
+  final String code;
+  final String password;
+  final String passwordConfirmation;
+
+  ResetPasswordWithOtpSubmitted({
+    required this.email,
+    required this.code,
+    required this.password,
+    required this.passwordConfirmation,
+  });
+}
+
+class ResendForgotPasswordOtp extends AuthEvent {
+  final String email;
+  ResendForgotPasswordOtp({required this.email});
+}
+
+class GoogleSignInSubmitted extends AuthEvent {
+   GoogleSignInSubmitted();
+}
