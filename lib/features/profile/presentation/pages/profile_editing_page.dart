@@ -51,21 +51,33 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
     return BlocListener<EditProfileBloc, EditProfileState>(
       listener: (context, state) {
         if (state is EditProfileSuccess) {
+          // تحديث البيانات في الصفحة السابقة
           context.read<SettingsBloc>().add(
                 GetProfileEvent(),
               );
-
-          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("تم حفظ التعديلات بنجاح!"),
+              backgroundColor: Colors.green, // لون يعبر عن النجاح
+            ),
+          );
+          Navigator.of(context).pop();
         }
 
         if (state is EditProfileError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+              const SnackBar(
+              content: Text(" لقد حدث خطأ اعد المحاولة من فضلك!"),
+              backgroundColor: Colors.red, // لون يعبر عن النجاح
+            ),
           );
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
           backgroundColor: AppColors.primary,
           title: const Padding(
             padding: EdgeInsets.all(20),
@@ -117,13 +129,14 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
                               : (user.avatar != null && user.avatar!.isNotEmpty
                                   ? NetworkImage(user.avatar!)
                                   : null) as ImageProvider?,
-                          child: (user.avatar == null || user.avatar!.isEmpty) &&
-                                  _image == null
-                              ? const Icon(
-                                  Icons.person,
-                                  size: 50,
-                                )
-                              : null,
+                          child:
+                              (user.avatar == null || user.avatar!.isEmpty) &&
+                                      _image == null
+                                  ? const Icon(
+                                      Icons.person,
+                                      size: 50,
+                                    )
+                                  : null,
                         ),
                         Positioned(
                           bottom: 0,
@@ -153,7 +166,7 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
                     TextformFiels(
                       controller: _nameController,
                       hint: user.name,
-                      label:AppStrings.fullName ,
+                      label: AppStrings.fullName,
                     ),
                     const SizedBox(height: 15),
                     TextformFiels(
