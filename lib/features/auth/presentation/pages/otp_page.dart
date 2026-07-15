@@ -174,8 +174,17 @@ class _OtpPageState extends State<OtpPage> {
           final isLoading = state is AuthLoading;
 
           return Scaffold(
-            appBar: AppBar(),
-            backgroundColor: AppColors.background,
+             backgroundColor: AppColors.background,
+            appBar: AppBar(
+              backgroundColor: AppColors.primary,
+              leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.buttonText,
+                  )),
+            ),
+           
             body: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
