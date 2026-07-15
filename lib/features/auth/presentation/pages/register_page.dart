@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => OtpPage(email: state.email),
