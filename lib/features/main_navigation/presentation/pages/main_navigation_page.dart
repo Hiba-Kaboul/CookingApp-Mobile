@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project2/features/community/pages/community_page.dart';
+import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
 import 'package:project2/features/setting/presentation/pages/settings_page.dart';
-import 'package:project2/features/splash/presentation/pages/splash_page.dart';
+import '../../../community/pages/users_page.dart';
 import '../../../onboarding/presentation/pages/onboarding_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../setting/data/api/settings_api.dart';
 import '../../../setting/presentation/bloc/settings_bloc.dart';
 import '../../widgets/custom_bottom_nav_bar.dart';
@@ -19,29 +22,31 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   // تحويل القائمة إلى Getter
   List<Widget> get pages => [
+        CommunityPage(),
+        UsersPage(),
         Center(
           child: Column(
             children: [
-              const Text('Home Page'),
+              const Text('add recipe Page'),
               IconButton(
                 onPressed: () {
                   // الآن يمكن الوصول إلى context بنجاح
                   Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => const OnboardingPage()),
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OnboardingPage()),
                   );
-                }, 
+                },
                 icon: const Icon(Icons.abc),
               )
             ],
           ),
         ),
-        const Center(child: Text('Search Page')),
-        const Center(child: Text('Add Recipe Page')),
         const Center(child: Text('Favorites Page')),
         BlocProvider(
-          create: (_) => SettingsBloc(SettingsApi()),
-          child: const SettingsPage(),
+          create: (_) => SettingsBloc(SettingsApi())
+            ..add(GetProfileEvent()), // لا تنسَ إطلاق الحدث لجلب البيانات
+          child: const ProfilePage(),
         ),
       ];
 
@@ -49,7 +54,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // استدعاء الـ getter هنا
-      body: pages[currentIndex], 
+      body: pages[currentIndex],
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: currentIndex,
         onTap: (index) {

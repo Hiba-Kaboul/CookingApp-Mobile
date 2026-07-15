@@ -11,7 +11,7 @@ class SettingsApi {
       final token = await TokenStorage.getToken();
 
       print("TOKEN = $token");
-
+      print("Requesting profile with token: $token");
       final response = await dio.get(
         "${ApiUrl.baseUrl}/auth/profile/show",
         options: Options(

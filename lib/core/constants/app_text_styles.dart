@@ -76,6 +76,16 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.textDark,
   );
+  static const TextStyle title = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textDark,
+  );
+  static const TextStyle title1 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: AppColors.light_brown,
+  );
   static const TextStyle passwordtitle = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 20,
@@ -94,7 +104,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.hintText,
   );
-  static const TextStyle Update = TextStyle(
+  static const TextStyle update = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
     color: AppColors.textDark,
@@ -130,7 +140,7 @@ class AppTextStyles {
     fontSize: 15,
   );
 
-  static TextStyle otpResend = TextStyle(
+  static const TextStyle otpResend = TextStyle(
     color: AppColors.primary,
     fontSize: 13,
     fontWeight: FontWeight.w600,
@@ -146,7 +156,7 @@ class AppTextStyles {
     decorationColor: Colors.grey,
   );
 
-  static TextStyle otpTimer = TextStyle(
+  static const TextStyle otpTimer = TextStyle(
     color: AppColors.primary,
     fontWeight: FontWeight.bold,
     fontSize: 15,

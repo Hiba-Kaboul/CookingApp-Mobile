@@ -33,18 +33,16 @@ class ProfileHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          GestureDetector(
+          InkWell(
             onTap: onEditTap,
+            customBorder: const CircleBorder(),
             child: Container(
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 color: AppColors.background,
                 shape: BoxShape.circle,
               ),
-              child: InkWell(child: const Icon(Icons.edit, size: 16, color: AppColors.primary),
-              onTap: () {
-                
-              },),
+              child: const Icon(Icons.edit, size: 18, color: AppColors.primary),
             ),
           ),
           const Spacer(),

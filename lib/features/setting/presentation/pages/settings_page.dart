@@ -94,6 +94,9 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+          iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         backgroundColor: AppColors.primary,
         centerTitle: true,
         title: const Padding(
@@ -156,24 +159,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: 'الحساب',
                 ),
                 _card([
-                  SettingsTile(
-                    title: 'المعلومات الشخصية',
-                    icon: Icons.person_outline,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          // 2. توفير الـ Bloc للصفحة المطلوبة
-                          builder: (context) => BlocProvider(
-                            create: (_) => SettingsBloc(SettingsApi())
-                              ..add(
-                                  GetProfileEvent()), // لا تنسَ إطلاق الحدث لجلب البيانات
-                            child: const ProfilePage(),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  // SettingsTile(
+                  //   title: 'المعلومات الشخصية',
+                  //   icon: Icons.person_outline,
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         // 2. توفير الـ Bloc للصفحة المطلوبة
+                  //         builder: (context) => BlocProvider(
+                  //           create: (_) => SettingsBloc(SettingsApi())
+                  //             ..add(
+                  //                 GetProfileEvent()), // لا تنسَ إطلاق الحدث لجلب البيانات
+                  //           child: const ProfilePage(),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   const Divider(height: 1),
                   SettingsTile(
                     title: 'الأمان وكلمة المرور',

@@ -7,6 +7,8 @@ class AppColors {
   static const Color background = Color(0xFFFFF8F6);
   static const Color textDark = Color(0xFF2C1810);
   static const Color textLight = Color(0xFF6B3A2A);
+  static const Color light_brown = Color(0xFF8D716B);
+  
   static const Color dotActive = Color(0xFFB02A2A);
   static const Color dotInactive = Color(0xFFD9D9D9);
   static const Color buttonText = Color(0xFFFFFFFF);

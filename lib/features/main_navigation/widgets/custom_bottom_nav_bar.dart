@@ -27,9 +27,9 @@ class CustomBottomNavBar extends StatelessWidget {
           label: 'الرئيسية',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          activeIcon: Icon(Icons.search),
-          label: 'بحث',
+          icon: Icon(Icons.group_rounded),
+          activeIcon: Icon(Icons.group_rounded),
+          label: 'المجتمع',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add_circle_outline),
@@ -37,14 +37,26 @@ class CustomBottomNavBar extends StatelessWidget {
           label: 'إضافة',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border),
-          activeIcon: Icon(Icons.favorite),
-          label: 'المفضلة',
+          
+          icon: ImageIcon(
+            AssetImage(
+                "assets/images/Container (1).png"),
+            size: 24,
+          ),
+     
+          activeIcon: ImageIcon(
+            AssetImage(
+                "assets/images/Container (1).png"), 
+            size: 24,
+            color: AppColors
+                .primary, 
+          ),
+          label: 'المطبخ الذكي',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
           activeIcon: Icon(Icons.person),
-          label: 'حسابي',
+          label: 'الملف الشخصي',
         ),
       ],
     );
