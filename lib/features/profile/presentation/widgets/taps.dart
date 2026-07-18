@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../data/api/my_posts_view.dart';
+import '../bloc_my_approved_posts.dart/my_posts_bloc.dart';
+import '../bloc_my_approved_posts.dart/my_posts_event.dart';
+import '../pages/my_posts_page.dart';
 
 class Taps extends StatelessWidget {
   const Taps({super.key});
@@ -8,25 +13,28 @@ class Taps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // نستخدم DefaultTabController هنا ليتحكم في الـ TabBar والـ TabBarView
-    return const DefaultTabController(
+    return  DefaultTabController(
       length: 2,
       child: Column(
         children: [
-           TabBar(
+        const  TabBar(
             indicatorColor: AppColors.grey,
             labelColor: AppColors.primary,
             tabs: [
-              Tab(text: "المفضلة"),
+              Tab(text: "محفوظاتي"),
               Tab(text: "وصفاتي"),
-              
             ],
           ),
           // نستخدم Expanded ليأخذ الـ TabBarView المساحة المتبقية فقط
-           Expanded(
+          Expanded(
             child: TabBarView(
               children: [
-                Center(child: Text("محتوى وصفاتي هنا")),
                 Center(child: Text("محتوى المفضلة هنا")),
+                BlocProvider(
+                  create: (_) =>
+                      MyPostsBloc(MyPostsViewApi())..add(GetMyPostsEvent()),
+                  child: const MyPostsPage(),
+                ),
               ],
             ),
           ),

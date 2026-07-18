@@ -34,8 +34,8 @@ class ProfileTitle extends StatelessWidget {
         ),
         if (bio.isNotEmpty)
           Container(
-            width: 150,
-            height: 28,
+            width: 200,
+            height: 35,
             decoration: BoxDecoration(
               color: AppColors.otpGradientBottom,
               borderRadius: BorderRadius.circular(20),
@@ -55,13 +55,13 @@ class ProfileTitle extends StatelessWidget {
               ),
             ),
           ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          title,
-          style: AppTextStyles.label,
-        ),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // Text(
+        //   title,
+        //   style: AppTextStyles.label,
+        // ),
         const SizedBox(
           height: 10,
         ),

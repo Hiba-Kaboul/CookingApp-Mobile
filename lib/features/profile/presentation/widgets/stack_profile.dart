@@ -18,7 +18,7 @@ class Profiletop extends StatelessWidget {
 
         Center(
           child: Container(
-            height: 140,
+            height: 110,
             width: double.infinity,
             color: AppColors.primary,
             child: Opacity(
@@ -30,7 +30,7 @@ class Profiletop extends StatelessWidget {
 
         if (imageUrl.isNotEmpty)
           Positioned(
-            bottom: -110,
+            bottom: -80,
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
@@ -41,8 +41,8 @@ class Profiletop extends StatelessWidget {
                 borderRadius: BorderRadius.circular(70),
                 child: Image.network(
                   imageUrl,
-                  width: 150,
-                  height: 150,
+                  width: 130,
+                  height: 130,
                   fit: BoxFit.cover,
                 ),
               ),
