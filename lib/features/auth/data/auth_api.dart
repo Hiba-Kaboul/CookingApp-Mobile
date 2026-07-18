@@ -4,6 +4,7 @@ import 'package:project2/core/constants/api_url.dart';
 import 'package:project2/features/auth/data/models/forgot_password_request_model.dart';
 import 'package:project2/features/auth/data/models/forgot_password_response_model.dart';
 import 'package:project2/features/auth/data/models/logout_response_model.dart';
+import 'package:project2/features/auth/data/models/refresh_token_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_request_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_response_model.dart';
 import 'models/register_request_model.dart';
@@ -14,6 +15,7 @@ import 'models/resend_verification_request_model.dart';
 import 'models/resend_verification_response_model.dart';
 import 'models/login_request_model.dart';
 import 'models/login_response_model.dart';
+import 'models/refresh_token_model.dart';
 
 class AuthApi {
   
@@ -43,7 +45,18 @@ class AuthApi {
       print(json);
       return RegisterResponseModel.fromJson(json);
     } else {
-      throw Exception(json['message'] ?? 'حدث خطأ أثناء إنشاء الحساب');
+      final message = json['message']?.toString().toLowerCase() ?? '';
+
+      if (message.contains('already been taken') ||
+          message.contains('already taken')) {
+        throw Exception('هذا الحساب موجود مسبقاً');
+      }
+
+      if (message.contains('at least 8')) {
+        throw Exception('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      }
+
+      throw Exception('حدث خطأ أثناء إنشاء الحساب');
     }
   }
 
@@ -131,14 +144,12 @@ class AuthApi {
     );
 
     final json = jsonDecode(response.body);
-
     if (response.statusCode == 200) {
       return LoginResponseModel.fromJson(json);
+    } else if (response.statusCode == 403) {
+      throw Exception('حسابك محظور، يرجى التواصل مع فريق الدعم');
     } else {
-      if (response.statusCode == 401 || response.statusCode == 422) {
-        throw Exception('كلمة المرور غير صحيحة، حاول مجدداً');
-      }
-      throw Exception(json['message'] ?? 'البريد أو كلمة المرور غير صحيحة');
+      throw Exception('البريد الإلكتروني أو كلمة المرور غير صحيحة');
     }
   }
 // ───────── 5) Logout ─────────
@@ -179,7 +190,18 @@ class AuthApi {
     if (response.statusCode == 200) {
       return ForgotPasswordResponseModel.fromJson(json);
     } else {
-      throw Exception(json['message'] ?? 'حدث خطأ أثناء إرسال الرمز');
+      final message = json['message']?.toString().toLowerCase() ?? '';
+
+      if (message.contains('please wait') ||
+          message.contains('seconds before')) {
+        final regex = RegExp(r'(\d+\.?\d*)');
+        final match = regex.firstMatch(message);
+        final seconds =
+            match != null ? double.parse(match.group(1)!).ceil() : 60;
+        throw Exception('يرجى الانتظار $seconds ثانية قبل طلب رمز جديد');
+      }
+
+      throw Exception('حدث خطأ أثناء إرسال الرمز');
     }
   }
 

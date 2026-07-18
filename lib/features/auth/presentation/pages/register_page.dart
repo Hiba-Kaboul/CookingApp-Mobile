@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => OtpPage(email: state.email),
@@ -178,7 +178,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 24),
 
                     // أزرار السوشيال
-                    const SocialButtonsRow(),
+                    SocialButtonsRow(
+                      onGooglePressed: () {
+                        context.read<AuthBloc>().add(GoogleSignInSubmitted());
+                      },
+                    ),
                     const SizedBox(height: 24),
 
                     // رابط تسجيل الدخول

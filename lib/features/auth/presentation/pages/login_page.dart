@@ -43,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
             await TokenStorage.saveSession(
               token: state.token,
               name: state.name,
-              email: _emailController.text.trim(),
+             // email: _emailController.text.trim(),
+               email: state.email  ?? ''
             );
             Navigator.pushAndRemoveUntil(
               context,
@@ -164,7 +165,11 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 24),
 
                     // أزرار السوشيال
-                    const SocialButtonsRow(),
+                    SocialButtonsRow(
+                      onGooglePressed: () {
+                        context.read<AuthBloc>().add(GoogleSignInSubmitted());
+                      },
+                    ),
                     const SizedBox(height: 24),
 
                     // رابط إنشاء حساب

@@ -58,13 +58,13 @@ class AppStrings {
   static const String resetTitle = "تغيير كلمة المرور ";
   static const String newPassword = "كلمة المرور الجديدة ";
   static const String confirmNewPassword = "تأكيد كلمة المرور الجديدة";
-  static const String update = "تحديث";
+  static const String sendotp = "OTP إرسال رمز ";
 
   // forget passowrd email
   static const String emailtitle =
       'أدخل بريدك الإلكتروني المسجل وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
   static const String appBarpassword = 'استعادة الحساب';
-  static const String sendCode = '  إرسال رمز  OTP  ';
+  static const String changepassword = '  تحديث كلمة المرور  ';
 
   static const String otpPageTitle = 'استعادة الحساب';
   static const String otpDescription =

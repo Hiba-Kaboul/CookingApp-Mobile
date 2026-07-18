@@ -16,7 +16,8 @@ class ResendOtpSuccess extends AuthState {}
 class LoginSuccess extends AuthState {
   final String token;
   final String name;
-  LoginSuccess({required this.token, required this.name});
+   final String? email; 
+  LoginSuccess({this.email, required this.token, required this.name});
 }
 
 class LogoutSuccess extends AuthState {}
@@ -28,7 +29,10 @@ class ForgetPasswordSuccess extends AuthState {
 
 class ResetPasswordSuccess extends AuthState {}
 
+class ResetPasswordWithOtpSuccess extends AuthState {}
 class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);
 }
+
+

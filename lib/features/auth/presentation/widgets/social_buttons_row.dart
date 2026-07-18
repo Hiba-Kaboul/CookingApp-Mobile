@@ -3,13 +3,14 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 
 class SocialButtonsRow extends StatelessWidget {
-  const SocialButtonsRow({super.key});
+   final VoidCallback? onGooglePressed;
+  const SocialButtonsRow({super.key, this.onGooglePressed});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-      const  Row(
+        const Row(
           children: [
             const Expanded(child: Divider(color: AppColors.inputBorder)),
             Padding(
@@ -23,16 +24,13 @@ class SocialButtonsRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _SocialButton(
-              label: 'Apple',
-              icon: Icons.apple,
-              onTap: () {},
-            ),
             const SizedBox(width: 16),
-            _SocialButton(
-              label: 'Google',
-              icon: Icons.g_mobiledata,
-              onTap: () {},
+            Center(
+              child: _SocialButton(
+                label: 'Google',
+                icon: Icons.g_mobiledata,
+                onTap: () { (onGooglePressed);},
+              ),
             ),
           ],
         ),
@@ -58,8 +56,7 @@ class _SocialButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.inputBorder),
           borderRadius: BorderRadius.circular(10),
