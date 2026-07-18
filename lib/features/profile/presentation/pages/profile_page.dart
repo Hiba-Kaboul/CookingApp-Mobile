@@ -69,18 +69,25 @@ class ProfilePage extends StatelessWidget {
               if (state is SettingsLoaded) {
                 final user = state.profile;
 
-                return Column(
-                  children: [
-                    Profiletop(imageUrl: user.avatar ?? ""),
-                    const SizedBox(height: 40),
-                    ProfileTitle(
-                      name: user.name,
-                      bio: user.bio ?? "",
-                      title: user.email ?? "",
-                      posts_count: user.posts_count,
-                    ),
-                    const Expanded(child: Taps()),
-                  ],
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Profiletop(imageUrl: user.avatar ?? ""),
+                      const SizedBox(height: 20),
+                      ProfileTitle(
+                        name: user.name,
+                        bio: user.bio ?? "",
+                        posts_count: user.posts_count,
+                        title: "",
+                        
+                      ),
+                      const SizedBox(
+                        height:
+                            500, // حددي الارتفاع المناسب لظهور التابات ومحتواها
+                        child: Taps(),
+                      ),
+                    ],
+                  ),
                 );
               }
               return Container(

@@ -26,7 +26,7 @@ class EditProfileApi {
           filename: image.path.split('/').last,
         ),
     });
-print("Requesting profile with token: $token");
+// print("Requesting profile with token: $token");
     final response = await dio.post(
       "${ApiUrl.baseUrl}/auth/profile/update",
       data: formData,
