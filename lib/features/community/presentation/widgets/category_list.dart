@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project2/core/constants/app_colors.dart';
 
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../pages/categories_page.dart';
 
 class CategoryList extends StatefulWidget {

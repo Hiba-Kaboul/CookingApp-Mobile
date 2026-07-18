@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../auth/presentation/widgets/custom_text_field.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../auth/presentation/widgets/custom_text_field.dart';
 import '../widgets/carouselslider.dart';
 import '../widgets/category_list.dart';
 import '../widgets/community_post_card.dart';
 import '../widgets/photo.dart';
 
-class CommunityPage extends StatelessWidget {
-  CommunityPage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
   final _searchController = TextEditingController();
 
@@ -91,13 +91,16 @@ class CommunityPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return const CommunityPostCard(
                     userName: "ياسين المنصوري",
+                    postId: 1,
                     timeAgo: "منذ ساعتين",
                     content:
                         "تجربة سلطة الكينوا الجديدة مع صلصة الليمون والأعشاب. الطعم خيالي ومنعش جداً!",
-                    imagePath:
-                        "assets/images/onboarding3.png", // تأكدي من مسار الصورة
-                    hashTag: "#وصفة_صحية",
-                    likes: 124,
+                   mediaList: [], // تأكدي من مسار الصورة
+                    // hashTag: "#وصفة_صحية",
+                    avatar: null,
+                    likesCount: 124,
+                    isLiked: true,
+                    isSaved: true,
                     comments: 18,
                   );
                 },

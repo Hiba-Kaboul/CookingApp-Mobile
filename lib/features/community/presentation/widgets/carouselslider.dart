@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:project2/core/constants/app_text_styles.dart';
 
-import '../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class Carouselslider extends StatelessWidget {
   const Carouselslider({super.key});

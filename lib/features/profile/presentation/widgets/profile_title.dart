@@ -55,13 +55,13 @@ class ProfileTitle extends StatelessWidget {
               ),
             ),
           ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          title,
-          style: AppTextStyles.label,
-        ),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // Text(
+        //   title,
+        //   style: AppTextStyles.label,
+        // ),
         const SizedBox(
           height: 10,
         ),

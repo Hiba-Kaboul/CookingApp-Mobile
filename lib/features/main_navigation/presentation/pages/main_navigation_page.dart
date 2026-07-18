@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project2/features/community/pages/community_page.dart';
+import 'package:project2/features/community/presentation/pages/home_page.dart';
 import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
-import 'package:project2/features/setting/presentation/pages/settings_page.dart';
-import '../../../community/pages/users_page.dart';
-import '../../../onboarding/presentation/pages/onboarding_page.dart';
+import '../../../add_recipe/data/api/categories_api.dart';
+import '../../../add_recipe/data/api/create_post_api.dart';
+import '../../../add_recipe/presentation/bloc/create_post_bloc.dart';
+import '../../../add_recipe/presentation/bloc_categories/categories_bloc.dart';
+import '../../../add_recipe/presentation/bloc_categories/categories_event.dart';
+import '../../../add_recipe/presentation/pages/add_recipe_page.dart';
+import '../../../community/data/api/delete_post_api.dart';
+import '../../../community/data/api/like_unlike_posts_api.dart';
+import '../../../community/data/api/save_unsave_posts_api.dart';
+import '../../../community/data/api/users_api.dart';
+import '../../../community/presentation/bloc/users_posts_bloc.dart';
+import '../../../community/presentation/bloc/users_posts_event.dart';
+import '../../../community/presentation/bloc_delete_post/delete_users_posts_bloc.dart';
+import '../../../community/presentation/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
+import '../../../community/presentation/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
+import '../../../community/presentation/pages/users_page.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../setting/data/api/settings_api.dart';
 import '../../../setting/presentation/bloc/settings_bloc.dart';
@@ -22,27 +35,53 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   // تحويل القائمة إلى Getter
   List<Widget> get pages => [
-        CommunityPage(),
-        UsersPage(),
-        Center(
-          child: Column(
-            children: [
-              const Text('add recipe Page'),
-              IconButton(
-                onPressed: () {
-                  // الآن يمكن الوصول إلى context بنجاح
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OnboardingPage()),
-                  );
-                },
-                icon: const Icon(Icons.abc),
-              )
+        HomePage(),
+
+        // في ملف MainNavigationPage.dart
+
+        BlocProvider(
+          create: (_) => UsersPostsBloc(UsersPostsApi()),
+          child: MultiBlocProvider(
+            // إضافة هذا ليحتوي على كِلا الـ Bloc
+            providers: [
+              BlocProvider(
+                  create: (_) => UsersPostsBloc(UsersPostsApi())
+                    ..add(GetUsersPostsEvent())),
+              BlocProvider(
+                  create: (_) => DeleteUsersPostsBloc(DeletePostApi())),
+              BlocProvider(
+                create: (_) => LikeUnlikePostsBloc(
+                  LikeUnlikePostsApi(),
+                ),
+              ),
+              BlocProvider(
+                create: (_) => SaveUnlikePostsBloc(
+                  SaveUnsavePostsApi(),
+                ),
+              ),
             ],
+            child: const UsersPage(),
           ),
         ),
+
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => CreatePostBloc(
+                CreatePostApi(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => CategoriesBloc(
+                CategoriesApi(),
+              )..add(GetCategoriesEvent()),
+            ),
+          ],
+          child: const AddRecipeScreen(),
+        ),
+// المطبخ الذكي
         const Center(child: Text('Favorites Page')),
+
         BlocProvider(
           create: (_) => SettingsBloc(SettingsApi())
             ..add(GetProfileEvent()), // لا تنسَ إطلاق الحدث لجلب البيانات

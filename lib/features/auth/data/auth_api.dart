@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:project2/core/constants/api_url.dart';
 import 'package:project2/features/auth/data/models/forgot_password_request_model.dart';
 import 'package:project2/features/auth/data/models/forgot_password_response_model.dart';
 import 'package:project2/features/auth/data/models/logout_response_model.dart';
@@ -15,8 +16,7 @@ import 'models/login_request_model.dart';
 import 'models/login_response_model.dart';
 
 class AuthApi {
-  final String baseUrl = 'http://127.0.0.1:8000/api';
-
+  
   // ───────── 1) Register ─────────
   Future<RegisterResponseModel> register({
     required String name,
@@ -31,7 +31,7 @@ class AuthApi {
     );
 
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/register'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(request.toJson()),
     );
@@ -57,7 +57,7 @@ class AuthApi {
     final request = VerifyEmailRequestModel(email: email, code: code);
     print(jsonEncode(request.toMap()));
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/verify-email'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/verify-email'),
       headers: {'Content-Type': 'application/json'},
       body: request.toJson(),
       // body: jsonEncode(request.toJson()),
@@ -79,7 +79,7 @@ class AuthApi {
     final request = ResendVerificationRequestModel(email: email);
 
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/resend-verification'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/resend-verification'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(request.toJson()),
     );
@@ -94,6 +94,27 @@ class AuthApi {
   }
 
   // ───────── 4) Login ─────────
+  // Future<LoginResponseModel> login({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   final request = LoginRequestModel(email: email, password: password);
+
+  //   final response = await http.post(
+  //     Uri.parse('${ApiUrl.baseUrl}/auth/login'),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: jsonEncode(request.toJson()),
+  //   );
+
+  //   final json = jsonDecode(response.body);
+
+  //   if (response.statusCode == 200) {
+  //     return LoginResponseModel.fromJson(json);
+  //   } else {
+  //     throw Exception('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+  //   }
+  // }
+
   Future<LoginResponseModel> login({
     required String email,
     required String password,
@@ -101,8 +122,11 @@ class AuthApi {
     final request = LoginRequestModel(email: email, password: password);
 
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/login'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse('${ApiUrl.baseUrl}/auth/login'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
       body: jsonEncode(request.toJson()),
     );
 
@@ -121,7 +145,7 @@ class AuthApi {
 
   Future<LogoutResponseModel> logout({required String token}) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/logout'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/logout'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -145,7 +169,7 @@ class AuthApi {
     final request = ForgotPasswordRequestModel(email: email);
 
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/forgot-password'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/forgot-password'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(request.toJson()),
     );
@@ -175,7 +199,7 @@ class AuthApi {
     );
 
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/reset-password'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/reset-password'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(request.toJson()),
     );
@@ -189,4 +213,54 @@ class AuthApi {
           json['message'] ?? 'حدث خطأ أثناء إعادة تعيين كلمة المرور');
     }
   }
+////////////////////////////////////////////////////////////
+// ───────── 6) Refresh Token ─────────
+
+  Future<RefreshTokenResponseModel> refreshToken({
+    required String token,
+  }) async {
+    final response = await http.post(
+      Uri.parse('${ApiUrl.baseUrl}/auth/refresh'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final json = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return RefreshTokenResponseModel.fromJson(json);
+    } else {
+      throw Exception(json['message'] ?? 'انتهت صلاحية الجلسة');
+    }
+  }
+
+//////////////////Google 
+  Future<LoginResponseModel> loginWithGoogle({required String idToken}) async {
+    final response = await http.post(
+      Uri.parse('${ApiUrl.baseUrl}/auth/google'), // نفس الرابط اللي في البوست مان
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'id_token': idToken, // نفس المفتاح اللي في البوست مان
+      }),
+    );
+
+    final json = jsonDecode(response.body);
+    
+    // إذا السيرفر رد بنجاح (200 أو 201)
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return LoginResponseModel.fromJson(json);
+    } else {
+      // إذا في خطأ من السيرفر (مثلاً التوكن مو صحيح)
+      throw Exception(json['message'] ?? 'فشل تسجيل الدخول بحساب جوجل');
+    }
+  }
+
+
+
+
 }
