@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project2/features/auth/presentation/pages/login_page.dart';
 import 'package:project2/features/community/presentation/pages/home_page.dart';
 import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
 import '../../../add_recipe/data/api/categories_api.dart';
@@ -80,7 +81,19 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           child: const AddRecipeScreen(),
         ),
 // المطبخ الذكي
-        const Center(child: Text('Favorites Page')),
+        Center(
+  child: InkWell(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginPage(),
+        ),
+      );
+    },
+    child: const Text('Favorites Page'),
+  ),
+),
 
         BlocProvider(
           create: (_) => SettingsBloc(SettingsApi())
