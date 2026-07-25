@@ -142,14 +142,12 @@ return MultiBlocListener(
     ],
     child: CommunityPostCard(
       postId: post.id,
-      isLiked: post.isLiked,
-      likesCount: post.likesCount,
-      isSaved: post.isSaved, // ستتحدث هذه القيمة بعد إرسال الحدث أعلاه
+     // ستتحدث هذه القيمة بعد إرسال الحدث أعلاه
       userName: post.user.name,
       avatar: post.user.avatar,
       content: post.description ?? "",
       mediaList: post.media,
-      comments: post.commentsCount,
+        post: post,
       timeAgo: "",
     ),
   );

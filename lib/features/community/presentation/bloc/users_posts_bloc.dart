@@ -18,6 +18,8 @@ class UsersPostsBloc extends Bloc<UsersPostsEvent, UsersPostsState> {
     on<LoadMorePostsEvent>(getPosts);
     on<UpdatePostLikeEvent>(updateLike);
     on<UpdatePostSaveEvent>(updateSave);
+    on<UpdatePostCommentCountEvent>(updateCommentCount); 
+  on<DecrementPostCommentCountEvent>(decrementCommentCount);
   }
   Future<void> getPosts(
     UsersPostsEvent event,
@@ -85,6 +87,32 @@ void updateSave(
   if (index == -1) return;
 
   allPosts[index].isSaved = event.isSaved; // تحديث حالة الحفظ
+
+  emit(UsersPostsSuccess(List.from(allPosts), hasMore));
+}
+
+  void updateCommentCount(
+    UpdatePostCommentCountEvent event,
+    Emitter<UsersPostsState> emit,
+  ) {
+    final index = allPosts.indexWhere((e) => e.id == event.postId);
+    if (index == -1) return;
+
+    allPosts[index].commentsCount = allPosts[index].commentsCount + 1;
+
+    emit(UsersPostsSuccess(List.from(allPosts), hasMore));
+  }
+
+void decrementCommentCount(
+  DecrementPostCommentCountEvent event,
+  Emitter<UsersPostsState> emit,
+) {
+  final index = allPosts.indexWhere((e) => e.id == event.postId);
+  if (index == -1) return;
+
+  if (allPosts[index].commentsCount > 0) {
+    allPosts[index].commentsCount = allPosts[index].commentsCount - 1;
+  }
 
   emit(UsersPostsSuccess(List.from(allPosts), hasMore));
 }

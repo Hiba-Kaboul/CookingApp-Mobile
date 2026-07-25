@@ -25,3 +25,16 @@ class UpdatePostSaveEvent extends UsersPostsEvent {
     required this.isSaved,
   });
 }
+
+class UpdatePostCommentCountEvent extends UsersPostsEvent {
+  final int postId;
+
+  UpdatePostCommentCountEvent({required this.postId});
+}
+
+
+// جوا users_posts_event.dart
+class DecrementPostCommentCountEvent extends UsersPostsEvent {
+  final int postId;
+  DecrementPostCommentCountEvent({required this.postId});
+}

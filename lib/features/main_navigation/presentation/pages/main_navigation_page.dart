@@ -82,18 +82,18 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         ),
 // المطبخ الذكي
         Center(
-  child: InkWell(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginPage(),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoginPage(),
+                ),
+              );
+            },
+            child: const Text('Favorites Page'),
+          ),
         ),
-      );
-    },
-    child: const Text('Favorites Page'),
-  ),
-),
 
         BlocProvider(
           create: (_) => SettingsBloc(SettingsApi())

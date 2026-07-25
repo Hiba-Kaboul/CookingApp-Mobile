@@ -84,27 +84,25 @@ class HomePage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const CommunityPostCard(
-                    userName: "ياسين المنصوري",
-                    postId: 1,
-                    timeAgo: "منذ ساعتين",
-                    content:
-                        "تجربة سلطة الكينوا الجديدة مع صلصة الليمون والأعشاب. الطعم خيالي ومنعش جداً!",
-                   mediaList: [], // تأكدي من مسار الصورة
-                    // hashTag: "#وصفة_صحية",
-                    avatar: null,
-                    likesCount: 124,
-                    isLiked: true,
-                    isSaved: true,
-                    comments: 18,
-                  );
-                },
-              ),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   itemCount: 5,
+              //   itemBuilder: (context, index) {
+              //     return const CommunityPostCard(
+              //       userName: "ياسين المنصوري",
+              //       postId: 1,
+              //       timeAgo: "منذ ساعتين",
+              //       content:
+              //           "تجربة سلطة الكينوا الجديدة مع صلصة الليمون والأعشاب. الطعم خيالي ومنعش جداً!",
+              //      mediaList: [], // تأكدي من مسار الصورة
+              //       // hashTag: "#وصفة_صحية",
+              //       avatar: null,
+              //        post: post,
+                   
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),
