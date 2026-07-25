@@ -7,6 +7,7 @@ import 'package:project2/features/auth/data/models/logout_response_model.dart';
 import 'package:project2/features/auth/data/models/refresh_token_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_request_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_response_model.dart';
+import 'models/refresh_token_model.dart';
 import 'models/register_request_model.dart';
 import 'models/register_response_model.dart';
 import 'models/verify_email_request_model.dart';

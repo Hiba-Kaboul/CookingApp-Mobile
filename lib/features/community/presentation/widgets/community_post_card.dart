@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
+import 'package:project2/features/community/presentation/widgets/comments_bottom_sheet.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../data/api/comment_api.dart';
+import '../../data/api/delete_comment_api.dart';
+import '../../data/api/list_comments_api.dart';
 import '../../data/model/users_model.dart';
+import '../bloc/users_posts_bloc.dart';
+import '../bloc/users_posts_state.dart';
+import '../bloc_comment_posts/comment_posts_bloc.dart';
+import '../bloc_delete_comment_posts/delete_comment_bloc.dart';
 import '../bloc_delete_post/delete_users_posts_bloc.dart';
 import '../bloc_liked_posts/likeed_unliked_posts_bloc.dart';
 import '../bloc_liked_posts/likeed_unliked_posts_event.dart';
 import '../bloc_saved_posts/saved_unsaved_posts_bloc.dart';
 import '../bloc_saved_posts/saved_unsaved_posts_event.dart';
+import '../lists_comments_post/lists_comments_bloc.dart';
 import 'media_widgets.dart';
 import 'postoptionsbottomsheet.dart';
 
@@ -18,11 +26,7 @@ class CommunityPostCard extends StatelessWidget {
   final String content;
   final List<MediaModel> mediaList;
   final String? avatar;
-
-  final int comments;
-  final bool isLiked;
-  final int likesCount;
-  final bool isSaved;
+  final PostModel post; // ✅ هاد بس يلي رح نعتمد عليه للتفاعلات
 
   const CommunityPostCard({
     super.key,
@@ -32,10 +36,7 @@ class CommunityPostCard extends StatelessWidget {
     required this.content,
     required this.mediaList,
     required this.avatar,
-    required this.comments,
-    required this.isLiked,
-    required this.likesCount,
-    required this.isSaved,
+    required this.post,
   });
 
   @override
@@ -95,39 +96,98 @@ class CommunityPostCard extends StatelessWidget {
           // 4. التذييل: التفاعل
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    context.read<LikeUnlikePostsBloc>().add(
-                          ToggleLikePostEvent(postId),
+            child: BlocBuilder<UsersPostsBloc, UsersPostsState>(
+              buildWhen: (previous, current) => current is UsersPostsSuccess,
+              builder: (context, state) {
+                // نجيب أحدث نسخة من نفس البوست، أو نستخدم القديمة إذا ما لقيناها
+                final currentPost = (state is UsersPostsSuccess)
+                    ? state.posts.firstWhere(
+                        (p) => p.id == post.id,
+                        orElse: () => post,
+                      )
+                    : post;
+
+                return Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<LikeUnlikePostsBloc>().add(
+                              ToggleLikePostEvent(postId),
+                            );
+                      },
+                      icon: Icon(
+                        currentPost.isLiked
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: currentPost.isLiked
+                            ? AppColors.primary
+                            : AppColors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Text("${currentPost.likesCount}"),
+                    const SizedBox(width: 20),
+                    IconButton(
+                      onPressed: () {
+                        // 1. خذ نسخة من الـ Bloc والمفتاح (Context) موجود فوق بشجرة الـ Widgets
+                        final usersPostsBloc = context.read<UsersPostsBloc>();
+
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+                            return MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (context) =>
+                                      CommentPostsBloc(CommentApi()),
+                                ),
+                                BlocProvider(
+                                  create: (context) =>
+                                      GetCommentsBloc(GetCommentsApi()),
+                                ),
+                                BlocProvider(
+                                  create: (context) =>
+                                      DeleteCommentBloc(DeleteCommentApi()),
+                                ),
+                                // 2. استخدم النسخة اللي أخذناها فوق لتبقى متاحة داخل الـ BottomSheet
+                                BlocProvider.value(
+                                  value: usersPostsBloc,
+                                ),
+                              ],
+                              child: CommentsBottomSheet(postId: postId),
+                            );
+                          },
                         );
-                  },
-                  icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? AppColors.primary : AppColors.grey),
-                ),
-                const SizedBox(width: 5),
-                Text("${likesCount}"),
-                const SizedBox(width: 20),
-                const Icon(Icons.chat_bubble_outline, color: AppColors.grey),
-                const SizedBox(width: 5),
-                Text("$comments"),
-                const SizedBox(width: 20),
-                const Icon(Icons.share, color: AppColors.grey),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    context.read<SaveUnlikePostsBloc>().add(
-                          ToggleSavePostEvent(postId),
-                        );
-                  },
-                  icon: Icon(
-                    isSaved ? Icons.bookmark : Icons.bookmark_border,
-                    color: isSaved ? AppColors.grey
-                     : AppColors.grey,
-                  ),
-                ),
-              ],
+                      },
+                      icon: const Icon(
+                        Icons.chat_bubble_outline,
+                        color: AppColors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                        "${currentPost.commentsCount}"), // ✅ من الـ Bloc مباشرة
+                    const SizedBox(width: 20),
+                    const Icon(Icons.share, color: AppColors.grey),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        context.read<SaveUnlikePostsBloc>().add(
+                              ToggleSavePostEvent(postId),
+                            );
+                      },
+                      icon: Icon(
+                        currentPost.isSaved
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        color: AppColors.grey,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

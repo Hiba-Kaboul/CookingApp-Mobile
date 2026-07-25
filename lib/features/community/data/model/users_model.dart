@@ -30,7 +30,7 @@ class PostModel {
   int likesCount;
   bool isSaved;
   int savesCount;
-  final int commentsCount;
+   int commentsCount;
   final num avgRating;
   final UserInfo user;
 
