@@ -60,6 +60,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                   SaveUnsavePostsApi(),
                 ),
               ),
+              BlocProvider(
+                create: (_) => SaveUnlikePostsBloc(
+                  SaveUnsavePostsApi(),
+                ),
+              ),
             ],
             child: const UsersPage(),
           ),

@@ -127,14 +127,9 @@ class CommunityPostCard extends StatelessWidget {
                     const SizedBox(width: 5),
                     Text("${currentPost.likesCount}"),
                     const SizedBox(width: 20),
-                    GestureDetector(
-                      onTap: () {
-                        final deleteCommentBloc =
-                            DeleteCommentBloc(DeleteCommentApi());
-
-                        final commentsBloc = CommentPostsBloc(CommentApi());
-                        final getCommentsBloc =
-                            GetCommentsBloc(GetCommentsApi());
+                    IconButton(
+                      onPressed: () {
+                        // 1. خذ نسخة من الـ Bloc والمفتاح (Context) موجود فوق بشجرة الـ Widgets
                         final usersPostsBloc = context.read<UsersPostsBloc>();
 
                         showModalBottomSheet(
@@ -144,18 +139,32 @@ class CommunityPostCard extends StatelessWidget {
                           builder: (context) {
                             return MultiBlocProvider(
                               providers: [
-                                BlocProvider.value(value: commentsBloc),
-                                BlocProvider.value(value: getCommentsBloc),
-                                BlocProvider.value(value: usersPostsBloc),
-                                BlocProvider.value(value: deleteCommentBloc),
+                                BlocProvider(
+                                  create: (context) =>
+                                      CommentPostsBloc(CommentApi()),
+                                ),
+                                BlocProvider(
+                                  create: (context) =>
+                                      GetCommentsBloc(GetCommentsApi()),
+                                ),
+                                BlocProvider(
+                                  create: (context) =>
+                                      DeleteCommentBloc(DeleteCommentApi()),
+                                ),
+                                // 2. استخدم النسخة اللي أخذناها فوق لتبقى متاحة داخل الـ BottomSheet
+                                BlocProvider.value(
+                                  value: usersPostsBloc,
+                                ),
                               ],
                               child: CommentsBottomSheet(postId: postId),
                             );
                           },
                         );
                       },
-                      child: const Icon(Icons.chat_bubble_outline,
-                          color: AppColors.grey),
+                      icon: const Icon(
+                        Icons.chat_bubble_outline,
+                        color: AppColors.grey,
+                      ),
                     ),
                     const SizedBox(width: 5),
                     Text(
