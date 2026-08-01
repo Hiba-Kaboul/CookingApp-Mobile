@@ -29,7 +29,7 @@ class SocialButtonsRow extends StatelessWidget {
               child: _SocialButton(
                 label: 'Google',
                 icon: Icons.g_mobiledata,
-                onTap: () { (onGooglePressed);},
+                onTap: () { onGooglePressed?.call();},
               ),
             ),
           ],

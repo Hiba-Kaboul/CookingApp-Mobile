@@ -41,11 +41,24 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) async {
           if (state is LoginSuccess) {
             await TokenStorage.saveSession(
-              token: state.token,
-              name: state.name,
-             // email: _emailController.text.trim(),
-               email: state.email  ?? ''
+                token: state.token,
+                name: state.name,
+                // email: _emailController.text.trim(),
+                email: state.email ?? '');
+            if (!context.mounted) return;
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'مرحباً ${state.name}\n!تم تسجيل الدخول بنجاح',
+                ),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
             );
+
+            if (!context.mounted) return;
+
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -167,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                     // أزرار السوشيال
                     SocialButtonsRow(
                       onGooglePressed: () {
+                        // print("زر Google انضغط");
                         context.read<AuthBloc>().add(GoogleSignInSubmitted());
                       },
                     ),

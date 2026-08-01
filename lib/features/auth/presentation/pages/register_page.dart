@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project2/core/utils/token_storage.dart';
 import 'package:project2/features/auth/presentation/pages/otp_page.dart';
+import 'package:project2/features/main_navigation/presentation/pages/main_navigation_page.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
@@ -83,6 +85,26 @@ class _RegisterPageState extends State<RegisterPage> {
                 builder: (_) => OtpPage(email: state.email),
               ),
             );
+          } else if (state is LoginSuccess) {
+            TokenStorage.saveSession(
+              token: state.token,
+              name: state.name,
+              email: state.email ?? '',
+            ).then((_) {
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('مرحباً ${state.name}\n!تم تسجيل الدخول بنجاح'),
+                  backgroundColor: Colors.green,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const MainNavigationPage()),
+                (route) => false,
+              );
+            });
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -118,16 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     const AuthHeaderImage(
                         imagePath: 'assets/images/Space for Branding.png'),
                     const SizedBox(height: 24),
-
-                    // العنوان
                     const Text(AppStrings.createAccount,
                         style: AppTextStyles.heading),
                     const SizedBox(height: 6),
                     const Text(AppStrings.createAccountSub,
                         style: AppTextStyles.subHeading),
                     const SizedBox(height: 24),
-
-                    // حقل الاسم
                     CustomTextField(
                       label: AppStrings.fullName,
                       hint: AppStrings.fullNameHint,
@@ -135,8 +153,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _nameController,
                     ),
                     const SizedBox(height: 16),
-
-                    // حقل الإيميل
                     CustomTextField(
                       label: AppStrings.email,
                       hint: AppStrings.emailHint,
@@ -144,8 +160,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _emailController,
                     ),
                     const SizedBox(height: 16),
-
-                    // حقل كلمة المرور
                     CustomTextField(
                       label: AppStrings.password,
                       hint: '••••••••',
@@ -154,8 +168,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       isPassword: true,
                     ),
                     const SizedBox(height: 16),
-
-                    // حقل تأكيد كلمة المرور
                     CustomTextField(
                       label: AppStrings.confirmpassword,
                       hint: '••••••••',
@@ -164,8 +176,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       isPassword: true,
                     ),
                     const SizedBox(height: 24),
-
-                    // زر إنشاء الحساب
                     state is AuthLoading
                         ? const Center(
                             child: CircularProgressIndicator(
@@ -176,16 +186,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () => _handleRegister(context),
                           ),
                     const SizedBox(height: 24),
-
-                    // أزرار السوشيال
                     SocialButtonsRow(
                       onGooglePressed: () {
                         context.read<AuthBloc>().add(GoogleSignInSubmitted());
                       },
                     ),
                     const SizedBox(height: 24),
-
-                    // رابط تسجيل الدخول
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
