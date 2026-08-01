@@ -1,25 +1,18 @@
-import '../../../community/data/model/search_post_model.dart';
 
+import '../../data/models/saved_item_model.dart';
 
-abstract class SavedPostsState {}
+abstract class SavedItemsState {}
 
-class SavedPostsInitial extends SavedPostsState {}
+class SavedItemsInitial extends SavedItemsState {}
 
-class SavedPostsLoading extends SavedPostsState {}
+class SavedItemsLoading extends SavedItemsState {}
 
-class SavedPostsError extends SavedPostsState {
+class SavedItemsError extends SavedItemsState {
   final String message;
-  SavedPostsError(this.message);
+  SavedItemsError(this.message);
 }
 
-class SavedPostsSuccess extends SavedPostsState {
-  final List<Post> posts;
-  final bool hasMore;
-  final int currentPage;
-
-  SavedPostsSuccess({
-    required this.posts,
-    required this.hasMore,
-    required this.currentPage,
-  });
+class SavedItemsSuccess extends SavedItemsState {
+  final List<SavedItem> items;
+  SavedItemsSuccess(this.items);
 }

@@ -1,5 +1,3 @@
-abstract class SavedPostsEvent {}
+abstract class SavedItemsEvent {}
 
-class GetSavedPostsEvent extends SavedPostsEvent {}
-
-class LoadMoreSavedPostsEvent extends SavedPostsEvent {}
+class GetSavedItemsEvent extends SavedItemsEvent {}

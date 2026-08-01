@@ -1,28 +1,22 @@
 import 'package:dio/dio.dart';
+
 import '../../../../core/constants/api_url.dart';
 import '../../../../core/utils/token_storage.dart';
-import '../../../community/data/model/search_post_model.dart';
+import '../models/saved_item_model.dart';
 
-
-class SavedPostsApi {
+class SavedItemsApi {
   final Dio dio = Dio();
 
-  Future<List<Post>> getSavedPosts({int page = 1}) async {
+  Future<SavedItemsResponse> getSavedItems() async {
     final token = await TokenStorage.getToken();
 
     final response = await dio.get(
-      "${ApiUrl.baseUrl}/saved",
-      queryParameters: {
-        "page": page,
-      },
+      "${ApiUrl.baseUrl}/saved", // 👈 عدّلي المسار حسب الصحيح عندك
       options: Options(
-        headers: {
-          "Authorization": "Bearer $token",
-        },
+        headers: {"Authorization": "Bearer $token"},
       ),
     );
 
-    final List data = response.data['data'];
-    return data.map((e) => Post.fromMap(e)).toList();
+    return SavedItemsResponse.fromMap(response.data);
   }
 }

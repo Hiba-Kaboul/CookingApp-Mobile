@@ -33,9 +33,9 @@ class Taps extends StatelessWidget {
             child: TabBarView(
               children: [
                 BlocProvider(
-                  create: (_) => SavedPostsBloc(SavedPostsApi())
-                    ..add(GetSavedPostsEvent()),
-                  child: const SavedPostsPage(),
+                  create: (_) => SavedItemsBloc(SavedItemsApi())
+                    ..add(GetSavedItemsEvent()),
+                  child: const SavedItemsPage(),
                 ),
                 BlocProvider(
                   create: (_) =>
