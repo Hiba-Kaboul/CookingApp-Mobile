@@ -79,6 +79,48 @@ class Recipe {
       createdAt: map['created_at'] ?? '',
     );
   }
+
+  Recipe copyWith({
+    int? id,
+    String? name,
+    String? description,
+    List<String>? ingredients,
+    List<String>? steps,
+    List<RecipeMedia>? media,
+    int? prepTime,
+    int? cookTime,
+    int? servings,
+    RecipeLabelValue? difficulty,
+    RecipeLabelValue? status,
+    RecipeCategory? category,
+    RecipeUser? user,
+    int? likesCount,
+    int? commentsCount,
+    bool? isLiked,
+    bool? isSaved,
+    String? createdAt,
+  }) {
+    return Recipe(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      ingredients: ingredients ?? this.ingredients,
+      steps: steps ?? this.steps,
+      media: media ?? this.media,
+      prepTime: prepTime ?? this.prepTime,
+      cookTime: cookTime ?? this.cookTime,
+      servings: servings ?? this.servings,
+      difficulty: difficulty ?? this.difficulty,
+      status: status ?? this.status,
+      category: category ?? this.category,
+      user: user ?? this.user,
+      likesCount: likesCount ?? this.likesCount,
+      commentsCount: commentsCount ?? this.commentsCount,
+      isLiked: isLiked ?? this.isLiked,
+      isSaved: isSaved ?? this.isSaved,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
   
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/api/recipes_api.dart';
+import '../../../data/api/recipes_posts_api.dart';
 import 'recipes_event.dart';
 import 'recipes_state.dart';
 
@@ -10,6 +10,9 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
   RecipesBloc(this.api) : super(RecipesInitial()) {
     on<GetRecipesEvent>(_onGetRecipes);
     on<LoadMoreRecipesEvent>(_onLoadMore);
+    on<UpdateRecipeLikeEvent>(_onUpdateLike);
+    on<UpdateRecipeSaveEvent>(_onUpdateSave);
+     on<UpdateRecipeCommentsEvent>(_onUpdateComments);
   }
 
   Future<void> _onGetRecipes(
@@ -49,4 +52,75 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
       // نضل بنفس الحالة عند الفشل
     }
   }
+
+  void _onUpdateLike(
+    UpdateRecipeLikeEvent event,
+    Emitter<RecipesState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is RecipesSuccess) {
+      final updatedRecipes = currentState.recipes.map((r) {
+        if (r.id == event.recipeId) {
+          return r.copyWith(
+            isLiked: event.isLiked,
+            likesCount: event.likesCount,
+          );
+        }
+        return r;
+      }).toList();
+
+      emit(RecipesSuccess(
+        recipes: updatedRecipes,
+        hasMore: currentState.hasMore,
+        currentPage: currentState.currentPage,
+      ));
+    }
+  }
+
+  void _onUpdateSave(
+    UpdateRecipeSaveEvent event,
+    Emitter<RecipesState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is RecipesSuccess) {
+      final updatedRecipes = currentState.recipes.map((r) {
+        if (r.id == event.recipeId) {
+          return r.copyWith(isSaved: event.isSaved);
+        }
+        return r;
+      }).toList();
+
+      emit(RecipesSuccess(
+        recipes: updatedRecipes,
+        hasMore: currentState.hasMore,
+        currentPage: currentState.currentPage,
+      ));
+    }
+  }
+
+  void _onUpdateComments(
+  UpdateRecipeCommentsEvent event,
+  Emitter<RecipesState> emit,
+) {
+  final currentState = state;
+
+  if (currentState is RecipesSuccess) {
+    final updatedRecipes = currentState.recipes.map((r) {
+      if (r.id == event.recipeId) {
+        return r.copyWith(
+          commentsCount: event.commentsCount,
+        );
+      }
+      return r;
+    }).toList();
+
+    emit(
+      RecipesSuccess(
+        recipes: updatedRecipes,
+        hasMore: currentState.hasMore,
+        currentPage: currentState.currentPage,
+      ),
+    );
+  }
+}
 }

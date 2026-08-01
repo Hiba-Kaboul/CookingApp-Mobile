@@ -2,23 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/features/community/presentation/widgets/comments_bottom_sheet.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../data/api/add_recipe_comment_api.dart';
 import '../../data/api/comment_api.dart';
 import '../../data/api/delete_comment_api.dart';
+import '../../data/api/delete_recipe_comment_api.dart';
+import '../../data/api/get_recipe_comments_api.dart';
 import '../../data/api/list_comments_api.dart';
 import '../../data/model/recipe_posts_model.dart'; // تأكد من مسار نموذج الوصفات
 import '../../data/model/users_model.dart';
+import '../bloc/bloc_comment_recipe/add_recipe_comment_bloc.dart';
+import '../bloc/bloc_delete_comment_recipe/delete_recipe_comment_bloc.dart';
 import '../bloc/bloc_homepage_posts/recipes_bloc.dart'; // مسار الـ Bloc الخاص بالوصفات
+import '../bloc/bloc_homepage_posts/recipes_event.dart';
 import '../bloc/bloc_homepage_posts/recipes_state.dart'; // مسار الـ State الخاص بالوصفات
 import '../bloc/bloc_comment_posts/comment_posts_bloc.dart';
 import '../bloc/bloc_delete_comment_posts/delete_comment_bloc.dart';
 import '../bloc/bloc_delete_post/delete_users_posts_bloc.dart';
-import '../bloc/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
-import '../bloc/bloc_liked_posts/likeed_unliked_posts_event.dart';
-import '../bloc/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
-import '../bloc/bloc_saved_posts/saved_unsaved_posts_event.dart';
+
+import '../bloc/bloc_liked_recipes/like_recipe_bloc.dart';
+import '../bloc/bloc_liked_recipes/like_recipe_event.dart';
+import '../bloc/bloc_liked_recipes/like_recipe_state.dart';
+
+import '../bloc/bloc_saved_recipes/save_recipe_bloc.dart';
+import '../bloc/bloc_saved_recipes/save_recipe_event.dart';
+import '../bloc/bloc_saved_recipes/save_recipe_state.dart';
 import '../bloc/lists_comments_post/lists_comments_bloc.dart';
+
+import '../bloc/lists_commenys_recipe/get_recipe_comments_bloc.dart';
 import 'media_widgets.dart';
 import 'postoptionsbottomsheet.dart';
+import 'recipe_comments_bottom_sheet.dart';
 
 class RecipePostCard extends StatelessWidget {
   final String userName;
@@ -84,12 +97,14 @@ class RecipePostCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.0),
                   child: PostMediaWidget(
-                    media: mediaList.map((m) => MediaModel(
-                      id: m.id,
-                      type: m.type,
-                      url: m.url,
-                      // order: m.order,
-                    )).toList(),
+                    media: mediaList
+                        .map((m) => MediaModel(
+                              id: m.id,
+                              type: m.type,
+                              url: m.url,
+                              // order: m.order,
+                            ))
+                        .toList(),
                   ),
                 ),
               ),
@@ -101,99 +116,129 @@ class RecipePostCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10, right: 20.0, top: 5),
             child: Text(content, textAlign: TextAlign.right),
           ),
-
-          // 4. التذييل: التفاعل
+// 4. التذييل: التفاعل
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: BlocBuilder<RecipesBloc, RecipesState>(
-              buildWhen: (previous, current) => current is RecipesSuccess,
-              builder: (context, state) {
-                // نجيب أحدث نسخة من نفس الوصفة من الـ RecipesBloc
-                final currentRecipe = (state is RecipesSuccess)
-                    ? state.recipes.firstWhere(
-                        (p) => p.id == recipe.id,
-                        orElse: () => recipe,
-                      )
-                    : recipe;
+            child: MultiBlocListener(
+              listeners: [
+                BlocListener<LikeRecipeBloc, LikeRecipeState>(
+                  listener: (context, state) {
+                    if (state is LikeRecipeSuccess &&
+                        state.recipeId == recipe.id) {
+                      context.read<RecipesBloc>().add(
+                            UpdateRecipeLikeEvent(
+                              recipeId: state.recipeId,
+                              isLiked: state.liked,
+                              likesCount: state.likesCount,
+                            ),
+                          );
+                    }
+                  },
+                ),
+                BlocListener<SaveRecipeBloc, SaveRecipeState>(
+                  listener: (context, state) {
+                    if (state is SaveRecipeSuccess &&
+                        state.recipeId == recipe.id) {
+                      context.read<RecipesBloc>().add(
+                            UpdateRecipeSaveEvent(
+                              recipeId: state.recipeId,
+                              isSaved: state.saved,
+                            ),
+                          );
+                    }
+                  },
+                ),
+              ],
+              child: BlocBuilder<RecipesBloc, RecipesState>(
+                buildWhen: (previous, current) => current is RecipesSuccess,
+                builder: (context, state) {
+                  final currentRecipe = (state is RecipesSuccess)
+                      ? state.recipes.firstWhere(
+                          (p) => p.id == recipe.id,
+                          orElse: () => recipe,
+                        )
+                      : recipe;
 
-                return Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        context.read<LikeUnlikePostsBloc>().add(
-                              ToggleLikePostEvent(postId),
-                            );
-                      },
-                      icon: Icon(
-                        currentRecipe.isLiked
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: currentRecipe.isLiked
-                            ? AppColors.primary
-                            : AppColors.grey,
+                  return Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<LikeRecipeBloc>().add(
+                                ToggleLikeRecipeEvent(recipe.id),
+                              );
+                        },
+                        icon: Icon(
+                          currentRecipe.isLiked
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: currentRecipe.isLiked
+                              ? AppColors.primary
+                              : AppColors.grey,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    Text("${currentRecipe.likesCount}"),
-                    const SizedBox(width: 20),
-                    IconButton(
-                      onPressed: () {
-                        final recipesBloc = context.read<RecipesBloc>();
-
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) {
-                            return MultiBlocProvider(
-                              providers: [
-                                BlocProvider(
-                                  create: (context) =>
-                                      CommentPostsBloc(CommentApi()),
+                      const SizedBox(width: 5),
+                      Text("${currentRecipe.likesCount}"),
+                      const SizedBox(width: 20),
+                      IconButton(
+                        onPressed: () {
+                          final recipesBloc = context.read<RecipesBloc>();
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return MultiBlocProvider(
+                                providers: [
+                                  BlocProvider.value(
+                                    value: recipesBloc,
+                                  ),
+                                  BlocProvider(
+                                    create: (_) => AddRecipeCommentBloc(
+                                        AddRecipeCommentApi()),
+                                  ),
+                                  BlocProvider(
+                                    create: (_) => GetRecipeCommentsBloc(
+                                        GetRecipeCommentsApi()),
+                                  ),
+                                  BlocProvider(
+                                    create: (_) => DeleteRecipeCommentBloc(
+                                        DeleteRecipeCommentApi()),
+                                  ),
+                                ],
+                                child: RecipeCommentsBottomSheet(
+                                  recipeId: recipe.id,
                                 ),
-                                BlocProvider(
-                                  create: (context) =>
-                                      GetCommentsBloc(GetCommentsApi()),
-                                ),
-                                BlocProvider(
-                                  create: (context) =>
-                                      DeleteCommentBloc(DeleteCommentApi()),
-                                ),
-                                BlocProvider.value(
-                                  value: recipesBloc,
-                                ),
-                              ],
-                              child: CommentsBottomSheet(postId: postId),
-                            );
-                          },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.chat_bubble_outline,
-                        color: AppColors.grey,
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.chat_bubble_outline,
+                          color: AppColors.grey,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    Text("${currentRecipe.commentsCount}"),
-                    const SizedBox(width: 20),
-                    const Icon(Icons.share, color: AppColors.grey),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        context.read<SaveUnlikePostsBloc>().add(
-                              ToggleSavePostEvent(postId),
-                            );
-                      },
-                      icon: Icon(
-                        currentRecipe.isSaved
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                        color: AppColors.grey,
+                      const SizedBox(width: 5),
+                      Text("${currentRecipe.commentsCount}"),
+                      const SizedBox(width: 20),
+                      const Icon(Icons.share, color: AppColors.grey),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          context.read<SaveRecipeBloc>().add(
+                                ToggleSaveRecipeEvent(recipe.id),
+                              );
+                        },
+                        icon: Icon(
+                          currentRecipe.isSaved
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: AppColors.grey,
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],

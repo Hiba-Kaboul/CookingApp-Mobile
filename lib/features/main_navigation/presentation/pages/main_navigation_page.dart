@@ -1,19 +1,26 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/features/auth/presentation/pages/login_page.dart';
 import 'package:project2/features/community/presentation/pages/home_page.dart';
 import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
+import '../../../../core/constants/api_url.dart';
 import '../../../add_recipe/data/api/categories_api.dart';
 import '../../../add_recipe/data/api/create_post_api.dart';
 import '../../../add_recipe/presentation/bloc/bloc_create_posts/create_post_bloc.dart';
 import '../../../add_recipe/presentation/bloc/bloc_categories/categories_bloc.dart';
 import '../../../add_recipe/presentation/bloc/bloc_categories/categories_event.dart';
 import '../../../add_recipe/presentation/pages/add_recipe_page.dart';
+import '../../../community/data/api/cuisine_api.dart';
 import '../../../community/data/api/delete_post_api.dart';
+import '../../../community/data/api/like_recipe_api.dart';
 import '../../../community/data/api/like_unlike_posts_api.dart';
-import '../../../community/data/api/recipes_api.dart';
+import '../../../community/data/api/recipes_posts_api.dart';
+import '../../../community/data/api/save_recipe_api.dart';
 import '../../../community/data/api/save_unsave_posts_api.dart';
 import '../../../community/data/api/users_api.dart';
+import '../../../community/presentation/bloc/bloc_liked_recipes/like_recipe_bloc.dart';
+import '../../../community/presentation/bloc/bloc_saved_recipes/save_recipe_bloc.dart';
 import '../../../community/presentation/bloc/bloc_user_posts/users_posts_bloc.dart';
 import '../../../community/presentation/bloc/bloc_user_posts/users_posts_event.dart';
 import '../../../community/presentation/bloc/bloc_delete_post/delete_users_posts_bloc.dart';
@@ -21,6 +28,8 @@ import '../../../community/presentation/bloc/bloc_homepage_posts/recipes_bloc.da
 import '../../../community/presentation/bloc/bloc_homepage_posts/recipes_event.dart';
 import '../../../community/presentation/bloc/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
 import '../../../community/presentation/bloc/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
+import '../../../community/presentation/bloc/cuisine/cuisine_bloc.dart';
+import '../../../community/presentation/bloc/cuisine/cuisine_event.dart';
 import '../../../community/presentation/pages/users_page.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../setting/data/api/settings_api.dart';
@@ -41,23 +50,35 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   List<Widget> get pages => [
         // في ملف MainNavigationPage.dart ضمن قائمة الـ pages:
 
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
-            ),
-            BlocProvider(
-              create: (_) => DeleteUsersPostsBloc(DeletePostApi()),
-            ),
-            BlocProvider(
-              create: (_) => LikeUnlikePostsBloc(LikeUnlikePostsApi()),
-            ),
-            BlocProvider(
-              create: (_) => SaveUnlikePostsBloc(SaveUnsavePostsApi()),
-            ),
-          ],
-          child: const HomePage(),
-        ),
+   MultiBlocProvider(
+  providers: [
+    BlocProvider(
+      create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
+    ),
+    BlocProvider(
+      create: (_) => DeleteUsersPostsBloc(DeletePostApi()),
+    ),
+    BlocProvider(
+      create: (_) => LikeUnlikePostsBloc(LikeUnlikePostsApi()),
+    ),
+    BlocProvider(
+      create: (_) => SaveUnlikePostsBloc(SaveUnsavePostsApi()),
+    ),
+    BlocProvider(
+      create: (_) {
+        final dio = Dio(BaseOptions(baseUrl: ApiUrl.baseUrl));
+        return CuisineBloc(CuisineApi(dio))..add(GetCuisinesEvent());
+      },
+    ),
+    BlocProvider( // 👈 جديد
+      create: (_) => LikeRecipeBloc(LikeRecipeApi()),
+    ),
+    BlocProvider( // 👈 جديد
+      create: (_) => SaveRecipeBloc(SaveRecipeApi()),
+    ),
+  ],
+  child: const HomePage(),
+),
 
         // في ملف MainNavigationPage.dart
 

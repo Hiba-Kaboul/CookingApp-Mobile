@@ -126,12 +126,11 @@ class CommunityPostCard extends StatelessWidget {
                             : AppColors.grey,
                       ),
                     ),
-                    // const SizedBox(width: 5),
                     Text("${currentPost.likesCount}"),
-                    const SizedBox(width: 0),
+                    const SizedBox(width: 10),
+
                     IconButton(
                       onPressed: () {
-                        // 1. خذ نسخة من الـ Bloc والمفتاح (Context) موجود فوق بشجرة الـ Widgets
                         final usersPostsBloc = context.read<UsersPostsBloc>();
 
                         showModalBottomSheet(
@@ -142,48 +141,37 @@ class CommunityPostCard extends StatelessWidget {
                             return MultiBlocProvider(
                               providers: [
                                 BlocProvider(
-                                  create: (context) =>
-                                      CommentPostsBloc(CommentApi()),
-                                ),
+                                    create: (context) =>
+                                        CommentPostsBloc(CommentApi())),
                                 BlocProvider(
-                                  create: (context) =>
-                                      GetCommentsBloc(GetCommentsApi()),
-                                ),
+                                    create: (context) =>
+                                        GetCommentsBloc(GetCommentsApi())),
                                 BlocProvider(
-                                  create: (context) =>
-                                      DeleteCommentBloc(DeleteCommentApi()),
-                                ),
-                                // 2. استخدم النسخة اللي أخذناها فوق لتبقى متاحة داخل الـ BottomSheet
-                                BlocProvider.value(
-                                  value: usersPostsBloc,
-                                ),
+                                    create: (context) =>
+                                        DeleteCommentBloc(DeleteCommentApi())),
+                                BlocProvider.value(value: usersPostsBloc),
                               ],
                               child: CommentsBottomSheet(postId: postId),
                             );
                           },
                         );
                       },
-                      icon: const Icon(
-                        Icons.chat_bubble_outline,
-                        color: AppColors.grey,
-                      ),
+                      icon: const Icon(Icons.chat_bubble_outline,
+                          color: AppColors.grey),
                     ),
-                    const SizedBox(width: 5),
-                    // const SizedBox(width: 20),
-
-                    const Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: AppColors.grey,
-                    ),
-
-                    const SizedBox(width: 5),
-
-                    Text("$viewsCount"),
                     Text(
-                        "${currentPost.commentsCount}"), // ✅ من الـ Bloc مباشرة
-                    const SizedBox(width: 20),
+                        "${currentPost.commentsCount}"), // 👈 صار بمكانه الصحيح جنب أيقونته
+                    const SizedBox(width: 10),
+
+                    const Icon(Icons.remove_red_eye_outlined,
+                        color: AppColors.grey),
+                    const SizedBox(width: 5),
+                    Text("$viewsCount"),
+                    const SizedBox(width: 10),
+
                     const Icon(Icons.share, color: AppColors.grey),
                     const Spacer(),
+
                     IconButton(
                       onPressed: () {
                         context.read<SaveUnlikePostsBloc>().add(

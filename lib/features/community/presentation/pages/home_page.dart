@@ -7,7 +7,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../auth/presentation/widgets/custom_text_field.dart';
 import '../../data/api/cuisine_api.dart';
-import '../../data/api/recipes_api.dart'; // تأكد من مسار الـ API الصحيح    // تأكد من مسار الـ BLoC الصحيح
+import '../../data/api/recipes_posts_api.dart'; // تأكد من مسار الـ API الصحيح    // تأكد من مسار الـ BLoC الصحيح
 import '../bloc/cuisine/cuisine_bloc.dart';
 import '../bloc/cuisine/cuisine_event.dart';
 import '../bloc/bloc_homepage_posts/recipes_bloc.dart';
@@ -24,20 +24,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
-        ),
-        BlocProvider(
-          create: (_) {
-            final dio = Dio(BaseOptions(baseUrl: ApiUrl.baseUrl));
-            return CuisineBloc(CuisineApi(dio))..add(GetCuisinesEvent());
-          },
-        ),
-      ],
-      child: const _HomeView(),
-    );
+    return const _HomeView(); // 👈 بس هيك، بدون أي Provider جوّاها
   }
 }
 
