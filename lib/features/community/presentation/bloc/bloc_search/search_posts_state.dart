@@ -1,4 +1,4 @@
-import '../../data/model/search_post_model.dart';
+import '../../../data/model/search_post_model.dart';
 
 abstract class SearchPostsState {}
 

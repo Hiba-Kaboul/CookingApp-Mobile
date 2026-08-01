@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project2/features/community/presentation/bloc_saved_posts/saved_unsaved_posts_state.dart';
-import '../../data/api/save_unsave_posts_api.dart';
+import 'package:project2/features/community/presentation/bloc/bloc_saved_posts/saved_unsaved_posts_state.dart';
+import '../../../data/api/save_unsave_posts_api.dart';
 import 'saved_unsaved_posts_event.dart';
 
 class SaveUnlikePostsBloc

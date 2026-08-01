@@ -4,11 +4,11 @@ import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_text_styles.dart';
 import '../../../auth/presentation/widgets/custom_text_field.dart';
 import '../../data/models/create_post_request_model.dart';
-import '../bloc/create_post_bloc.dart';
-import '../bloc/create_post_event.dart';
-import '../bloc/create_post_state.dart';
-import '../bloc_categories/categories_bloc.dart';
-import '../bloc_categories/categories_state.dart';
+import '../bloc/bloc_create_posts/create_post_bloc.dart';
+import '../bloc/bloc_create_posts/create_post_event.dart';
+import '../bloc/bloc_create_posts/create_post_state.dart';
+import '../bloc/bloc_categories/categories_bloc.dart';
+import '../bloc/bloc_categories/categories_state.dart';
 import '../widgets/CategorySelector.dart';
 import '../widgets/multi_media_picker_v2.dart'; // 👈 استيراد جديد
 

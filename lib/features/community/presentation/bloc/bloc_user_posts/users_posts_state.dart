@@ -1,4 +1,4 @@
-import '../../data/model/users_model.dart';
+import '../../../data/model/users_model.dart';
 
 abstract class UsersPostsState {}
 

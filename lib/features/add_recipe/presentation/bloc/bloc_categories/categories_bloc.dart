@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/categories_api.dart';
+import '../../../data/api/categories_api.dart';
 import 'categories_event.dart';
 import 'categories_state.dart';
 

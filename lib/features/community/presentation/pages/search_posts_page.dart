@@ -5,9 +5,9 @@ import 'package:project2/core/constants/app_text_styles.dart';
 
 import '../../data/api/search_posts_api.dart';
 import '../../data/model/search_post_model.dart';
-import '../bloc_search/search_posts_bloc.dart';
-import '../bloc_search/search_posts_event.dart';
-import '../bloc_search/search_posts_state.dart';
+import '../bloc/bloc_search/search_posts_bloc.dart';
+import '../bloc/bloc_search/search_posts_event.dart';
+import '../bloc/bloc_search/search_posts_state.dart';
 
 class SearchPostsPage extends StatelessWidget {
   const SearchPostsPage({super.key});

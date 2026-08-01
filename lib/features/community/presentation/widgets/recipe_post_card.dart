@@ -5,18 +5,18 @@ import '../../../../core/constants/app_colors.dart';
 import '../../data/api/comment_api.dart';
 import '../../data/api/delete_comment_api.dart';
 import '../../data/api/list_comments_api.dart';
-import '../../data/model/recipe_model.dart'; // تأكد من مسار نموذج الوصفات
+import '../../data/model/recipe_posts_model.dart'; // تأكد من مسار نموذج الوصفات
 import '../../data/model/users_model.dart';
-import '../bloc_homepage_posts/recipes_bloc.dart'; // مسار الـ Bloc الخاص بالوصفات
-import '../bloc_homepage_posts/recipes_state.dart'; // مسار الـ State الخاص بالوصفات
-import '../bloc_comment_posts/comment_posts_bloc.dart';
-import '../bloc_delete_comment_posts/delete_comment_bloc.dart';
-import '../bloc_delete_post/delete_users_posts_bloc.dart';
-import '../bloc_liked_posts/likeed_unliked_posts_bloc.dart';
-import '../bloc_liked_posts/likeed_unliked_posts_event.dart';
-import '../bloc_saved_posts/saved_unsaved_posts_bloc.dart';
-import '../bloc_saved_posts/saved_unsaved_posts_event.dart';
-import '../lists_comments_post/lists_comments_bloc.dart';
+import '../bloc/bloc_homepage_posts/recipes_bloc.dart'; // مسار الـ Bloc الخاص بالوصفات
+import '../bloc/bloc_homepage_posts/recipes_state.dart'; // مسار الـ State الخاص بالوصفات
+import '../bloc/bloc_comment_posts/comment_posts_bloc.dart';
+import '../bloc/bloc_delete_comment_posts/delete_comment_bloc.dart';
+import '../bloc/bloc_delete_post/delete_users_posts_bloc.dart';
+import '../bloc/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
+import '../bloc/bloc_liked_posts/likeed_unliked_posts_event.dart';
+import '../bloc/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
+import '../bloc/bloc_saved_posts/saved_unsaved_posts_event.dart';
+import '../bloc/lists_comments_post/lists_comments_bloc.dart';
 import 'media_widgets.dart';
 import 'postoptionsbottomsheet.dart';
 

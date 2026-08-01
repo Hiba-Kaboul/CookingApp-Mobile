@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/core/constants/app_colors.dart';
 import 'package:project2/core/constants/app_text_styles.dart';
 import '../../data/change_password_api.dart';
-import '../bloc_password/change_password_bloc.dart';
-import '../bloc_password/change_password_event.dart';
-import '../bloc_password/change_password_state.dart';
+import '../bloc/bloc_password/change_password_bloc.dart';
+import '../bloc/bloc_password/change_password_event.dart';
+import '../bloc/bloc_password/change_password_state.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 

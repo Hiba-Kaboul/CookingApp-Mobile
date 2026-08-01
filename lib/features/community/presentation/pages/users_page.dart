@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
-import '../bloc/users_posts_bloc.dart';
-import '../bloc/users_posts_event.dart';
-import '../bloc/users_posts_state.dart';
-import '../bloc_delete_post/delete_users_posts_bloc.dart';
-import '../bloc_delete_post/delete_users_posts_state.dart';
-import '../bloc_liked_posts/likeed_unliked_posts_bloc.dart';
-import '../bloc_liked_posts/likeed_unliked_posts_state.dart';
-import '../bloc_saved_posts/saved_unsaved_posts_bloc.dart';
-import '../bloc_saved_posts/saved_unsaved_posts_state.dart';
+import '../bloc/bloc_user_posts/users_posts_bloc.dart';
+import '../bloc/bloc_user_posts/users_posts_event.dart';
+import '../bloc/bloc_user_posts/users_posts_state.dart';
+import '../bloc/bloc_delete_post/delete_users_posts_bloc.dart';
+import '../bloc/bloc_delete_post/delete_users_posts_state.dart';
+import '../bloc/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
+import '../bloc/bloc_liked_posts/likeed_unliked_posts_state.dart';
+import '../bloc/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
+import '../bloc/bloc_saved_posts/saved_unsaved_posts_state.dart';
 import '../widgets/community_post_card.dart';
 import 'search_posts_page.dart';
 

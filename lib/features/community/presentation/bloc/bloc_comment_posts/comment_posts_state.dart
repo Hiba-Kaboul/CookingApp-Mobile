@@ -1,4 +1,4 @@
-import '../../data/model/comment_model.dart';
+import '../../../data/model/comment_model.dart';
 
 abstract class CommentPostsState {}
 

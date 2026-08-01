@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/delete_post_api.dart';
+import '../../../data/api/delete_post_api.dart';
 import 'delete_users_posts_event.dart';
 import 'delete_users_posts_state.dart';
 

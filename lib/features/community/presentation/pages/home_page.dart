@@ -10,9 +10,9 @@ import '../../data/api/cuisine_api.dart';
 import '../../data/api/recipes_api.dart'; // تأكد من مسار الـ API الصحيح    // تأكد من مسار الـ BLoC الصحيح
 import '../bloc/cuisine/cuisine_bloc.dart';
 import '../bloc/cuisine/cuisine_event.dart';
-import '../bloc_homepage_posts/recipes_bloc.dart';
-import '../bloc_homepage_posts/recipes_event.dart';
-import '../bloc_homepage_posts/recipes_state.dart';
+import '../bloc/bloc_homepage_posts/recipes_bloc.dart';
+import '../bloc/bloc_homepage_posts/recipes_event.dart';
+import '../bloc/bloc_homepage_posts/recipes_state.dart';
 import '../widgets/carouselslider.dart';
 import '../widgets/category_list.dart';
 import '../widgets/community_post_card.dart';

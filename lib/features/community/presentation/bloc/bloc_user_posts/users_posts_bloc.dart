@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/users_api.dart';
-import '../../data/model/users_model.dart';
+import '../../../data/api/users_api.dart';
+import '../../../data/model/users_model.dart';
 import 'users_posts_event.dart';
 import 'users_posts_state.dart';
 

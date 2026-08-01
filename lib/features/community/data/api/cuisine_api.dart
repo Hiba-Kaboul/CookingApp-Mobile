@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:project2/features/community/data/models/cuisine_model.dart';
+import 'package:project2/features/community/data/model/cuisine_model.dart';
 
 class CuisineApi {
   final Dio dio;

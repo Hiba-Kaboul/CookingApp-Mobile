@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/recipes_api.dart';
+import '../../../data/api/recipes_api.dart';
 import 'recipes_event.dart';
 import 'recipes_state.dart';
 

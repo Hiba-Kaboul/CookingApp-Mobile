@@ -1,4 +1,4 @@
-import '../../data/model/comments_list_model.dart';
+import '../../../data/model/comments_list_model.dart';
 
 abstract class GetCommentsState {}
 

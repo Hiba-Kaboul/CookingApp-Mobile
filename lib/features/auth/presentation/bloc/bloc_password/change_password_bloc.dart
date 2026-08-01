@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/change_password_api.dart';
+import '../../../data/change_password_api.dart';
 import 'change_password_event.dart';
 import 'change_password_state.dart';
 

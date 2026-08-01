@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../models/category_model.dart';
+import '../model/category_model.dart';
 
 class CategoryApi {
   final Dio dio;

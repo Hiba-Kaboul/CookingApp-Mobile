@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/constants/api_url.dart';
 import '../../../../core/utils/token_storage.dart';
-import '../model/recipe_model.dart';
+import '../model/recipe_posts_model.dart';
 
 class RecipesApi {
   final Dio dio = Dio();

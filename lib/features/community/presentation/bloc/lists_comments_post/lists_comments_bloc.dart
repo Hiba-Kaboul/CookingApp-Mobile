@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/list_comments_api.dart';
-import '../../data/model/comments_list_model.dart';
+import '../../../data/api/list_comments_api.dart';
+import '../../../data/model/comments_list_model.dart';
 import 'lists_comments_event.dart';
 import 'lists_comments_state.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/api/search_posts_api.dart';
+import '../../../data/api/search_posts_api.dart';
 import 'search_posts_event.dart';
 import 'search_posts_state.dart';
 

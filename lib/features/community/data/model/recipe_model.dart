@@ -1,179 +1,76 @@
-class RecipesResponse {
-  final List<Recipe> data;
-  final Meta meta;
-
-  RecipesResponse({required this.data, required this.meta});
-
-  factory RecipesResponse.fromMap(Map<String, dynamic> map) {
-    return RecipesResponse(
-      data: List<Recipe>.from(
-        (map['data'] as List).map((e) => Recipe.fromMap(e)),
-      ),
-      meta: Meta.fromMap(map['meta']),
-    );
-  }
-}
-
-class Recipe {
+class RecipeModel {
   final int id;
   final String name;
   final String description;
+
   final List<String> ingredients;
   final List<String> steps;
-  final List<RecipeMedia> media;
+  final List<String> images;
+
   final int prepTime;
   final int cookTime;
   final int servings;
-  final RecipeLabelValue difficulty;
-  final RecipeLabelValue status;
-  final RecipeCategory category;
-  final RecipeUser user;
+
+  final int calories;
+  final int carbs;
+  final int protein;
+  final int fat;
+
+  final String difficulty;
+
+  final String chefName;
+
   final int likesCount;
   final int commentsCount;
+
   final bool isLiked;
   final bool isSaved;
-  final String createdAt;
 
-  Recipe({
+  RecipeModel({
     required this.id,
     required this.name,
     required this.description,
     required this.ingredients,
     required this.steps,
-    required this.media,
+    required this.images,
     required this.prepTime,
     required this.cookTime,
     required this.servings,
+    required this.calories,
+    required this.carbs,
+    required this.protein,
+    required this.fat,
     required this.difficulty,
-    required this.status,
-    required this.category,
-    required this.user,
+    required this.chefName,
     required this.likesCount,
     required this.commentsCount,
     required this.isLiked,
     required this.isSaved,
-    required this.createdAt,
   });
 
-  factory Recipe.fromMap(Map<String, dynamic> map) {
-    return Recipe(
-      id: map['id'],
-      name: map['name'] ?? '',
-      description: map['description'] ?? '',
-      ingredients: List<String>.from(map['ingredients'] ?? []),
-      steps: List<String>.from(map['steps'] ?? []),
-      media: List<RecipeMedia>.from(
-        (map['media'] as List? ?? []).map((e) => RecipeMedia.fromMap(e)),
-      ),
-      prepTime: map['prep_time'] ?? 0,
-      cookTime: map['cook_time'] ?? 0,
-      servings: map['servings'] ?? 0,
-      difficulty: RecipeLabelValue.fromMap(map['difficulty']),
-      status: RecipeLabelValue.fromMap(map['status']),
-      category: RecipeCategory.fromMap(map['category']),
-      user: RecipeUser.fromMap(map['user']),
-      likesCount: map['likes_count'] ?? 0,
-      commentsCount: map['comments_count'] ?? 0,
-      isLiked: map['is_liked'] ?? false,
-      isSaved: map['is_saved'] ?? false,
-      createdAt: map['created_at'] ?? '',
-    );
-  }
-  
-}
-
-class RecipeMedia {
-  final int id;
-  final String type;
-  final String url;
-  final int order;
-
-  RecipeMedia({
-    required this.id,
-    required this.type,
-    required this.url,
-    required this.order,
-  });
-
-  factory RecipeMedia.fromMap(Map<String, dynamic> map) {
-    return RecipeMedia(
-      id: map['id'],
-      type: map['type']?['value'] ?? '',
-      url: map['url'] ?? '',
-      order: map['order'] ?? 0,
-    );
-  }
-}
-
-class RecipeLabelValue {
-  final String value;
-  final String label;
-
-  RecipeLabelValue({required this.value, required this.label});
-
-  factory RecipeLabelValue.fromMap(Map<String, dynamic> map) {
-    return RecipeLabelValue(
-      value: map['value'] ?? '',
-      label: map['label'] ?? '',
-    );
-  }
-}
-
-class RecipeCategory {
-  final int id;
-  final String name;
-  final RecipeCuisine cuisine;
-
-  RecipeCategory({required this.id, required this.name, required this.cuisine});
-
-  factory RecipeCategory.fromMap(Map<String, dynamic> map) {
-    return RecipeCategory(
-      id: map['id'],
-      name: map['name'] ?? '',
-      cuisine: RecipeCuisine.fromMap(map['cuisine']),
-    );
-  }
-}
-
-class RecipeCuisine {
-  final int id;
-  final String name;
-
-  RecipeCuisine({required this.id, required this.name});
-
-  factory RecipeCuisine.fromMap(Map<String, dynamic> map) {
-    return RecipeCuisine(id: map['id'], name: map['name'] ?? '');
-  }
-}
-
-class RecipeUser {
-  final int id;
-  final String name;
-  final String? avatar; // أضفنا الـ avatar
-
-  RecipeUser({required this.id, required this.name, this.avatar});
-
-  factory RecipeUser.fromMap(Map<String, dynamic> map) {
-    return RecipeUser(
-      id: map['id'],
-      name: map['name'] ?? '',
-      avatar: map['avatar'], // جلب الـ avatar من الـ JSON
-    );
-  }
-}
-
-class Meta {
-  final int currentPage;
-  final int lastPage;
-  final int total;
-
-  Meta({required this.currentPage, required this.lastPage, required this.total});
-
-  factory Meta.fromMap(Map<String, dynamic> map) {
-    return Meta(
-      currentPage: map['current_page'] ?? 1,
-      lastPage: map['last_page'] ?? 1,
-      total: map['total'] ?? 0,
+  factory RecipeModel.fromJson(Map<String, dynamic> json) {
+    return RecipeModel(
+      id: json["id"],
+      name: json["name"],
+      description: json["description"] ?? "",
+      ingredients: List<String>.from(json["ingredients"] ?? []),
+      steps: List<String>.from(json["steps"] ?? []),
+      images:
+          (json["media"] as List?)?.map((e) => e["url"] as String).toList() ??
+              [],
+      prepTime: json["prep_time"] ?? 0,
+      cookTime: json["cook_time"] ?? 0,
+      servings: json["servings"] ?? 0,
+      calories: json["nutrition"]?["calories"] ?? 0,
+      carbs: json["nutrition"]?["carbs"] ?? 0,
+      protein: json["nutrition"]?["protein"] ?? 0,
+      fat: json["nutrition"]?["fat"] ?? 0,
+      difficulty: json["difficulty"]?["label"] ?? "",
+      chefName: json["user"]?["name"] ?? "",
+      likesCount: json["likes_count"] ?? 0,
+      commentsCount: json["comments_count"] ?? 0,
+      isLiked: json["is_liked"] ?? false,
+      isSaved: json["is_saved"] ?? false,
     );
   }
 }

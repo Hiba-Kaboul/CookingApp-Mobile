@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/api/delete_comment_api.dart';
+import '../../../data/api/delete_comment_api.dart';
 import 'delete_comment_event.dart';
 import 'delete_comment_state.dart';
 

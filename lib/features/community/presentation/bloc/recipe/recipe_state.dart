@@ -1,4 +1,4 @@
-import 'package:project2/features/community/data/models/recipe_model.dart';
+import 'package:project2/features/community/data/model/recipe_model.dart';
 
 abstract class RecipeState {}
 

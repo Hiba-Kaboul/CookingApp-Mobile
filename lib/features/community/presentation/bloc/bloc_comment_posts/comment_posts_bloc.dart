@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/api/comment_api.dart';
+import '../../../data/api/comment_api.dart';
 import 'comment_posts_event.dart';
 import 'comment_posts_state.dart';
 

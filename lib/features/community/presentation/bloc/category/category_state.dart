@@ -1,4 +1,4 @@
-import 'package:project2/features/community/data/models/category_model.dart';
+import 'package:project2/features/community/data/model/category_model.dart';
 
 abstract class CategoryState {}
 

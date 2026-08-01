@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../models/recipe_model.dart';
+import '../model/recipe_model.dart';
 
 class RecipeApi {
   final Dio dio;
