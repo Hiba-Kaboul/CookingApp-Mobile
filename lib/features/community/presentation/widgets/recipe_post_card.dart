@@ -5,9 +5,10 @@ import '../../../../core/constants/app_colors.dart';
 import '../../data/api/comment_api.dart';
 import '../../data/api/delete_comment_api.dart';
 import '../../data/api/list_comments_api.dart';
+import '../../data/model/recipe_model.dart'; // تأكد من مسار نموذج الوصفات
 import '../../data/model/users_model.dart';
-import '../bloc/users_posts_bloc.dart';
-import '../bloc/users_posts_state.dart';
+import '../bloc_homepage_posts/recipes_bloc.dart'; // مسار الـ Bloc الخاص بالوصفات
+import '../bloc_homepage_posts/recipes_state.dart'; // مسار الـ State الخاص بالوصفات
 import '../bloc_comment_posts/comment_posts_bloc.dart';
 import '../bloc_delete_comment_posts/delete_comment_bloc.dart';
 import '../bloc_delete_post/delete_users_posts_bloc.dart';
@@ -19,17 +20,16 @@ import '../lists_comments_post/lists_comments_bloc.dart';
 import 'media_widgets.dart';
 import 'postoptionsbottomsheet.dart';
 
-class CommunityPostCard extends StatelessWidget {
+class RecipePostCard extends StatelessWidget {
   final String userName;
   final int postId;
   final String timeAgo;
   final String content;
-  final int viewsCount;
-  final List<MediaModel> mediaList;
+  final List<RecipeMedia> mediaList;
   final String? avatar;
-  final PostModel post; // ✅ هاد بس يلي رح نعتمد عليه للتفاعلات
+  final Recipe recipe; // ✅ اعتمدنا على Recipe هنا للتفاعلات
 
-  const CommunityPostCard({
+  const RecipePostCard({
     super.key,
     required this.userName,
     required this.postId,
@@ -37,8 +37,7 @@ class CommunityPostCard extends StatelessWidget {
     required this.content,
     required this.mediaList,
     required this.avatar,
-    required this.post,
-    required this.viewsCount,
+    required this.recipe,
   });
 
   @override
@@ -52,38 +51,46 @@ class CommunityPostCard extends StatelessWidget {
         children: [
           // 1. الرأس: صورة المستخدم والاسم
           ListTile(
-              leading: CircleAvatar(
-                backgroundImage: avatar != null ? NetworkImage(avatar!) : null,
-                child: avatar == null ? const Icon(Icons.person) : null,
-              ),
-              title: Text(userName,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(timeAgo),
-              trailing: IconButton(
-                onPressed: () {
-                  final currentBloc = context.read<DeleteUsersPostsBloc>();
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) {
-                      return BlocProvider.value(
-                        value: currentBloc,
-                        child: PostOptionsBottomSheet(postId: postId),
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(Icons.more_vert),
-              )),
+            leading: CircleAvatar(
+              backgroundImage: avatar != null ? NetworkImage(avatar!) : null,
+              child: avatar == null ? const Icon(Icons.person) : null,
+            ),
+            title: Text(userName,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(timeAgo),
+            trailing: IconButton(
+              onPressed: () {
+                final currentBloc = context.read<DeleteUsersPostsBloc>();
+                showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return BlocProvider.value(
+                      value: currentBloc,
+                      child: PostOptionsBottomSheet(postId: postId),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.more_vert),
+            ),
+          ),
 
           Stack(
             children: [
-              // 2. الجسم: مكان عرض الميديا
+              // 2. الجسم: مكان عرض الميديا (تم تعديل الـ MediaModel إلى نوع متوافق مع RecipeMedia إذا تطلب الأمر، أو يتم تحويله)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.0),
-                  child: PostMediaWidget(media: mediaList),
+                  child: PostMediaWidget(
+                    media: mediaList.map((m) => MediaModel(
+                      id: m.id,
+                      type: m.type,
+                      url: m.url,
+                      // order: m.order,
+                    )).toList(),
+                  ),
                 ),
               ),
             ],
@@ -98,16 +105,16 @@ class CommunityPostCard extends StatelessWidget {
           // 4. التذييل: التفاعل
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: BlocBuilder<UsersPostsBloc, UsersPostsState>(
-              buildWhen: (previous, current) => current is UsersPostsSuccess,
+            child: BlocBuilder<RecipesBloc, RecipesState>(
+              buildWhen: (previous, current) => current is RecipesSuccess,
               builder: (context, state) {
-                // نجيب أحدث نسخة من نفس البوست، أو نستخدم القديمة إذا ما لقيناها
-                final currentPost = (state is UsersPostsSuccess)
-                    ? state.posts.firstWhere(
-                        (p) => p.id == post.id,
-                        orElse: () => post,
+                // نجيب أحدث نسخة من نفس الوصفة من الـ RecipesBloc
+                final currentRecipe = (state is RecipesSuccess)
+                    ? state.recipes.firstWhere(
+                        (p) => p.id == recipe.id,
+                        orElse: () => recipe,
                       )
-                    : post;
+                    : recipe;
 
                 return Row(
                   children: [
@@ -118,21 +125,20 @@ class CommunityPostCard extends StatelessWidget {
                             );
                       },
                       icon: Icon(
-                        currentPost.isLiked
+                        currentRecipe.isLiked
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: currentPost.isLiked
+                        color: currentRecipe.isLiked
                             ? AppColors.primary
                             : AppColors.grey,
                       ),
                     ),
-                    // const SizedBox(width: 5),
-                    Text("${currentPost.likesCount}"),
-                    const SizedBox(width: 0),
+                    const SizedBox(width: 5),
+                    Text("${currentRecipe.likesCount}"),
+                    const SizedBox(width: 20),
                     IconButton(
                       onPressed: () {
-                        // 1. خذ نسخة من الـ Bloc والمفتاح (Context) موجود فوق بشجرة الـ Widgets
-                        final usersPostsBloc = context.read<UsersPostsBloc>();
+                        final recipesBloc = context.read<RecipesBloc>();
 
                         showModalBottomSheet(
                           context: context,
@@ -153,9 +159,8 @@ class CommunityPostCard extends StatelessWidget {
                                   create: (context) =>
                                       DeleteCommentBloc(DeleteCommentApi()),
                                 ),
-                                // 2. استخدم النسخة اللي أخذناها فوق لتبقى متاحة داخل الـ BottomSheet
                                 BlocProvider.value(
-                                  value: usersPostsBloc,
+                                  value: recipesBloc,
                                 ),
                               ],
                               child: CommentsBottomSheet(postId: postId),
@@ -169,18 +174,7 @@ class CommunityPostCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    // const SizedBox(width: 20),
-
-                    const Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: AppColors.grey,
-                    ),
-
-                    const SizedBox(width: 5),
-
-                    Text("$viewsCount"),
-                    Text(
-                        "${currentPost.commentsCount}"), // ✅ من الـ Bloc مباشرة
+                    Text("${currentRecipe.commentsCount}"),
                     const SizedBox(width: 20),
                     const Icon(Icons.share, color: AppColors.grey),
                     const Spacer(),
@@ -191,7 +185,7 @@ class CommunityPostCard extends StatelessWidget {
                             );
                       },
                       icon: Icon(
-                        currentPost.isSaved
+                        currentRecipe.isSaved
                             ? Icons.bookmark
                             : Icons.bookmark_border,
                         color: AppColors.grey,

@@ -11,11 +11,14 @@ import '../../../add_recipe/presentation/bloc_categories/categories_event.dart';
 import '../../../add_recipe/presentation/pages/add_recipe_page.dart';
 import '../../../community/data/api/delete_post_api.dart';
 import '../../../community/data/api/like_unlike_posts_api.dart';
+import '../../../community/data/api/recipes_api.dart';
 import '../../../community/data/api/save_unsave_posts_api.dart';
 import '../../../community/data/api/users_api.dart';
 import '../../../community/presentation/bloc/users_posts_bloc.dart';
 import '../../../community/presentation/bloc/users_posts_event.dart';
 import '../../../community/presentation/bloc_delete_post/delete_users_posts_bloc.dart';
+import '../../../community/presentation/bloc_homepage_posts/recipes_bloc.dart';
+import '../../../community/presentation/bloc_homepage_posts/recipes_event.dart';
 import '../../../community/presentation/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
 import '../../../community/presentation/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
 import '../../../community/presentation/pages/users_page.dart';
@@ -36,7 +39,25 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   // تحويل القائمة إلى Getter
   List<Widget> get pages => [
-        HomePage(),
+        // في ملف MainNavigationPage.dart ضمن قائمة الـ pages:
+
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
+            ),
+            BlocProvider(
+              create: (_) => DeleteUsersPostsBloc(DeletePostApi()),
+            ),
+            BlocProvider(
+              create: (_) => LikeUnlikePostsBloc(LikeUnlikePostsApi()),
+            ),
+            BlocProvider(
+              create: (_) => SaveUnlikePostsBloc(SaveUnsavePostsApi()),
+            ),
+          ],
+          child: const HomePage(),
+        ),
 
         // في ملف MainNavigationPage.dart
 

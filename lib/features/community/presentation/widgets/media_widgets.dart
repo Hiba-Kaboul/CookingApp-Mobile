@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../data/model/users_model.dart';
+import 'video_widgets.dart';
 
 class PostMediaWidget extends StatefulWidget {
   final List<MediaModel> media;
@@ -28,11 +29,16 @@ class _PostMediaWidgetState extends State<PostMediaWidget> {
             enableInfiniteScroll: false,
             scrollPhysics: const PageScrollPhysics(),
             onPageChanged: (index, reason) {
-              setState(() => _currentIndex = index);
+              setState(() {
+                _currentIndex = index;
+              });
             },
           ),
           itemBuilder: (context, index, realIndex) {
-            return _buildMedia(widget.media[index]);
+            return _buildMedia(
+              widget.media[index],
+              _currentIndex == index,
+            );
           },
         ),
 
@@ -48,7 +54,9 @@ class _PostMediaWidgetState extends State<PostMediaWidget> {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: _currentIndex == entry.key ? Colors.black : Colors.grey.withOpacity(0.5),
+                  color: _currentIndex == entry.key
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.5),
                 ),
               );
             }).toList(),
@@ -58,9 +66,18 @@ class _PostMediaWidgetState extends State<PostMediaWidget> {
     );
   }
 
-  Widget _buildMedia(MediaModel item) {
-    return item.type == 'video'
-        ? Container(color: Colors.black, child: const Icon(Icons.play_circle, color: Colors.white, size: 50))
-        : Image.network(item.url, fit: BoxFit.cover, width: double.infinity);
+  Widget _buildMedia(MediaModel item, bool autoPlay) {
+    if (item.type == "video") {
+      return PostVideoWidget(
+        url: item.url,
+        autoPlay: autoPlay,
+      );
+    }
+
+    return Image.network(
+      item.url,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
   }
 }

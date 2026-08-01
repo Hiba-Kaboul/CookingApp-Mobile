@@ -13,6 +13,7 @@ import '../bloc_liked_posts/likeed_unliked_posts_state.dart';
 import '../bloc_saved_posts/saved_unsaved_posts_bloc.dart';
 import '../bloc_saved_posts/saved_unsaved_posts_state.dart';
 import '../widgets/community_post_card.dart';
+import 'search_posts_page.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({super.key});
@@ -51,6 +52,17 @@ class _UsersPageState extends State<UsersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SearchPostsPage(),
+                ),
+              );
+            },
+          ),
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
@@ -109,49 +121,50 @@ class _UsersPageState extends State<UsersPage> {
                       }
                     }
                     final post = posts[index];
-return MultiBlocListener(
-    listeners: [
-      // استماع للـ Like
-      BlocListener<LikeUnlikePostsBloc, LikeUnlikePostsState>(
-        listener: (context, state) {
-          if (state is LikeUnlikePostsSuccess) {
-            context.read<UsersPostsBloc>().add(
-              UpdatePostLikeEvent(
-                postId: state.postId,
-                isLiked: state.liked,
-                likesCount: state.likesCount,
-              ),
-            );
-          }
-        },
-      ),
-      // 2. أضف الاستماع للـ Save هنا
-      BlocListener<SaveUnlikePostsBloc, SaveUnlikePostsState>(
-        listener: (context, state) {
-          if (state is SaveUnlikePostsSuccess) {
-            // أرسل حدثاً لـ UsersPostsBloc لتحديث حالة الحفظ في القائمة
-            context.read<UsersPostsBloc>().add(
-              UpdatePostSaveEvent( // تأكد من إنشاء هذا الحدث في UsersPostsBloc
-                postId: state.postId,
-                isSaved: state.isSaved,
-              ),
-            );
-          }
-        },
-      ),
-    ],
-    child: CommunityPostCard(
-      postId: post.id,
-     // ستتحدث هذه القيمة بعد إرسال الحدث أعلاه
-      userName: post.user.name,
-      avatar: post.user.avatar,
-      content: post.description ?? "",
-      mediaList: post.media,
-        post: post,
-      timeAgo: "",
-    ),
-  );
-},
+                    return MultiBlocListener(
+                      listeners: [
+                        // استماع للـ Like
+                        BlocListener<LikeUnlikePostsBloc, LikeUnlikePostsState>(
+                          listener: (context, state) {
+                            if (state is LikeUnlikePostsSuccess) {
+                              context.read<UsersPostsBloc>().add(
+                                    UpdatePostLikeEvent(
+                                      postId: state.postId,
+                                      isLiked: state.liked,
+                                      likesCount: state.likesCount,
+                                    ),
+                                  );
+                            }
+                          },
+                        ),
+                        // 2. أضف الاستماع للـ Save هنا
+                        BlocListener<SaveUnlikePostsBloc, SaveUnlikePostsState>(
+                          listener: (context, state) {
+                            if (state is SaveUnlikePostsSuccess) {
+                              // أرسل حدثاً لـ UsersPostsBloc لتحديث حالة الحفظ في القائمة
+                              context.read<UsersPostsBloc>().add(
+                                    UpdatePostSaveEvent(
+                                      // تأكد من إنشاء هذا الحدث في UsersPostsBloc
+                                      postId: state.postId,
+                                      isSaved: state.isSaved,
+                                    ),
+                                  );
+                            }
+                          },
+                        ),
+                      ],
+                      child: CommunityPostCard(
+                        postId: post.id,
+                        userName: post.user.name,
+                        avatar: post.user.avatar,
+                        content: post.description ?? "",
+                        mediaList: post.media,
+                        post: post,
+                        timeAgo: "",
+                        viewsCount: post.viewscount,
+                      ),
+                    );
+                  },
                 );
               }
               return const SizedBox();

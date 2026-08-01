@@ -91,8 +91,26 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return BlocConsumer<CreatePostBloc, CreatePostState>(
         listener: (context, state) {
       if (state is CreatePostSuccess) {
+        dishNameController.clear();
+        descriptionController.clear();
+        cookTimeController.clear();
+        numberofpersonsController.clear();
+
+        for (final ingredient in _ingredients) {
+          ingredient['name']!.clear();
+          ingredient['amount']!.clear();
+        }
+
+        for (final step in _steps) {
+          step.clear();
+        }
+
+        setState(() {
+          _recipeMedia.clear();
+          selectedCategoryId = null;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
-        const  SnackBar(
+          const SnackBar(
             backgroundColor: Colors.green,
             content: Text("تم إنشاء المنشور بنجاح. في انتظار الموافقة."),
           ),

@@ -31,6 +31,7 @@ class PostModel {
   bool isSaved;
   int savesCount;
    int commentsCount;
+   int viewscount;
   final num avgRating;
   final UserInfo user;
 
@@ -44,6 +45,7 @@ class PostModel {
     required this.isSaved,
     required this.savesCount,
     required this.commentsCount,
+    required this.viewscount,
     required this.avgRating,
     required this.user,
   });
@@ -60,6 +62,7 @@ class PostModel {
       isSaved: json['is_saved'] ?? false,
       savesCount: json['saves_count'] ?? 0,
       commentsCount: json['comments_count'],
+      viewscount: json['views_count'],
       avgRating: json['avg_rating'],
       user: UserInfo.fromJson(json['user']),
     );

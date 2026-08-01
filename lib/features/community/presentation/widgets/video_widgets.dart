@@ -3,10 +3,12 @@ import 'package:video_player/video_player.dart';
 
 class PostVideoWidget extends StatefulWidget {
   final String url;
+  final bool autoPlay;
 
   const PostVideoWidget({
     super.key,
     required this.url,
+    required this.autoPlay,
   });
 
   @override
@@ -23,8 +25,27 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
     controller = VideoPlayerController.networkUrl(
       Uri.parse(widget.url),
     )..initialize().then((_) {
+        controller.setLooping(true);
+
+        if (widget.autoPlay) {
+          controller.play();
+        }
+
         setState(() {});
       });
+  }
+
+  @override
+  void didUpdateWidget(covariant PostVideoWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.autoPlay != oldWidget.autoPlay) {
+      if (widget.autoPlay) {
+        controller.play();
+      } else {
+        controller.pause();
+      }
+    }
   }
 
   @override
@@ -47,26 +68,38 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: VideoPlayer(controller),
+
+        SizedBox(
+          width: double.infinity,
+          height: 300,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: controller.value.size.width,
+              height: controller.value.size.height,
+              child: VideoPlayer(controller),
+            ),
+          ),
         ),
 
         IconButton(
           iconSize: 60,
           color: Colors.white,
+          onPressed: () {
+
+            if (controller.value.isPlaying) {
+              controller.pause();
+            } else {
+              controller.play();
+            }
+
+            setState(() {});
+          },
           icon: Icon(
             controller.value.isPlaying
                 ? Icons.pause_circle
                 : Icons.play_circle,
           ),
-          onPressed: () {
-            setState(() {
-              controller.value.isPlaying
-                  ? controller.pause()
-                  : controller.play();
-            });
-          },
         ),
       ],
     );

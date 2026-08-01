@@ -86,11 +86,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Center(
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 300,
               child: Image.asset(
-                'assets/images/Space for Branding.png',
-                width: 350,
-                height: 250,
+                'assets/images/1782168548270.png',
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 15),
