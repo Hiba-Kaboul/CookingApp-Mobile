@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:project2/features/community/data/models/recipe_model.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_text_styles.dart';
 
 class Carditems extends StatelessWidget {
-  const Carditems({super.key});
-
+  const Carditems({
+    super.key,
+    required this.recipe,
+  });
+  final RecipeModel recipe;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,19 +24,13 @@ class Carditems extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10), // نفس نصف قطر Card
-                child: Image.asset(
-                  "assets/images/onboarding3.png",
+                child: Image.network(
+                  recipe.images.isNotEmpty
+                      ? recipe.images.first
+                      : "https://via.placeholder.com/150",
                   width: 95,
                   height: 95,
                   fit: BoxFit.cover,
-                  // errorBuilder: (context, error, stackTrace) {
-                  //   return Image.asset(
-                  //     "assets/images/عصير برتقال طبيعي.jpg",
-                  //     width: 95,
-                  //     height: 95,
-                  //     fit: BoxFit.cover,
-                  //   );
-                  // },
                 ),
               ),
             ),
@@ -42,23 +40,25 @@ class Carditems extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                 const SizedBox(height: 10),
-                const  SizedBox(
+                  const SizedBox(height: 10),
+                  SizedBox(
                     width: 120,
                     child: Text(
-                      " وصفة كوسا",
+                      recipe.name,
                       style: AppTextStyles.names,
                       // overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
                     children: [
-                    const  SizedBox(
+                      SizedBox(
                         width: 120,
-                        child: Text("اسم الشيف",
+                        child: Text(recipe.chefName,
                             style: AppTextStyles.otpDescription),
                       ),
-                      SizedBox(width: 50,),
+                      SizedBox(
+                        width: 50,
+                      ),
                       InkWell(
                         onTap: () {
                           // Navigator.push(context,
@@ -72,23 +72,22 @@ class Carditems extends StatelessWidget {
                       ),
                     ],
                   ),
-               const   Row(
+                   Row(
                     children: [
-                      Icon(
+                     const Icon(
                         Icons.access_time_rounded,
                         size: 20,
                         color: Color(0xEf436850),
                       ),
-                      SizedBox(width: 5),
+                     const SizedBox(width: 5),
                       Text(
-                        "25",
-                        style: TextStyle(
+                        "${recipe.prepTime}",
+                        style:const TextStyle(
                           fontFamily: 'AncizarSerif',
                           fontSize: 18,
                           color: Colors.black,
                         ),
                       ),
-                 
                     ],
                   ),
                 ],

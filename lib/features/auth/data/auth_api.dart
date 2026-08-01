@@ -17,8 +17,8 @@ import 'models/login_response_model.dart';
 import 'models/refresh_token_model.dart';
 
 class AuthApi {
-  final String baseUrl = 'http://127.0.0.1:8000/api';
- // final String baseUrl = 'http://10.0.2.2:8000/api';
+ // final String baseUrl = 'http://127.0.0.1:8000/api';
+  final String baseUrl = 'http://192.168.1.6:8000/api';
 
   // ───────── 1) Register ─────────
   Future<RegisterResponseModel> register({
@@ -262,28 +262,24 @@ class AuthApi {
 //////////////////Google 
   Future<LoginResponseModel> loginWithGoogle({required String idToken}) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/google'), // نفس الرابط اللي في البوست مان
+      Uri.parse('$baseUrl/auth/google'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
       body: jsonEncode({
-        'id_token': idToken, // نفس المفتاح اللي في البوست مان
+        'id_token': idToken, 
       }),
     );
 
     final json = jsonDecode(response.body);
     
-    // إذا السيرفر رد بنجاح (200 أو 201)
+    
     if (response.statusCode == 200 || response.statusCode == 201) {
       return LoginResponseModel.fromJson(json);
     } else {
-      // إذا في خطأ من السيرفر (مثلاً التوكن مو صحيح)
+      
       throw Exception(json['message'] ?? 'فشل تسجيل الدخول بحساب جوجل');
     }
   }
-
-
-
-
 }

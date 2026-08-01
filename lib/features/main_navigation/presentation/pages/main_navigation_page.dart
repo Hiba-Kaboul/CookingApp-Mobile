@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project2/features/community/pages/community_page.dart';
+import 'package:project2/features/community/presentation/pages/community_page.dart';
 import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
 import 'package:project2/features/setting/presentation/pages/settings_page.dart';
-import '../../../community/pages/users_page.dart';
+import '../../../community/presentation/pages/users_page.dart';
 import '../../../onboarding/presentation/pages/onboarding_page.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../setting/data/api/settings_api.dart';

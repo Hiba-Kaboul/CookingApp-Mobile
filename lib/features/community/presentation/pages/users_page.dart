@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../widgets/community_post_card.dart';
 
 class UsersPage extends StatelessWidget {

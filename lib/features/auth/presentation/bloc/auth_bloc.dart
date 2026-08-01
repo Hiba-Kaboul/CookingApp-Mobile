@@ -8,8 +8,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthApi _api = AuthApi();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId:
-        '70674170260-8leo7ijs6k4paqgclo0rijciib1bn8h5.apps.googleusercontent.com',
+    serverClientId:
+        '70674170260-k9o41q4m09mia8q35u8vo65fhit3gsp9.apps.googleusercontent.com',
     scopes: ['email', 'profile'],
   );
   AuthBloc() : super(AuthInitial()) {
@@ -82,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoginSuccess(
         token: result.data.accessToken,
         name: result.data.user.name,
-         email: result.data.user.email, 
+        email: result.data.user.email,
       ));
     } catch (e) {
       emit(AuthFailure(e.toString().replaceAll('Exception: ', '')));
@@ -167,21 +167,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFailure(e.toString().replaceAll('Exception: ', '')));
     }
   }
-////////////////////////////////////////////////
+
   Future<void> _onGoogleSignIn(
     GoogleSignInSubmitted event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
     try {
-      // 1. فتح نافذة جوجل
       final googleUser = await _googleSignIn.signIn();
+
       if (googleUser == null) {
         emit(AuthFailure('تم إلغاء تسجيل الدخول'));
         return;
       }
 
-      // 2. استخراج الـ id_token
       final googleAuth = await googleUser.authentication;
       final idToken = googleAuth.idToken;
 
@@ -190,14 +189,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
 
-      // 3. إرسال التوكن إلى Laravel (عبر ملف الـ API)
       final result = await _api.loginWithGoogle(idToken: idToken);
 
-      // 4. في حال نجاح الباك اند، نطلق نفس الـ State الخاص باللوجين العادي
       emit(LoginSuccess(
         token: result.data.accessToken,
         name: result.data.user.name,
-         email: result.data.user.email, 
+        email: result.data.user.email,
       ));
     } catch (e) {
       emit(AuthFailure(e.toString().replaceAll('Exception: ', '')));
