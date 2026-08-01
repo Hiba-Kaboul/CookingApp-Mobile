@@ -1,10 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/api_url.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../auth/presentation/widgets/custom_text_field.dart';
+import '../../data/api/cuisine_api.dart';
 import '../../data/api/recipes_api.dart'; // تأكد من مسار الـ API الصحيح    // تأكد من مسار الـ BLoC الصحيح
+import '../bloc/cuisine/cuisine_bloc.dart';
+import '../bloc/cuisine/cuisine_event.dart';
 import '../bloc_homepage_posts/recipes_bloc.dart';
 import '../bloc_homepage_posts/recipes_event.dart';
 import '../bloc_homepage_posts/recipes_state.dart';
@@ -19,8 +24,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
+      return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
+        ),
+        BlocProvider(
+          create: (_) {
+            final dio = Dio(BaseOptions(baseUrl: ApiUrl.baseUrl));
+            return CuisineBloc(CuisineApi(dio))..add(GetCuisinesEvent());
+          },
+        ),
+      ],
       child: const _HomeView(),
     );
   }
