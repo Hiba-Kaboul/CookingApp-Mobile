@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project2/features/admin_recipe_detail/data/api/admin_recipe_detail_api.dart';
+import 'package:project2/features/admin_recipe_detail/presentation/bloc/admin_recipe_detail_bloc.dart';
+import 'package:project2/features/admin_recipe_detail/presentation/pages/admin_recipe_detail_page.dart';
 import 'package:project2/features/community/presentation/widgets/comments_bottom_sheet.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../data/api/add_recipe_comment_api.dart';
@@ -114,7 +117,35 @@ class RecipePostCard extends StatelessWidget {
           // 3. المحتوى والنص
           Padding(
             padding: const EdgeInsets.only(bottom: 10, right: 20.0, top: 5),
-            child: Text(content, textAlign: TextAlign.right),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Text(
+                    content,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider(
+                          create: (_) =>
+                              AdminRecipeDetailBloc(AdminRecipeDetailApi()),
+                          child: AdminRecipeDetailPage(
+                            id: recipe.id,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text("المزيد.."),
+                ),
+              ],
+            ),
           ),
 // 4. التذييل: التفاعل
           Padding(

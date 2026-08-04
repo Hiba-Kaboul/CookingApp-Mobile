@@ -162,6 +162,7 @@ class _UsersPageState extends State<UsersPage> {
                         post: post,
                         timeAgo: "",
                         viewsCount: post.viewscount,
+                        
                       ),
                     );
                   },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+
 class PostVideoWidget extends StatefulWidget {
   final String url;
   final bool autoPlay;
@@ -58,7 +59,8 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
   Widget build(BuildContext context) {
     if (!controller.value.isInitialized) {
       return const SizedBox(
-        height: 300,
+        width: double.infinity,
+        height: double.infinity,
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -71,7 +73,7 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
 
         SizedBox(
           width: double.infinity,
-          height: 300,
+          height: double.infinity,
           child: FittedBox(
             fit: BoxFit.cover,
             child: SizedBox(

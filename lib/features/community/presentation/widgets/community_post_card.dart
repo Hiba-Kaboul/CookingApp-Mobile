@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/features/community/presentation/widgets/comments_bottom_sheet.dart';
+import 'package:project2/features/recipe_detail/data/api/recipe_detail_api.dart';
+import 'package:project2/features/recipe_detail/data/models/recipe_detail_model.dart';
+import 'package:project2/features/recipe_detail/presentation/bloc/recipe_detail_bloc.dart';
+import 'package:project2/features/recipe_detail/presentation/pages/recipe_detail_page.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../data/api/comment_api.dart';
 import '../../data/api/delete_comment_api.dart';
@@ -39,6 +43,7 @@ class CommunityPostCard extends StatelessWidget {
     required this.avatar,
     required this.post,
     required this.viewsCount,
+   
   });
 
   @override
@@ -102,8 +107,17 @@ class CommunityPostCard extends StatelessWidget {
       const SizedBox(width: 10), // مسافة بسيطة بين النص والزر
       TextButton(
         onPressed: () {
-          // الكود الذي تنفذه عند الضغط على الزر
-        },
+ Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => RecipeDetailBloc(RecipeDetailApi()),
+          child: RecipeDetailPage(
+              id: post.id,
+          ),
+        ),
+      ),
+    );        },
         child: const Text("المزيد.."), // النص الخاص بالزر
       ),
     ],

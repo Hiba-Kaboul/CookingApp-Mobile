@@ -26,10 +26,14 @@ class AppColors {
       Color.fromARGB(255, 248, 214, 203);
   static const Color ResetPasswordTextField = Color(0xFFFFF1ED);
 
-  static const Color recipeCardYellow = Color(0xFFF4B740);
-static const Color recipeCardGreen = Color(0xFFBBD98A);
-static const Color followButton = Color(0xFFF4C430);
-static const Color recipeCircleGreen = Color(0xFF6B8E23);
+//   static const Color recipeCardYellow = Color(0xFFF4B740);
+// static const Color recipeCardGreen = Color(0xFFBBD98A);
+// static const Color followButton = Color(0xFFF4C430);
+// static const Color recipeCircleGreen = Color(0xFF6B8E23);
+  static const Color recipeCardYellow = Color(0xFFFFF1ED);//
+  static const Color recipeCardGreen = Color(0xFFFFF1ED);//
+  static const Color followButton = Color(0xFFFFF1ED);//
+  static const Color recipeCircleGreen = Color(0xFFFFF1ED);
 }
 
 
