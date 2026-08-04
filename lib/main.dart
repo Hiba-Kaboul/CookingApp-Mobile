@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project2/features/recipe_detail/presentation/pages/recipe_detail_page.dart';
 import 'package:project2/features/splash/presentation/pages/splash_page.dart';
 import 'core/constants/app_theme.dart';
 import 'core/constants/themecubit.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
-          home: const SplashPage(), // شاشتك الرئيسية
+          home: SplashPage(),
         );
       },
     );

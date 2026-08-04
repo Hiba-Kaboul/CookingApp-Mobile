@@ -2,9 +2,9 @@ class ApiUrl {
   // static const String baseUrl = "http://localhost:8000/api";
   // static const String photoUrl = "http://localhost:8000/";
   // رن عال ويندوز
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  static const String baseUrl = 'http://192.168.43.162:8000/api';
   // static const String photoUrl = "http://192.168.1.11/";
-
+  //static const String baseUrl = "http://192.168.1.6:8000/api";
 }
 
 // class ApiUrl {

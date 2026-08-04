@@ -20,7 +20,7 @@ class UsersPostsApi {
         },
       ),
     );
-
+print(response.data);
     return UsersPostsModel.fromJson(response.data);
   }
 }

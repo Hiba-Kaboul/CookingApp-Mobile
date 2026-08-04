@@ -19,8 +19,8 @@ import 'models/login_response_model.dart';
 import 'models/refresh_token_model.dart';
 
 class AuthApi {
- // final String baseUrl = 'http://127.0.0.1:8000/api';
-  final String baseUrl = 'http://192.168.1.6:8000/api';
+  //final String baseUrl = 'http://127.0.0.1:8000/api';
+  final String baseUrl = 'http://192.168.43.162:8000/api';
 
   // ───────── 1) Register ─────────
   Future<RegisterResponseModel> register({
