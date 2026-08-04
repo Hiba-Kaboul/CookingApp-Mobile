@@ -97,7 +97,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: const Icon(
-                                  Icons.layers, // أو استخدمي Icons.collections
+                                  Icons.collections, // أو استخدمي Icons.collections
                                   color: AppColors.otpGradientMiddle,
                                   size: 20,
                                 ),

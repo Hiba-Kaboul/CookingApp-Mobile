@@ -5,6 +5,7 @@ import 'package:project2/features/auth/presentation/pages/login_page.dart';
 import 'package:project2/features/community/presentation/pages/home_page.dart';
 import 'package:project2/features/setting/presentation/bloc/settings_event.dart';
 import '../../../../core/constants/api_url.dart';
+import '../../../AI_ChatBot/presentation/pages/chat_page.dart';
 import '../../../add_recipe/data/api/categories_api.dart';
 import '../../../add_recipe/data/api/create_post_api.dart';
 import '../../../add_recipe/presentation/bloc/bloc_create_posts/create_post_bloc.dart';
@@ -127,20 +128,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           ],
           child: const AddRecipeScreen(),
         ),
+
 // المطبخ الذكي
-        Center(
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LoginPage(),
-                ),
-              );
-            },
-            child: const Text('Favorites Page'),
-          ),
-        ),
+const ChatPage(),
 
         BlocProvider(
           create: (_) => SettingsBloc(SettingsApi())

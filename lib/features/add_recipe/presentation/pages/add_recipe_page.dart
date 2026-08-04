@@ -211,6 +211,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       return Center(child: const CircularProgressIndicator());
                     }
 
+                    // if (state is CategoriesError) {
+                    //   return Snackbar;
+                    // }
                     if (state is CategoriesSuccess) {
                       return CategorySelector(
                         categories: state.categories,
@@ -375,10 +378,62 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     });
   }
 
-  Widget _buildPublishButton() {
-    // هاد الزررررر يلي عم اشتغل عليه
+ Widget _buildPublishButton() {
     return ElevatedButton.icon(
       onPressed: () {
+        // 1. التحقق من أن التصنيف مختار أولاً
+        if (selectedCategoryId == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red, // 👈 جعلناه أحمر للتنبيه
+              content: Text("اختر تصنيفاً أولاً"),
+            ),
+          );
+          return;
+        }
+
+        // 2. التحقق من الحقول الأساسية إذا كانت فارغة
+        if (dishNameController.text.trim().isEmpty ||
+            descriptionController.text.trim().isEmpty ||
+            cookTimeController.text.trim().isEmpty ||
+            numberofpersonsController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("عذرا املا الحقول جميعها اولا"),
+            ),
+          );
+          return;
+        }
+
+        // 3. التحقق من المكونات (إذا كان اسم المكون أو الكمية فارغاً)
+        for (var ingredient in _ingredients) {
+          if (ingredient['name']!.text.trim().isEmpty ||
+              ingredient['amount']!.text.trim().isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text("عذرا املا الحقول جميعها اولا"),
+              ),
+            );
+            return;
+          }
+        }
+
+        // 4. التحقق من خطوات التحضير (إذا كانت أي خطوة فارغة)
+        for (var step in _steps) {
+          if (step.text.trim().isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text("عذرا املا الحقول جميعها اولا"),
+              ),
+            );
+            return;
+          }
+        }
+
+        // إذا كل شي تمام، تابع عملية الإنشاء والإرسال:
         final mediaFiles = _recipeMedia.map((e) => e.file).toList();
 
         final ingredients = _ingredients.map((ingredient) {
@@ -406,15 +461,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           ingredients: ingredients,
           media: mediaFiles,
         );
-        if (selectedCategoryId == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("اختر تصنيفاً أولاً"),
-            ),
-          );
 
-          return;
-        }
         context.read<CreatePostBloc>().add(
               CreatePostButtonPressed(
                 request: request,

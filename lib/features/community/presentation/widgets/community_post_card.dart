@@ -90,10 +90,25 @@ class CommunityPostCard extends StatelessWidget {
           ),
 
           // 3. المحتوى والنص
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10, right: 20.0, top: 5),
-            child: Text(content, textAlign: TextAlign.right),
-          ),
+        Padding(
+  padding: const EdgeInsets.only(bottom: 10, right: 20.0, top: 5),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.end, // لضمان ذهاب العناصر للجهة اليمنى (حسب رغبتك)
+    children: [
+      Text(
+        content, 
+        textAlign: TextAlign.right,
+      ),
+      const SizedBox(width: 10), // مسافة بسيطة بين النص والزر
+      TextButton(
+        onPressed: () {
+          // الكود الذي تنفذه عند الضغط على الزر
+        },
+        child: const Text("المزيد.."), // النص الخاص بالزر
+      ),
+    ],
+  ),
+),
 
           // 4. التذييل: التفاعل
           Padding(

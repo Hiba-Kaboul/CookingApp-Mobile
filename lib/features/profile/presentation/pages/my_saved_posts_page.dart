@@ -5,8 +5,6 @@ import 'package:project2/core/constants/app_colors.dart';
 import '../bloc_my_saved_posts.dart/saved_posts_bloc.dart';
 import '../bloc_my_saved_posts.dart/saved_posts_state.dart';
 
-
-
 class SavedItemsPage extends StatelessWidget {
   const SavedItemsPage({super.key});
 
@@ -43,52 +41,79 @@ class SavedItemsPage extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final item = state.items[index];
+              final cover = item.coverMedia;
 
               return Container(
                 color: Colors.grey.shade200,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: item.isVideo
-                            ? Container(
-                                color: AppColors.textDark,
-                                child: const Icon(
-                                  Icons.play_circle_fill,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              )
-                            : Image.network(
-                                item.image,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                    // شارة توضح نوع العنصر (وصفة أو منشور)
-                    Positioned(
-                      top: 6,
-                      right: 6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.85),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          item.isRecipe ? "وصفة" : "منشور",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                child: cover == null
+                    ? const Icon(Icons.image)
+                    : Stack(
+                        children: [
+                          Positioned.fill(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: cover.isVideo
+                                  ? Container(
+                                      color: AppColors.textDark,
+                                      child: const Icon(
+                                        Icons.play_circle_fill,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      cover.url,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) =>
+                                          const Icon(Icons.broken_image),
+                                    ),
+                            ),
                           ),
-                        ),
+
+                          // إشارة إنستغرام عند وجود أكثر من صورة/فيديو
+                          if (item.hasMultipleMedia)
+                            Positioned(
+                              top: 6,
+                              right: 6,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.45),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Icon(
+                                  Icons.collections,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+
+                          // شارة النوع
+                          Positioned(
+                            top: 6,
+                            left: 6,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.85),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                item.isRecipe ? "وصفة" : "منشور",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               );
             },
           );

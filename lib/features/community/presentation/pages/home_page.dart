@@ -18,6 +18,7 @@ import '../widgets/category_list.dart';
 import '../widgets/community_post_card.dart';
 import '../widgets/photo.dart';
 import '../widgets/recipe_post_card.dart';
+import 'search_recipe_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -103,11 +104,22 @@ class _HomeViewState extends State<_HomeView> {
                       style: AppTextStyles.title,
                     ),
                   ),
-                  CustomTextField(
-                    label: "",
-                    hint: AppStrings.search,
-                    suffixIcon: Icons.search,
-                    controller: _searchController,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const SearchRecipesPage()),
+                      );
+                    },
+                    child: AbsorbPointer(
+                      child: CustomTextField(
+                        label: "",
+                        hint: AppStrings.search,
+                        suffixIcon: Icons.search,
+                        controller: _searchController,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Photo(),

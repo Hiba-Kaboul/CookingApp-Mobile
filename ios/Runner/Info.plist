@@ -53,5 +53,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>نحتاج إذن الميكروفون لتسجيل صوتك</string>
 </dict>
 </plist>

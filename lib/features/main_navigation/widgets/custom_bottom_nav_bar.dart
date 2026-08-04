@@ -51,7 +51,7 @@ class CustomBottomNavBar extends StatelessWidget {
             color: AppColors
                 .primary, 
           ),
-          label: 'المطبخ الذكي',
+          label: 'شات بوت',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),

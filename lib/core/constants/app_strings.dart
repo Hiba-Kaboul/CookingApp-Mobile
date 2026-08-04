@@ -76,7 +76,7 @@ class AppStrings {
   static const String bio =": البايو ";
   static const String popular =": الأكثر تداولاً ";
   static const String type_kitchens =":  المطابخ ";
-  static const String search =": ابحث عن وصفة، مكون، أو شيف... ";
+  static const String search =" ... ابحث عن وصفة ";
 
   
 }

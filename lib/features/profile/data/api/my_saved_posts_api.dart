@@ -11,9 +11,12 @@ class SavedItemsApi {
     final token = await TokenStorage.getToken();
 
     final response = await dio.get(
-      "${ApiUrl.baseUrl}/saved", // 👈 عدّلي المسار حسب الصحيح عندك
+      "${ApiUrl.baseUrl}/saved",
       options: Options(
-        headers: {"Authorization": "Bearer $token"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "Accept": "application/json",
+        },
       ),
     );
 
