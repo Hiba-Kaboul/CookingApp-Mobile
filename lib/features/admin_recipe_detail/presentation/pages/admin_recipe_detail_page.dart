@@ -12,6 +12,9 @@ import 'package:project2/features/admin_recipe_detail/presentation/widget/admin_
 import 'package:project2/features/admin_recipe_detail/presentation/widget/admin_recipe_header_widget.dart';
 import 'package:project2/features/admin_recipe_detail/presentation/widget/admin_recipe_tabs_widget.dart';
 
+import '../../../shopping_cart/data/api/add_shopping_list_api.dart';
+import '../../../shopping_cart/presentation/bloc/bloc_add_to_shopping/add_shopping_list_bloc.dart';
+
 class AdminRecipeDetailPage extends StatefulWidget {
   final int id;
 
@@ -33,10 +36,13 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
 
   bool isFavorite = true;
   AdminRecipeTab selectedTab = AdminRecipeTab.ingredients;
+  final Map<int, bool> selectedIngredients = {};
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
+    return BlocProvider(
+  create: (context) => AddToShoppingListBloc(AddShoppingItemApi()),
+  child: Directionality(
       textDirection: TextDirection.rtl,
       child: BlocBuilder<AdminRecipeDetailBloc, AdminRecipeDetailState>(
         builder: (context, state) {
@@ -128,16 +134,17 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
                     right: 0,
                     child: AdminRecipeBottomButton(
                       onPressed: () {
-                         Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SmartCookingPage(
-          steps: recipe.steps,
-          imageUrl:
-              recipe.media.isNotEmpty ? recipe.media.first.url : '',
-        ),
-      ),
-    );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SmartCookingPage(
+                              steps: recipe.steps,
+                              imageUrl: recipe.media.isNotEmpty
+                                  ? recipe.media.first.url
+                                  : '',
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -152,7 +159,7 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
           );
         },
       ),
-    );
+    ));
   }
 
   Widget _buildStats(AdminRecipeDetailModel recipe) {
@@ -233,7 +240,10 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
 
   Widget _buildIngredients(AdminRecipeDetailModel recipe) {
     return Column(
-      children: recipe.ingredients.map((item) {
+      children: recipe.ingredients.asMap().entries.map((entry) {
+        final index = entry.key;
+        final item = entry.value;
+
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
@@ -241,18 +251,33 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
             color: AppColors.recipeCardGreen,
             borderRadius: BorderRadius.circular(18),
           ),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              item,
-              style: AppTextStyles.title,
-              textAlign: TextAlign.right,
-            ),
+          child: Row(
+            children: [
+              Checkbox(
+                value: selectedIngredients[index] ?? false,
+                activeColor: AppColors.primary,
+                onChanged: (value) {
+                  setState(() {
+                    selectedIngredients[index] = value ?? false;
+                  });
+                },
+              ),
+              const Spacer(),
+              Expanded(
+                child: Text(
+                  item,
+                  textAlign: TextAlign.right,
+                  style: AppTextStyles.title,
+                ),
+              ),
+            ],
           ),
         );
       }).toList(),
     );
+    
   }
+  
 
   Widget _buildSteps(AdminRecipeDetailModel recipe) {
     return Column(

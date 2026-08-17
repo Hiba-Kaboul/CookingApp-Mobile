@@ -19,6 +19,18 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   final TextEditingController _controller = TextEditingController();
+  bool _hasText = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      final hasText = _controller.text.trim().isNotEmpty;
+      if (hasText != _hasText) {
+        setState(() => _hasText = hasText);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -52,7 +64,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
     return BlocListener<VoiceToTextBloc, VoiceToTextState>(
       listener: (context, state) {
         if (state is VoiceTranscribed) {
-          // 👇 النص بينحط بالـ TextField، ما بينبعت لحاله
           setState(() {
             _controller.text = state.text;
             _controller.selection = TextSelection.fromPosition(
@@ -63,71 +74,151 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
         if (state is VoiceError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.primary,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           );
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(10),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          12, 10, 12, MediaQuery.of(context).padding.bottom + 10,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: TextField(
-                controller: _controller,
-                textAlign: TextAlign.right,
-                style: AppTextStyles.label,
-                decoration: InputDecoration(
-                  hintText: "اكتب سؤالك هنا...",
-                  filled: true,
-                  fillColor: AppColors.buttonText,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 48),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(26),
+                  border: Border.all(
+                    color: AppColors.inputBorder.withOpacity(0.6),
                   ),
                 ),
-                onSubmitted: (_) => _send(context),
-              ),
-            ),
-            const SizedBox(width: 4),
-            // 👇 زر المايك
-            BlocBuilder<VoiceToTextBloc, VoiceToTextState>(
-              builder: (context, state) {
-                final isRecording = state is VoiceRecording;
-                final isProcessing = state is VoiceProcessing;
+                child: Row(
+                  children: [
+                    // زر المايك جوا الحقل
+                    BlocBuilder<VoiceToTextBloc, VoiceToTextState>(
+                      builder: (context, state) {
+                        final isRecording = state is VoiceRecording;
+                        final isProcessing = state is VoiceProcessing;
 
-                if (isProcessing) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: AppColors.primary,
+                        if (isProcessing) {
+                          return const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return IconButton(
+                          splashRadius: 22,
+                          icon: Icon(
+                            isRecording
+                                ? Icons.stop_circle_rounded
+                                : Icons.mic_none_rounded,
+                            color: isRecording
+                                ? Colors.red
+                                : AppColors.light_brown,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            final voiceBloc = context.read<VoiceToTextBloc>();
+                            if (isRecording) {
+                              voiceBloc.add(VoiceRecordingStopped());
+                            } else {
+                              voiceBloc.add(VoiceRecordingStarted());
+                            }
+                          },
+                        );
+                      },
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        textAlign: TextAlign.right,
+                        minLines: 1,
+                        maxLines: 4,
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.textDark,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: "اكتب سؤالك هنا...",
+                          hintStyle: AppTextStyles.label.copyWith(
+                            color: AppColors.hintText,
+                          ),
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onSubmitted: (_) => _send(context),
                       ),
                     ),
-                  );
-                }
-
-                return IconButton(
-                  icon: Icon(
-                    isRecording ? Icons.stop_circle : Icons.mic,
-                    color: isRecording ? Colors.red : AppColors.primary,
-                  ),
-                  onPressed: () {
-                    final voiceBloc = context.read<VoiceToTextBloc>();
-                    if (isRecording) {
-                      voiceBloc.add(VoiceRecordingStopped());
-                    } else {
-                      voiceBloc.add(VoiceRecordingStarted());
-                    }
-                  },
-                );
-              },
+                  ],
+                ),
+              ),
             ),
-            IconButton(
-              icon: const Icon(Icons.send, color: AppColors.primary),
-              onPressed: () => _send(context),
+            const SizedBox(width: 8),
+            // زر الإرسال الدائري
+            GestureDetector(
+              onTap: () => _send(context),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: _hasText
+                        ? [AppColors.primary, const Color(0xFFC9573F)]
+                        : [
+                            AppColors.hintText.withOpacity(0.5),
+                            AppColors.hintText.withOpacity(0.5),
+                          ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: _hasText
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.35),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: const Icon(
+                  Icons.send_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
             ),
           ],
         ),

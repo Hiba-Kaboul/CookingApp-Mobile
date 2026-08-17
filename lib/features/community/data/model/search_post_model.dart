@@ -120,16 +120,16 @@ class PostMedia {
     required this.order,
   });
 
-  factory PostMedia.fromMap(Map<String, dynamic> map) {
-    return PostMedia(
-      id: map['id'],
-      type: map['type'] ?? '',
-      url: map['url'] ?? '',
-      thumbnail: map['thumbnail'],
-      duration: map['duration'],
-      order: map['order'] ?? 0,
-    );
-  }
+ factory PostMedia.fromMap(Map<String, dynamic> map) {
+  return PostMedia(
+    id: map['id'] ?? 0,
+    type: map['type'] ?? '',
+    url: map['url'] ?? '',
+    thumbnail: map['thumbnail'],
+    duration: _toIntOrNull(map['duration']),
+    order: map['order'] ?? 0,
+  );
+}
 }
 
 class PostUser {
@@ -175,4 +175,12 @@ class Meta {
       to: map['to'] ?? 0,
     );
   }
+}
+
+int? _toIntOrNull(dynamic value) {
+  if (value == null || value == '') return null;
+  if (value is int) return value;
+  if (value is double) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
 }

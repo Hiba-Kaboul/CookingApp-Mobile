@@ -88,7 +88,7 @@ class Carditems extends StatelessWidget {
                      const Icon(
                         Icons.access_time_rounded,
                         size: 20,
-                        color: Color(0xEf436850),
+                        color: AppColors.primary,
                       ),
                      const SizedBox(width: 5),
                       Text(

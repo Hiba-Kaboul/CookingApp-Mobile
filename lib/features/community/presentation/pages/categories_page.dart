@@ -56,25 +56,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
               ),
             ),
           ),
-          body: Column(
-            children: [
-              Center(
-                child: Text(
-                  "${widget.categoryName}",
-                  style: AppTextStyles.title.copyWith(
-                    fontSize: 20,
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.bold,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Center(
+                //   child: Text(
+                //     "${widget.categoryName}",
+                //     style: AppTextStyles.title.copyWith(
+                //       fontSize: 20,
+                //       color: AppColors.primary,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 700,
+                  child: Gridview(
+                    categoryName: widget.categoryName,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 700,
-                child: Gridview(
-                  categoryName: widget.categoryName,
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ));
   }

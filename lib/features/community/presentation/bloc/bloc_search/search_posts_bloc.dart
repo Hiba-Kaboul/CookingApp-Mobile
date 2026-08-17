@@ -38,9 +38,10 @@ class SearchPostsBloc extends Bloc<SearchPostsEvent, SearchPostsState> {
     } on DioException catch (e) {
       final message = e.response?.data['message'] ?? 'حدث خطأ، حاول مرة أخرى';
       emit(SearchPostsError(message.toString()));
-    } catch (e) {
-      emit(SearchPostsError('حدث خطأ، حاول مرة أخرى'));
-    }
+   } catch (e) {
+  print('SEARCH POSTS ERROR: $e');
+  emit(SearchPostsError('حدث خطأ، حاول مرة أخرى'));
+}
   }
 
   @override

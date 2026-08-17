@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-
 class PostVideoWidget extends StatefulWidget {
   final String url;
   final bool autoPlay;
+  final String? thumbnail;
 
   const PostVideoWidget({
     super.key,
     required this.url,
     required this.autoPlay,
+    this.thumbnail,
   });
 
   @override
@@ -58,19 +59,23 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
   @override
   Widget build(BuildContext context) {
     if (!controller.value.isInitialized) {
-      return const SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      if (widget.thumbnail != null && widget.thumbnail!.isNotEmpty) {
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(widget.thumbnail!, fit: BoxFit.cover),
+            const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            ),
+          ],
+        );
+      }
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Stack(
       alignment: Alignment.center,
       children: [
-
         SizedBox(
           width: double.infinity,
           height: double.infinity,
@@ -83,12 +88,10 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
             ),
           ),
         ),
-
         IconButton(
           iconSize: 60,
           color: Colors.white,
           onPressed: () {
-
             if (controller.value.isPlaying) {
               controller.pause();
             } else {
@@ -98,9 +101,7 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
             setState(() {});
           },
           icon: Icon(
-            controller.value.isPlaying
-                ? Icons.pause_circle
-                : Icons.play_circle,
+            controller.value.isPlaying ? Icons.pause_circle : Icons.play_circle,
           ),
         ),
       ],

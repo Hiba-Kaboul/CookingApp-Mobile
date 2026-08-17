@@ -35,7 +35,6 @@ class ChatPage extends StatelessWidget {
             ..add(GetConversationsEvent()),
         ),
         BlocProvider(
-          // 👈 جديد
           create: (_) => VoiceToTextBloc(VoiceToTextApi()),
         ),
       ],
@@ -43,20 +42,82 @@ class ChatPage extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: Scaffold(
           backgroundColor: AppColors.background,
-          appBar: AppBar(
-            backgroundColor: AppColors.primary,
-            automaticallyImplyLeading: false,
-            iconTheme: const IconThemeData(color: Colors.white),
-            title:
-                const Text(" شات بوت", style: AppTextStyles.appBarTitle),
-            // leading: Builder(
-            //   builder: (context) => IconButton(
-            //     icon: const Icon(Icons.menu, color: Colors.white),
-            //     onPressed: () => Scaffold.of(context).openEndDrawer(),
-            //   ),
-            // ),
-          ),
           endDrawer: const ChatDrawer(),
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(72),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [AppColors.primary, Color(0xFFC97964)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x33000000),
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    children: [
+                      // 👇 زر الرجوع للشاشة الرئيسية
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward,
+                            color: Colors.white, size: 20),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                      ),
+                      Container(
+                        width: 42,
+                        height: 42,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.18),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.4)),
+                        ),
+                        child: Image.asset(
+                          "assets/images/chatboat.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "المساعد الذكي",
+                              style: AppTextStyles.appBarTitle.copyWith(
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // زر القائمة (الدرور) — رجعناه هون بالنهاية
+                      Builder(
+                        builder: (context) => IconButton(
+                          icon: const Icon(Icons.menu_rounded,
+                              color: Colors.white),
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           body: const Column(
             children: [
               Expanded(child: ChatMessagesList()),

@@ -73,11 +73,13 @@ class MediaModel {
   final int id;
   final String url;
   final String type;
+  final String? thumbnail;
 
   MediaModel({
     required this.id,
     required this.url,
     required this.type,
+    this.thumbnail,
   });
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
@@ -85,6 +87,7 @@ class MediaModel {
       id: json['id'],
       url: json['url'],
       type: json['type'],
+      thumbnail: json['thumbnail'],
     );
   }
 }

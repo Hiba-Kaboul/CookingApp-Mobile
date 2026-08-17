@@ -121,7 +121,7 @@ class _SmartCookingPageState extends State<SmartCookingPage2> {
        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'وضع الطبخ الذكي',
+            'وضع الطبخ ',
             style: TextStyle(
               color: Colors.white,
               fontSize: 17,

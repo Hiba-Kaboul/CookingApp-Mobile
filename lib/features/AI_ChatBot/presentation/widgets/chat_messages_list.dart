@@ -24,7 +24,6 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
   }
 
   void _scrollToBottom() {
-    // بننتظر فريم واحد لحتى الـ ListView يخلص يبني نفسه بالمحتوى الجديد
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
@@ -38,54 +37,124 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChatBloc, ChatState>(
-      listener: (context, state) {
-        // 👇 كل ما تتغير الحالة (رسالة جديدة، رد، تحميل محادثة) ننزل لتحت
-        if (state is ChatLoading || state is ChatLoaded || state is ChatError) {
-          _scrollToBottom();
-        }
-      },
-      builder: (context, state) {
-        if (state is ChatInitial) {
-          return const Center(child: Text("اسألني عن أي وصفة!"));
-        }
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFFBEDE9),
+            AppColors.background,
+          ],
+        ),
+      ),
+      child: BlocConsumer<ChatBloc, ChatState>(
+        listener: (context, state) {
+          if (state is ChatLoading ||
+              state is ChatLoaded ||
+              state is ChatError) {
+            _scrollToBottom();
+          }
+        },
+        builder: (context, state) {
+          if (state is ChatInitial) {
+            return _buildEmptyState();
+          }
 
-        if (state is ChatLoading) {
-          return _buildMessagesWithLoader(state.messages);
-        }
+          if (state is ChatLoading) {
+            return _buildMessagesWithLoader(state.messages);
+          }
 
-        if (state is ChatError) {
-          return Column(
-            children: [
-              Expanded(child: _buildMessagesList(state.messages)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  state.message,
-                  style: AppTextStyles.label.copyWith(color: Colors.red),
+          if (state is ChatError) {
+            return Column(
+              children: [
+                Expanded(child: _buildMessagesList(state.messages)),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.red.withOpacity(0.2)),
+                  ),
+                  child: Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.label.copyWith(color: Colors.red),
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
+              ],
+            );
+          }
 
-        if (state is ChatLoaded) {
-          return _buildMessagesList(state.messages);
-        }
+          if (state is ChatLoaded) {
+            return _buildMessagesList(state.messages);
+          }
 
-        return const SizedBox();
-      },
+          return const SizedBox();
+        },
+      ),
     );
   }
 
+ Widget _buildEmptyState() {
+  return Center(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 150,
+          height: 150,
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              colors: [AppColors.primary, Color(0xFFC97964)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withOpacity(0.8),
+                blurRadius: 20,
+                spreadRadius: 4,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            "assets/images/chatboat.png",
+            fit: BoxFit.contain,
+          ),
+        ),
+        const SizedBox(height: 18),
+        Text(
+          "المساعد الذكي بانتظارك",
+          style: AppTextStyles.names.copyWith(fontSize: 17),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          "اسألني عن أي وصفة، وأنا هون لمساعدتك",
+          style: AppTextStyles.subHeading,
+        ),
+      ],
+    ),
+  );
+}
+
   Widget _buildMessagesList(List messages) {
     return ListView.builder(
-      controller: _scrollController, // 👈 جديد
-      padding: const EdgeInsets.all(12),
+      controller: _scrollController,
+      padding: const EdgeInsets.fromLTRB(14, 16, 14, 8),
       itemCount: messages.length,
       itemBuilder: (_, index) {
         final msg = messages[index];
-        return ChatBubble(text: msg.content, isUser: msg.isUser);
+        return ChatBubble(
+          text: msg.content,
+          isUser: msg.isUser,
+          time: msg.time,
+        );
       },
     );
   }
@@ -94,9 +163,26 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
     return Column(
       children: [
         Expanded(child: _buildMessagesList(messages)),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: CircularProgressIndicator(color: AppColors.primary),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 14, top: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.primary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                "جاري الكتابة...",
+                style: AppTextStyles.subHeading.copyWith(fontSize: 12),
+              ),
+            ],
+          ),
         ),
       ],
     );

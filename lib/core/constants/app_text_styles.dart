@@ -136,6 +136,7 @@ class AppTextStyles {
   );
 
   static const TextStyle otpNotReceived = TextStyle(
+    fontFamily: _fontFamily,
     color: Colors.black54,
     fontSize: 16,
     fontWeight: FontWeight.w600,

@@ -96,29 +96,14 @@ class _RecipeHeaderWidgetState extends State<RecipeHeaderWidget> {
             ),
           Positioned(
             top: 16,
-            right: 16,
+            left: 16,
             child: _circleButton(
               icon: Icons.arrow_forward,
               onTap: widget.onBack,
+              
             ),
           ),
-          Positioned(
-            top: 16,
-            left: 60,
-            child: _circleButton(
-              icon: Icons.ios_share_outlined,
-              onTap: () {},
-            ),
-          ),
-          Positioned(
-            top: 16,
-            left: 16,
-            child: _circleButton(
-              icon: widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-              iconColor: AppColors.primary,
-              onTap: widget.onFavorite,
-            ),
-          ),
+
         ],
       ),
     );
@@ -127,7 +112,7 @@ class _RecipeHeaderWidgetState extends State<RecipeHeaderWidget> {
   Widget _circleButton({
     required IconData icon,
     required VoidCallback onTap,
-    Color iconColor = AppColors.textDark,
+    Color iconColor = AppColors.otpCardBackground,
   }) {
     return InkWell(
       onTap: onTap,
@@ -136,7 +121,7 @@ class _RecipeHeaderWidgetState extends State<RecipeHeaderWidget> {
         width: 40,
         height: 40,
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppColors.primary,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(

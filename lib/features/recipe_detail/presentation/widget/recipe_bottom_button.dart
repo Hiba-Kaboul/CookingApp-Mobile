@@ -38,7 +38,7 @@ class RecipeBottomButton extends StatelessWidget {
             Icons.auto_awesome,
           ),
           label: Text(
-            "ابدأ الطبخ الذكي",
+            " وضع الطبخ ",
             style: AppTextStyles.button,
           ),
           style: ElevatedButton.styleFrom(

@@ -119,16 +119,11 @@ class _RegisterPageState extends State<RegisterPage> {
             backgroundColor: AppColors.background,
             appBar: AppBar(
               backgroundColor: AppColors.primary,
+              automaticallyImplyLeading: false,
               centerTitle: true,
               title: const Text(AppStrings.registerTitle,
                   style: AppTextStyles.appBarTitle),
-              leading: const Icon(Icons.search, color: AppColors.buttonText),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: Icon(Icons.menu, color: AppColors.buttonText),
-                )
-              ],
+           
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(20),

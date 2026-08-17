@@ -71,16 +71,19 @@ class RecipeDetailMedia {
 }
 
 class IngredientModel {
+  final int id;
   final String name;
   final String quantity;
 
   IngredientModel({
+    required this.id,
     required this.name,
     required this.quantity,
   });
 
   factory IngredientModel.fromJson(Map<String, dynamic> json) {
     return IngredientModel(
+      id: json["id"],
       name: json["name"],
       quantity: json["quantity"],
     );

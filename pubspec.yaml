@@ -47,6 +47,9 @@ dependencies:
   google_sign_in: ^6.2.2
   record: ^6.2.1
   path_provider: ^2.1.5
+  url_launcher: ^6.3.1
+  flutter_launcher_icons: ^0.14.4
+  
  
   
 
@@ -60,6 +63,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.jpg"
+  adaptive_icon_background: "#FDECEC"
+  adaptive_icon_foreground: "assets/images/app_icon.jpg"
+  adaptive_icon_foreground_inset: 0
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

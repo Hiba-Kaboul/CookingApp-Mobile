@@ -96,14 +96,7 @@ class _HomeViewState extends State<_HomeView> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "صباح الخير، جنان 👋",
-                      style: AppTextStyles.title,
-                    ),
-                  ),
+        
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

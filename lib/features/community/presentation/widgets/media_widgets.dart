@@ -67,12 +67,13 @@ class _PostMediaWidgetState extends State<PostMediaWidget> {
   }
 
   Widget _buildMedia(MediaModel item, bool autoPlay) {
-    if (item.type == "video") {
-      return PostVideoWidget(
-        url: item.url,
-        autoPlay: autoPlay,
-      );
-    }
+   if (item.type == "video") {
+  return PostVideoWidget(
+    url: item.url,
+    autoPlay: autoPlay,
+    thumbnail: item.thumbnail,
+  );
+}
 
     return Image.network(
       item.url,
