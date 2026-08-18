@@ -37,7 +37,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   int servings = 4;
 
   RecipeTab selectedTab = RecipeTab.ingredients;
-
+  final Map<int, bool> selectedIngredients = {}; 
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -125,22 +125,22 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                       left: 0,
                       right: 0,
                       child: RecipeBottomButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SmartCookingPage2(
-          steps: recipe.steps
-              .map((step) => step.description)
-              .toList(),
-          imageUrl: recipe.media.isNotEmpty
-              ? recipe.media.first.url
-              : '',
-        ),
-      ),
-    );
-  },
-),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SmartCookingPage2(
+                                steps: recipe.steps
+                                    .map((step) => step.description)
+                                    .toList(),
+                                imageUrl: recipe.media.isNotEmpty
+                                    ? recipe.media.first.url
+                                    : '',
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -233,9 +233,39 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     }
   }
 
+  // Widget _buildIngredients(RecipeDetailModel recipe) {
+  //   return Column(
+  //     children: recipe.ingredients.map((item) {
+  //       return Container(
+  //         margin: const EdgeInsets.only(bottom: 12),
+  //         padding: const EdgeInsets.all(16),
+  //         decoration: BoxDecoration(
+  //           color: AppColors.recipeCardGreen,
+  //           borderRadius: BorderRadius.circular(18),
+  //         ),
+  //         child: Row(
+  //           children: [
+  //             Text(
+  //               item.quantity,
+  //               style: AppTextStyles.text14_400,
+  //             ),
+  //             const Spacer(),
+  //             Text(
+  //               item.name,
+  //               style: AppTextStyles.title,
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }).toList(),
+  //   );
+  // }
   Widget _buildIngredients(RecipeDetailModel recipe) {
     return Column(
-      children: recipe.ingredients.map((item) {
+      children: recipe.ingredients.asMap().entries.map((entry) {
+        final index = entry.key;
+        final item = entry.value;
+
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
@@ -245,14 +275,26 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           ),
           child: Row(
             children: [
+              Checkbox(
+                value: selectedIngredients[index] ?? false,
+                activeColor: AppColors.primary,
+                onChanged: (value) {
+                  setState(() {
+                    selectedIngredients[index] = value ?? false;
+                  });
+                },
+              ),
               Text(
                 item.quantity,
                 style: AppTextStyles.text14_400,
               ),
               const Spacer(),
-              Text(
-                item.name,
-                style: AppTextStyles.title,
+              Expanded(
+                child: Text(
+                  item.name,
+                  textAlign: TextAlign.end,
+                  style: AppTextStyles.title,
+                ),
               ),
             ],
           ),

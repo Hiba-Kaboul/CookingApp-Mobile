@@ -18,6 +18,11 @@ import '../widgets/category_list.dart';
 import '../widgets/community_post_card.dart';
 import '../widgets/photo.dart';
 import '../widgets/recipe_post_card.dart';
+import '../../../notification/data/fcm_service.dart';
+import '../../../notification/presentation/bloc/bloc_notifications/notifications_bloc.dart';
+import '../../../notification/presentation/bloc/bloc_notifications/notifications_event.dart';
+import '../../../notification/presentation/bloc/bloc_notifications/notifications_state.dart';
+import '../../../notification/presentation/pages/notifications_page.dart';
 import 'search_recipe_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -36,14 +41,28 @@ class _HomeView extends StatefulWidget {
   State<_HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<_HomeView> {
+class _HomeViewState extends State<_HomeView> with WidgetsBindingObserver {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     scrollController.addListener(_onScroll);
+    FcmService.onForegroundMessage = _refreshNotifications;
+  }
+
+  void _refreshNotifications() {
+    if (!mounted) return;
+    context.read<NotificationsBloc>().add(GetNotificationsEvent());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshNotifications();
+    }
   }
 
   void _onScroll() {
@@ -55,6 +74,8 @@ class _HomeViewState extends State<_HomeView> {
 
   @override
   void dispose() {
+    FcmService.onForegroundMessage = null;
+    WidgetsBinding.instance.removeObserver(this);
     _searchController.dispose();
     scrollController.dispose();
     super.dispose();
@@ -78,6 +99,48 @@ class _HomeViewState extends State<_HomeView> {
             ),
           ),
         ),
+        actions: [
+          BlocBuilder<NotificationsBloc, NotificationsState>(
+            builder: (context, state) {
+              final unreadCount =
+                  state is NotificationsSuccess ? state.unreadCount : 0;
+
+              return IconButton(
+                onPressed: () async {
+                  context
+                      .read<NotificationsBloc>()
+                      .add(ClearUnreadLocallyEvent());
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const NotificationsPage(),
+                    ),
+                  );
+                  if (!context.mounted) return;
+                  context
+                      .read<NotificationsBloc>()
+                      .add(GetNotificationsEvent());
+                },
+                icon: Badge(
+                  isLabelVisible: unreadCount > 0,
+                  backgroundColor: Colors.white,
+                  textColor: AppColors.primary,
+                  label: Text(
+                    unreadCount > 99 ? '99+' : '$unreadCount',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.notifications_none,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<RecipesBloc, RecipesState>(
         builder: (context, state) {

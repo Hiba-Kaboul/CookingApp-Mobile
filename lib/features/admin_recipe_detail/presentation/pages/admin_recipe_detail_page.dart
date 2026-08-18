@@ -33,7 +33,7 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
 
   bool isFavorite = true;
   AdminRecipeTab selectedTab = AdminRecipeTab.ingredients;
-
+  final Map<int, bool> selectedIngredients = {};
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -128,16 +128,17 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
                     right: 0,
                     child: AdminRecipeBottomButton(
                       onPressed: () {
-                         Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SmartCookingPage(
-          steps: recipe.steps,
-          imageUrl:
-              recipe.media.isNotEmpty ? recipe.media.first.url : '',
-        ),
-      ),
-    );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SmartCookingPage(
+                              steps: recipe.steps,
+                              imageUrl: recipe.media.isNotEmpty
+                                  ? recipe.media.first.url
+                                  : '',
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -231,28 +232,68 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
     }
   }
 
+  // Widget _buildIngredients(AdminRecipeDetailModel recipe) {
+  //   return Column(
+  //     children: recipe.ingredients.map((item) {
+  //       return Container(
+  //         margin: const EdgeInsets.only(bottom: 12),
+  //         padding: const EdgeInsets.all(16),
+  //         decoration: BoxDecoration(
+  //           color: AppColors.recipeCardGreen,
+  //           borderRadius: BorderRadius.circular(18),
+  //         ),
+  //         child: Align(
+  //           alignment: Alignment.centerRight,
+  //           child: Text(
+  //             item,
+  //             style: AppTextStyles.title,
+  //             textAlign: TextAlign.right,
+  //           ),
+  //         ),
+  //       );
+  //     }).toList(),
+  //   );
+  // }
   Widget _buildIngredients(AdminRecipeDetailModel recipe) {
-    return Column(
-      children: recipe.ingredients.map((item) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.recipeCardGreen,
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              item,
-              style: AppTextStyles.title,
-              textAlign: TextAlign.right,
+  return Column(
+    children: recipe.ingredients.asMap().entries.map((entry) {
+      final index = entry.key;
+      final item = entry.value;
+
+      return Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.recipeCardGreen,
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Row(
+          children: [
+            Checkbox(
+              value: selectedIngredients[index] ?? false,
+              activeColor: AppColors.primary,
+              onChanged: (value) {
+                setState(() {
+                  selectedIngredients[index] = value ?? false;
+                });
+              },
             ),
-          ),
-        );
-      }).toList(),
-    );
-  }
+
+            const Spacer(),
+
+            Expanded(
+              child: Text(
+                item,
+                textAlign: TextAlign.right,
+                style: AppTextStyles.title,
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList(),
+  );
+}
 
   Widget _buildSteps(AdminRecipeDetailModel recipe) {
     return Column(
