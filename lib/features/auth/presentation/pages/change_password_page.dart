@@ -55,14 +55,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 listener: (context, state) {
                   if (state is ChangePasswordSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                    const  SnackBar(
                           backgroundColor: Colors.green,
                           content: Text("تم تغيير كلمة المرور بنجاح")),
                     );
                     Navigator.pop(context);
                   } else if (state is ChangePasswordFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                    const  SnackBar(
                           backgroundColor: AppColors.primary,
                           content: Text("كلمة المرور الحالية غير مطابقة")),
                     );

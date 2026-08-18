@@ -74,7 +74,7 @@ class CommunityPostCard extends StatelessWidget {
             await launchUrl(uri, mode: LaunchMode.externalApplication);
           } else if (state.platform == 'copy_link') {
             await Clipboard.setData(
-              ClipboardData(text: state.data.shareUrl),
+              ClipboardData(text: state.data.deepLink),
             );
 
             ScaffoldMessenger.of(context).showSnackBar(
@@ -226,7 +226,7 @@ class CommunityPostCard extends StatelessWidget {
 
                       Text("${currentPost.likesCount}"),
 
-                      const SizedBox(width: 10),
+                      // const SizedBox(width: 10),
 
                       // Comments
                       IconButton(
@@ -274,19 +274,19 @@ class CommunityPostCard extends StatelessWidget {
 
                       Text("${currentPost.commentsCount}"),
 
-                      const SizedBox(width: 10),
+                      // const SizedBox(width: 10),
 
                       // Views
-                      const Icon(
-                        Icons.remove_red_eye_outlined,
-                        color: AppColors.grey,
-                      ),
+                      // const Icon(
+                      //   Icons.remove_red_eye_outlined,
+                      //   color: AppColors.grey,
+                      // ),
 
-                      const SizedBox(width: 5),
+                      // const SizedBox(width: 5),
 
-                      Text("$viewsCount"),
+                      // Text("$viewsCount"),
 
-                      const SizedBox(width: 10),
+                      // const SizedBox(width: 10),
 
                       // Share
                       IconButton(

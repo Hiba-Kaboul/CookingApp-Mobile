@@ -38,7 +38,7 @@ class AdminRecipeBottomButton extends StatelessWidget {
             Icons.auto_awesome,
           ),
           label: Text(
-            "وضع الطبخ",
+            "عرض الخطوات ",
             style: AppTextStyles.button,
           ),
           style: ElevatedButton.styleFrom(

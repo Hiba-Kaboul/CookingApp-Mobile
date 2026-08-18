@@ -66,7 +66,7 @@ class RecipePostCard extends StatelessWidget {
             await launchUrl(uri, mode: LaunchMode.externalApplication);
           } else if (state.platform == 'copy_link') {
             await Clipboard.setData(
-              ClipboardData(text: state.data.shareUrl),
+              ClipboardData(text: state.data.deepLink),
             );
 
             ScaffoldMessenger.of(context).showSnackBar(
@@ -235,9 +235,9 @@ class RecipePostCard extends StatelessWidget {
                                 : AppColors.grey,
                           ),
                         ),
-                        const SizedBox(width: 5),
+                        // const SizedBox(width: 5),
                         Text("${currentRecipe.likesCount}"),
-                        const SizedBox(width: 20),
+                        // const SizedBox(width: 20),
                         IconButton(
                           onPressed: () {
                             final recipesBloc = context.read<RecipesBloc>();
@@ -279,9 +279,9 @@ class RecipePostCard extends StatelessWidget {
                             color: AppColors.grey,
                           ),
                         ),
-                        const SizedBox(width: 5),
+                        // const SizedBox(width: 5),
                         Text("${currentRecipe.commentsCount}"),
-                        const SizedBox(width: 20),
+                        // const SizedBox(width: 20),
                         IconButton(
                           onPressed: () {
                             _showShareSheet(context, recipe.id);

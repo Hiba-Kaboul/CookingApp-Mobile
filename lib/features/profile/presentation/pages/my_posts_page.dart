@@ -51,12 +51,18 @@ class _MyPostsPageState extends State<MyPostsPage> {
         }
 
         if (state is MyPostsError) {
-          return Center(
-            child: Text(state.message),
+          return const Center(
+            child: Text("لا يوجد وصفات منشورة"),
           );
         }
 
         if (state is MyPostsSuccess) {
+          if (state.posts.isEmpty) {
+            return const Center(
+              child: Text("لا يوجد وصفات منشورة"),
+            );
+          }
+
           return GridView.builder(
             controller: controller,
             padding: const EdgeInsets.all(2),
@@ -67,6 +73,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
               mainAxisSpacing: 2,
             ),
             itemBuilder: (context, index) {
+              // نفس الكود الموجود عندك، لا تغيّريه
               final post = state.posts[index];
 
               final cover = post.media.isNotEmpty ? post.media.first : null;

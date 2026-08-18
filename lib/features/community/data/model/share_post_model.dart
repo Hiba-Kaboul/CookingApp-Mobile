@@ -21,13 +21,13 @@ class SharePostResponse {
 }
 
 class SharePostData {
-  final String shareUrl;
+  final String deepLink;
   final String whatsappUrl;
   final String telegramUrl;
   final int sharesCount;
 
   SharePostData({
-    required this.shareUrl,
+    required this.deepLink,
     required this.whatsappUrl,
     required this.telegramUrl,
     required this.sharesCount,
@@ -35,7 +35,7 @@ class SharePostData {
 
   factory SharePostData.fromMap(Map<String, dynamic> map) {
     return SharePostData(
-      shareUrl: map['share_url'] ?? '',
+      deepLink: map['deep_link'] ?? '',
       whatsappUrl: map['whatsapp_url'] ?? '',
       telegramUrl: map['telegram_url'] ?? '',
       sharesCount: map['shares_count'] ?? 0,
@@ -49,7 +49,7 @@ class SharePostData {
     int? sharesCount,
   }) {
     return SharePostData(
-      shareUrl: shareUrl ?? this.shareUrl,
+      deepLink: shareUrl ?? this.deepLink,
       whatsappUrl: whatsappUrl ?? this.whatsappUrl,
       telegramUrl: telegramUrl ?? this.telegramUrl,
       sharesCount: sharesCount ?? this.sharesCount,

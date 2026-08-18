@@ -104,6 +104,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
               if (state is MarkPurchasedSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
+                    backgroundColor: Colors.green,
                       content:
                           Text("تم تحديد ${state.updatedCount} عنصر كمشترى")),
                 );
@@ -122,6 +123,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
               if (state is MarkUnpurchasedSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
+                    backgroundColor: Colors.blueGrey,
                       content: Text(
                           "تم تحديد ${state.updatedCount} عنصر كغير مشترى")),
                 );

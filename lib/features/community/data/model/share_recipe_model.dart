@@ -21,13 +21,13 @@ class ShareRecipeResponse {
 }
 
 class ShareRecipeData {
-  final String shareUrl;
+  final String deepLink;
   final String whatsappUrl;
   final String telegramUrl;
   final int sharesCount;
 
   ShareRecipeData({
-    required this.shareUrl,
+    required this.deepLink,
     required this.whatsappUrl,
     required this.telegramUrl,
     required this.sharesCount,
@@ -35,7 +35,7 @@ class ShareRecipeData {
 
   factory ShareRecipeData.fromMap(Map<String, dynamic> map) {
     return ShareRecipeData(
-      shareUrl: map['share_url'] ?? '',
+      deepLink: map['deep_link'] ?? '',
       whatsappUrl: map['whatsapp_url'] ?? '',
       telegramUrl: map['telegram_url'] ?? '',
       sharesCount: map['shares_count'] ?? 0,

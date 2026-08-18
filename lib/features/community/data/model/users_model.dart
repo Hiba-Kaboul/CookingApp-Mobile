@@ -13,10 +13,16 @@ class UsersPostsModel {
 
   factory UsersPostsModel.fromJson(Map<String, dynamic> json) {
     return UsersPostsModel(
-      status: json['status'],
-      message: json['message'],
-      data: (json['data'] as List).map((e) => PostModel.fromJson(e)).toList(),
-      meta: MetaModel.fromJson(json['meta']), // قمنا بتهيئته
+      status: json['status'] ?? 0,
+      message: json['message'] ?? '',
+      data: (json['data'] as List? ?? [])
+          .map((e) => PostModel.fromJson(e))
+          .toList(),
+      meta: MetaModel.fromJson(
+        json['meta'] is Map
+            ? Map<String, dynamic>.from(json['meta'] as Map)
+            : {},
+      ),
     );
   }
 }
@@ -131,12 +137,12 @@ class MetaModel {
 
   factory MetaModel.fromJson(Map<String, dynamic> json) {
     return MetaModel(
-      currentPage: json['current_page'],
-      lastPage: json['last_page'],
-      perPage: json['per_page'],
-      total: json['total'],
-      from: json['from'],
-      to: json['to'],
+      currentPage: json['current_page'] ?? 1,
+      lastPage: json['last_page'] ?? 1,
+      perPage: json['per_page'] ?? 0,
+      total: json['total'] ?? 0,
+      from: json['from'] ?? 0,
+      to: json['to'] ?? 0,
     );
   }
 }
