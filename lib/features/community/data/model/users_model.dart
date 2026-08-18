@@ -13,10 +13,16 @@ class UsersPostsModel {
 
   factory UsersPostsModel.fromJson(Map<String, dynamic> json) {
     return UsersPostsModel(
-      status: json['status'],
-      message: json['message'],
-      data: (json['data'] as List).map((e) => PostModel.fromJson(e)).toList(),
-      meta: MetaModel.fromJson(json['meta']), // قمنا بتهيئته
+      status: json['status'] ?? 0,
+      message: json['message'] ?? '',
+      data: (json['data'] as List? ?? [])
+          .map((e) => PostModel.fromJson(e))
+          .toList(),
+      meta: MetaModel.fromJson(
+        json['meta'] is Map
+            ? Map<String, dynamic>.from(json['meta'] as Map)
+            : {},
+      ),
     );
   }
 }
@@ -30,7 +36,8 @@ class PostModel {
   int likesCount;
   bool isSaved;
   int savesCount;
-  final int commentsCount;
+   int commentsCount;
+   int viewscount;
   final num avgRating;
   final UserInfo user;
 
@@ -44,6 +51,7 @@ class PostModel {
     required this.isSaved,
     required this.savesCount,
     required this.commentsCount,
+    required this.viewscount,
     required this.avgRating,
     required this.user,
   });
@@ -60,6 +68,7 @@ class PostModel {
       isSaved: json['is_saved'] ?? false,
       savesCount: json['saves_count'] ?? 0,
       commentsCount: json['comments_count'],
+      viewscount: json['views_count'],
       avgRating: json['avg_rating'],
       user: UserInfo.fromJson(json['user']),
     );
@@ -70,11 +79,13 @@ class MediaModel {
   final int id;
   final String url;
   final String type;
+  final String? thumbnail;
 
   MediaModel({
     required this.id,
     required this.url,
     required this.type,
+    this.thumbnail,
   });
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
@@ -82,6 +93,7 @@ class MediaModel {
       id: json['id'],
       url: json['url'],
       type: json['type'],
+      thumbnail: json['thumbnail'],
     );
   }
 }
@@ -125,12 +137,12 @@ class MetaModel {
 
   factory MetaModel.fromJson(Map<String, dynamic> json) {
     return MetaModel(
-      currentPage: json['current_page'],
-      lastPage: json['last_page'],
-      perPage: json['per_page'],
-      total: json['total'],
-      from: json['from'],
-      to: json['to'],
+      currentPage: json['current_page'] ?? 1,
+      lastPage: json['last_page'] ?? 1,
+      perPage: json['per_page'] ?? 0,
+      total: json['total'] ?? 0,
+      from: json['from'] ?? 0,
+      to: json['to'] ?? 0,
     );
   }
 }

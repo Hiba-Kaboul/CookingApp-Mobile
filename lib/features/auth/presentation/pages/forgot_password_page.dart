@@ -70,7 +70,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     children: [
                       Center(
                         child: Image.asset(
-                          "assets/images/forgotpassword.png",
+                          "assets/images/145.png",
                           width: MediaQuery.of(context).size.width * 0.8,
                         ),
                       ),

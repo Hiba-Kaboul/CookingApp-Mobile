@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-08-14T18:52:00.000Z" agent="Cursor" version="22.1.0" type="device">
+  <diagram id="CookingAppUseCase" name="Cooking App Use Case">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="sys" value="Cooking App" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontStyle=1;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="160" y="40" width="980" height="2200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pkg1" value="المصادقة" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;verticalAlign=top;align=center;spacingTop=6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="80" width="920" height="280" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_register" value="إنشاء حساب جديد" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_login" value="تسجيل الدخول" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="210" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_forgot" value="نسيان كلمة المرور" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="280" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_otp_reg" value="إرسال رمز OTP" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="120" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_google" value="التسجيل / الدخول عبر Google" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_otp_forgot" value="إرسال رمز وتأكيده OTP" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="280" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_reg_otp" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_register" target="uc_otp_reg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_google_reg" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_google" target="uc_register">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_google_login" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_google" target="uc_login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_forgot_otp" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_forgot" target="uc_otp_forgot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pkg2" value="الملف الشخصي" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;verticalAlign=top;align=center;spacingTop=6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="380" width="920" height="320" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_profile" value="إدارة الملف الشخصي" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="450" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_edit_profile" value="تعديل الملف الشخصي" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="420" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_change_pass" value="تغيير كلمة السر" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="500" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_logout" value="تسجيل الخروج" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="580" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_saved" value="عرض محفوظاتي" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="420" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_my_posts" value="عرض منشوراتي" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="500" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_avatar" value="إضافة / تعديل / حذف الصورة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="420" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_bio" value="تعديل البايو" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="500" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_unsave" value="إزالة من المحفوظات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="580" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_edit_prof" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_edit_profile" target="uc_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_chg_pass" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_change_pass" target="uc_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_logout" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_logout" target="uc_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_saved" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_saved" target="uc_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_myposts" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_my_posts" target="uc_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_avatar" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_avatar" target="uc_edit_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_bio" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_bio" target="uc_edit_profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_unsave" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_unsave" target="uc_saved">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pkg3" value="الوصفات والتفاصيل" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;verticalAlign=top;align=center;spacingTop=6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="720" width="920" height="620" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_cuisine" value="اختيار نوع المطبخ" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="770" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_search" value="البحث باسم الوصفة والمنشور" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="850" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_recipe_detail" value="عرض تفاصيل الوصفة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="950" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_post_detail" value="عرض تفاصيل المنشور" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1040" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_add_recipe" value="إضافة وصفة جديدة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1130" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_browse_recipes" value="تصفح الوصفات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1220" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_cats" value="عرض الأصناف ضمن المطبخ" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="770" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_items" value="عرض الوصفات ضمن الصنف" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="770" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_nutrition" value="المعلومات الغذائية" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="900" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_difficulty" value="عرض مستوى الصعوبة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="900" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_steps" value="خطوات التحضير" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="980" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_ingredients" value="عرض المكونات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="980" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_cook_mode" value="عرض خطوات التحضير (وضع الطبخ)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="940" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_keep_awake" value="منع إطفاء الشاشة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="1020" width="140" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_edit_before" value="تعديل وصفة قبل النشر" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1130" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_like_r" value="الإعجاب بالوصفات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1220" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_comment_r" value="التعليق على الوصفات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1220" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_share_r" value="مشاركة الوصفة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="770" y="1220" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_save_r" value="حفظ الوصفة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="910" y="1220" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_cuisine_cats" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_cuisine" target="uc_cats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cats_items" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_cats" target="uc_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rd_nut" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_recipe_detail" target="uc_nutrition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rd_diff" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_recipe_detail" target="uc_difficulty">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rd_steps" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_recipe_detail" target="uc_steps">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rd_ing" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_recipe_detail" target="uc_ingredients">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_pd_steps" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_post_detail" target="uc_steps">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_pd_ing" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_post_detail" target="uc_ingredients">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cook_rd" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_cook_mode" target="uc_recipe_detail">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cook_pd" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_cook_mode" target="uc_post_detail">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_awake" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_cook_mode" target="uc_keep_awake">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_edit_add" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_edit_before" target="uc_add_recipe">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_like_r" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_like_r" target="uc_browse_recipes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_comment_r" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_comment_r" target="uc_browse_recipes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_share_r" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_share_r" target="uc_browse_recipes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_save_r" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_save_r" target="uc_browse_recipes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pkg4" value="المجتمع" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;verticalAlign=top;align=center;spacingTop=6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="1360" width="920" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_browse_posts" value="تصفح المنشورات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1440" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_like_p" value="الإعجاب بالمنشورات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="1410" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_comment_p" value="التعليق على المنشورات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1410" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_share_p" value="مشاركة المنشور" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="1410" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_save_p" value="حفظ المنشور" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1410" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_like_p" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_like_p" target="uc_browse_posts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_comment_p" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_comment_p" target="uc_browse_posts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_share_p" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_share_p" target="uc_browse_posts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_save_p" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_save_p" target="uc_browse_posts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pkg5" value="المطبخ الذكي والإشعارات" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;verticalAlign=top;align=center;spacingTop=6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="1630" width="920" height="560" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_chatbot" value="شات بوت" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1720" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_shopping" value="إنشاء قائمة التسوق" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1900" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_notif" value="استقبال الإشعارات والتذكيرات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="2060" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_all_chats" value="عرض جميع المحادثات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1690" width="140" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_del_chat" value="حذف محادثة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1760" width="140" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_suggest" value="اقتراح وصفات حسب المكونات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1830" width="150" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_alt" value="اقتراح بدائل المكونات" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1830" width="140" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_servings" value="تعديل الكميات حسب عدد الأشخاص" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1720" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_shop_items" value="إدارة عناصر القائمة" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1910" width="140" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_chat_all" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_chatbot" target="uc_all_chats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_del_chat" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_del_chat" target="uc_chatbot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_suggest" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_suggest" target="uc_chatbot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_alt" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_alt" target="uc_suggest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_servings" value="&lt;&lt;extend&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_servings" target="uc_chatbot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_shop" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;dashed=1;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="uc_shopping" target="uc_shop_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="actor_user" value="المستخدم" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1050" width="50" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_email" value="خادم البريد الإلكتروني" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="160" width="50" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_cloudinary" value="Cloudinary" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="980" width="50" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_firebase" value="Firebase" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="2040" width="50" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_grok" value="Grok" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="1700" width="50" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_register"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a2" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_login"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a3" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_forgot"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a4" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_profile"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a5" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_cuisine"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a6" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_search"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a7" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_recipe_detail"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a8" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_post_detail"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a9" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_add_recipe"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a10" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_browse_recipes"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a11" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_browse_posts"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a12" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_chatbot"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a13" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_shopping"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a14" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_user" target="uc_notif"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="ae1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_otp_reg" target="actor_email"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae2" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_otp_forgot" target="actor_email"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ac1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_avatar" target="actor_cloudinary"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ac2" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_recipe_detail" target="actor_cloudinary"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ac3" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_post_detail" target="actor_cloudinary"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ac4" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_add_recipe" target="actor_cloudinary"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="af1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="uc_notif" target="actor_firebase"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ag1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="actor_grok" target="uc_chatbot"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

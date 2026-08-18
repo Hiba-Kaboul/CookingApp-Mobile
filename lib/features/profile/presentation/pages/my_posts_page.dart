@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/core/constants/app_colors.dart';
 
+import '../../../recipe_detail/data/api/recipe_detail_api.dart';
+import '../../../recipe_detail/presentation/bloc/recipe_detail_bloc.dart';
+import '../../../recipe_detail/presentation/pages/recipe_detail_page.dart';
 import '../bloc_my_approved_posts.dart/my_posts_bloc.dart';
 import '../bloc_my_approved_posts.dart/my_posts_event.dart';
 import '../bloc_my_approved_posts.dart/my_posts_state.dart';
@@ -48,12 +51,18 @@ class _MyPostsPageState extends State<MyPostsPage> {
         }
 
         if (state is MyPostsError) {
-          return Center(
-            child: Text(state.message),
+          return const Center(
+            child: Text("لا يوجد وصفات منشورة"),
           );
         }
 
         if (state is MyPostsSuccess) {
+          if (state.posts.isEmpty) {
+            return const Center(
+              child: Text("لا يوجد وصفات منشورة"),
+            );
+          }
+
           return GridView.builder(
             controller: controller,
             padding: const EdgeInsets.all(2),
@@ -64,47 +73,65 @@ class _MyPostsPageState extends State<MyPostsPage> {
               mainAxisSpacing: 2,
             ),
             itemBuilder: (context, index) {
+              // نفس الكود الموجود عندك، لا تغيّريه
               final post = state.posts[index];
 
-              return Container(
-                color: Colors.grey.shade200,
-                child: post.media.isEmpty
-                    ? const Icon(Icons.image)
-                    : Stack(
-                        // 1. استخدمي Stack لوضع العناصر فوق بعضها
-                        children: [
-                          // الصورة الأساسية
-                          Positioned.fill(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                post.media.first.url,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+              final cover = post.media.isNotEmpty ? post.media.first : null;
+              final coverUrl = cover == null
+                  ? null
+                  : (cover.type == 'video' &&
+                          cover.thumbnail != null &&
+                          cover.thumbnail!.isNotEmpty)
+                      ? cover.thumbnail!
+                      : cover.url;
 
-                          // 2. التحقق من وجود أكثر من صورة لإظهار الأيقونة
-                          if (post.media.length > 1)
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: AppColors.textDark
-                                      .withOpacity(0.5), // خلفية شبه شفافة
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: const Icon(
-                                  Icons.layers, // أو استخدمي Icons.collections
-                                  color: AppColors.otpGradientMiddle,
-                                  size: 20,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider(
+                        create: (_) => RecipeDetailBloc(RecipeDetailApi()),
+                        child: RecipeDetailPage(id: post.id),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  color: Colors.grey.shade200,
+                  child: post.media.isEmpty
+                      ? const Icon(Icons.image)
+                      : Stack(
+                          children: [
+                            Positioned.fill(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  coverUrl!,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                        ],
-                      ),
+                            if (post.media.length > 1)
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.textDark.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Icon(
+                                    Icons.collections,
+                                    color: AppColors.otpGradientMiddle,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                ),
               );
             },
           );

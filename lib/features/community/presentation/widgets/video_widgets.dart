@@ -3,10 +3,14 @@ import 'package:video_player/video_player.dart';
 
 class PostVideoWidget extends StatefulWidget {
   final String url;
+  final bool autoPlay;
+  final String? thumbnail;
 
   const PostVideoWidget({
     super.key,
     required this.url,
+    required this.autoPlay,
+    this.thumbnail,
   });
 
   @override
@@ -23,8 +27,27 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
     controller = VideoPlayerController.networkUrl(
       Uri.parse(widget.url),
     )..initialize().then((_) {
+        controller.setLooping(true);
+
+        if (widget.autoPlay) {
+          controller.play();
+        }
+
         setState(() {});
       });
+  }
+
+  @override
+  void didUpdateWidget(covariant PostVideoWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.autoPlay != oldWidget.autoPlay) {
+      if (widget.autoPlay) {
+        controller.play();
+      } else {
+        controller.pause();
+      }
+    }
   }
 
   @override
@@ -36,37 +59,50 @@ class _PostVideoWidgetState extends State<PostVideoWidget> {
   @override
   Widget build(BuildContext context) {
     if (!controller.value.isInitialized) {
-      return const SizedBox(
-        height: 300,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      if (widget.thumbnail != null && widget.thumbnail!.isNotEmpty) {
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(widget.thumbnail!, fit: BoxFit.cover),
+            const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            ),
+          ],
+        );
+      }
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Stack(
       alignment: Alignment.center,
       children: [
-        AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: VideoPlayer(controller),
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: controller.value.size.width,
+              height: controller.value.size.height,
+              child: VideoPlayer(controller),
+            ),
+          ),
         ),
-
         IconButton(
           iconSize: 60,
           color: Colors.white,
-          icon: Icon(
-            controller.value.isPlaying
-                ? Icons.pause_circle
-                : Icons.play_circle,
-          ),
           onPressed: () {
-            setState(() {
-              controller.value.isPlaying
-                  ? controller.pause()
-                  : controller.play();
-            });
+            if (controller.value.isPlaying) {
+              controller.pause();
+            } else {
+              controller.play();
+            }
+
+            setState(() {});
           },
+          icon: Icon(
+            controller.value.isPlaying ? Icons.pause_circle : Icons.play_circle,
+          ),
         ),
       ],
     );

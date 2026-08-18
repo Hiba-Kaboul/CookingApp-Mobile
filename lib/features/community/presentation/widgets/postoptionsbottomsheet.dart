@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // استبدل المسار التالي بمسار الـ Bloc الخاص بك
-import '../bloc_delete_post/delete_users_posts_bloc.dart';
-import '../bloc_delete_post/delete_users_posts_event.dart';
+import '../bloc/bloc_delete_post/delete_users_posts_bloc.dart';
+import '../bloc/bloc_delete_post/delete_users_posts_event.dart';
 
 
 class PostOptionsBottomSheet extends StatelessWidget {

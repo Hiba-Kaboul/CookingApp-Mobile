@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/core/constants/app_colors.dart';
 import 'package:project2/core/constants/app_text_styles.dart';
-import 'package:project2/features/profile/presentation/pages/profile_page.dart';
+import '../../../../core/constants/themecubit.dart';
+import '../../../auth/presentation/pages/change_password_page.dart';
 import '../../../profile/data/api/edit_profile_api.dart';
 import '../../../profile/presentation/bloc/edit_profile_bloc.dart';
 import '../../../profile/presentation/pages/profile_editing_page.dart';
-import '../../data/api/settings_api.dart';
 import '../bloc/settings_bloc.dart';
 import '../bloc/settings_event.dart';
 import '../bloc/settings_state.dart';
@@ -89,12 +89,77 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  String _themeLabel(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.dark:
+        return 'داكن';
+      case ThemeMode.light:
+        return 'فاتح';
+      case ThemeMode.system:
+        return 'تلقائي';
+    }
+  }
+
+  void _showThemeSheet(BuildContext context) {
+    final themeCubit = context.read<ThemeCubit>();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Text(
+                  'اختر المظهر',
+                  style: AppTextStyles.appBarTitle,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.light_mode_outlined),
+                title: const Text('فاتح', textAlign: TextAlign.right),
+                onTap: () {
+                  themeCubit.setTheme(ThemeMode.light);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.dark_mode_outlined),
+                title: const Text('داكن', textAlign: TextAlign.right),
+                onTap: () {
+                  themeCubit.setTheme(ThemeMode.dark);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings_suggest_outlined),
+                title: const Text('تلقائي (حسب النظام)',
+                    textAlign: TextAlign.right),
+                onTap: () {
+                  themeCubit.setTheme(ThemeMode.system);
+                  Navigator.pop(context);
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-          iconTheme: const IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
         backgroundColor: AppColors.primary,
@@ -181,7 +246,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   SettingsTile(
                     title: 'الأمان وكلمة المرور',
                     icon: Icons.lock_outline,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ChangePasswordPage(),
+                        ),
+                      );
+                    },
                   ),
                 ]),
                 const SizedBox(height: 20),
@@ -203,9 +275,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: 'المظهر',
                     icon: Icons.palette_outlined,
                     trailingBadge: _badge(
-                      user.theme.label,
+                      _themeLabel(context.watch<ThemeCubit>().state),
                     ),
-                    onTap: () {},
+                    onTap: () => _showThemeSheet(context),
                   ),
                 ]),
                 const SizedBox(height: 20),

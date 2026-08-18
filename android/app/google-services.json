@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "70674170260",
+    "project_id": "cookingapp-501013",
+    "storage_bucket": "cookingapp-501013.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70674170260:android:27d29a5318b9bc1dd7cf81",
+        "android_client_info": {
+          "package_name": "com.example.project2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70674170260-8leo7ijs6k4paqgclo0rijciib1bn8h5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project2",
+            "certificate_hash": "95619d159cc2664ac4e1524f1dc47d30160ba7ea"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC15MQKHDP0TSRsJpTbe-fDKZOT0uZr048"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

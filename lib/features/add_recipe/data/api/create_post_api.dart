@@ -12,7 +12,7 @@ class CreatePostApi {
       CreatePostRequestModel request) async {
     try {
       final token = await TokenStorage.getToken();
-       // المعلومات العادية
+      // المعلومات العادية
       final formData = FormData.fromMap({
         "title": request.title,
         "description": request.description,
@@ -57,30 +57,41 @@ class CreatePostApi {
 
       // إضافة الصور والفيديو
       for (final file in request.media) {
+        final name = file.path.split(RegExp(r'[\\/]')).last;
+        final isVideo = name.toLowerCase().endsWith('.mp4') ||
+            name.toLowerCase().endsWith('.mov');
+
         formData.files.add(
           MapEntry(
             "media[]",
             await MultipartFile.fromFile(
               file.path,
-              filename: file.path.split('/').last,
+              filename: name,
+              contentType: isVideo
+                  ? DioMediaType('video', 'mp4')
+                  : DioMediaType('image', 'jpeg'),
             ),
           ),
         );
       }
-      // ارسال الطلب
+
       final response = await dio.post(
         "${ApiUrl.baseUrl}/posts",
         data: formData,
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
-            "Content-Type": "multipart/form-data",
+            "Accept": "application/json",
           },
+          sendTimeout: const Duration(minutes: 3),
+          receiveTimeout: const Duration(minutes: 3),
         ),
       );
 
       return CreatePostResponseModel.fromJson(response.data);
     } on DioException catch (e) {
+      print("DIO TYPE: ${e.type}");
+      print("DIO MESSAGE: ${e.message}");
       print("STATUS CODE: ${e.response?.statusCode}");
       print("RESPONSE: ${e.response?.data}");
       rethrow;

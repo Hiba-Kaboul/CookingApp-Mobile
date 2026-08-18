@@ -76,7 +76,9 @@ class AppStrings {
   static const String bio =": البايو ";
   static const String popular =": الأكثر تداولاً ";
   static const String type_kitchens =":  المطابخ ";
-  static const String search =": ابحث عن وصفة، مكون، أو شيف... ";
+  static const String search =" ... ابحث عن وصفة ";
+  static const String splach1 =" ..اصنع ذكرياتك في كل وجبة.";
+  static const String splach2 =" رحلتك في عالم الطهي تبدأ الان";
 
   
 }

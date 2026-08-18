@@ -185,114 +185,116 @@ class _OtpPageState extends State<OtpPage> {
                   )),
             ),
            
-            body: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    AppColors.otpGradientTop,
-                    AppColors.otpGradientMiddle,
-                    AppColors.otpGradientBottom,
-                  ],
+            body: SingleChildScrollView(
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.otpGradientTop,
+                      AppColors.otpGradientMiddle,
+                      AppColors.otpGradientBottom,
+                    ],
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.otpCardBackground,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          AppStrings.otpTitle,
-                          style: AppTextStyles.heading,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          '${AppStrings.otpSubtitle}\n${widget.email}',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.subHeading,
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            6,
-                            (index) => buildOtpField(index),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: AppColors.otpCardBackground,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            AppStrings.otpTitle,
+                            style: AppTextStyles.heading,
                           ),
-                        ),
-                        const SizedBox(height: 30),
-
-                        // دائرة التايمر
-                        Container(
-                          width: 70,
-                          height: 70,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: _isExpired
-                                  ? AppColors.grey
-                                  : AppColors.primary,
-                              width: 3,
+                          const SizedBox(height: 10),
+                          Text(
+                            '${AppStrings.otpSubtitle}\n${widget.email}',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.subHeading,
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(
+                              6,
+                              (index) => buildOtpField(index),
                             ),
                           ),
-                          child: Text(
-                            _isExpired ? '00:00' : _formattedTime,
-                            style: TextStyle(
-                              color: _isExpired
-                                  ? AppColors.grey
-                                  : AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // زر إعادة الإرسال
-                        TextButton(
-                          onPressed: _isExpired && !isLoading
-                              ? () {
-                                  context.read<AuthBloc>().add(
-                                        ResendOtpRequested(email: widget.email),
-                                      );
-                                }
-                              : null,
-                          child: Text(
-                            AppStrings.resendCode,
-                            style: AppTextStyles.link.copyWith(
-                              color: _isExpired
-                                  ? AppColors.primary
-                                  : AppColors.grey,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        isLoading
-                            ? const CircularProgressIndicator(
-                                color: AppColors.primary,
-                              )
-                            : PrimaryButton(
-                                text: AppStrings.verify,
-                                onPressed: isOtpComplete
-                                    ? () {
-                                        context.read<AuthBloc>().add(
-                                              VerifyOtpSubmitted(
-                                                email: widget.email,
-                                                code: _otpCode,
-                                              ),
-                                            );
-                                      }
-                                    : null,
+                          const SizedBox(height: 30),
+              
+                          // دائرة التايمر
+                          Container(
+                            width: 70,
+                            height: 70,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: _isExpired
+                                    ? AppColors.grey
+                                    : AppColors.primary,
+                                width: 3,
                               ),
-                      ],
+                            ),
+                            child: Text(
+                              _isExpired ? '00:00' : _formattedTime,
+                              style: TextStyle(
+                                color: _isExpired
+                                    ? AppColors.grey
+                                    : AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+              
+                          // زر إعادة الإرسال
+                          TextButton(
+                            onPressed: _isExpired && !isLoading
+                                ? () {
+                                    context.read<AuthBloc>().add(
+                                          ResendOtpRequested(email: widget.email),
+                                        );
+                                  }
+                                : null,
+                            child: Text(
+                              AppStrings.resendCode,
+                              style: AppTextStyles.link.copyWith(
+                                color: _isExpired
+                                    ? AppColors.primary
+                                    : AppColors.grey,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+              
+                          isLoading
+                              ? const CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                )
+                              : PrimaryButton(
+                                  text: AppStrings.verify,
+                                  onPressed: isOtpComplete
+                                      ? () {
+                                          context.read<AuthBloc>().add(
+                                                VerifyOtpSubmitted(
+                                                  email: widget.email,
+                                                  code: _otpCode,
+                                                ),
+                                              );
+                                        }
+                                      : null,
+                                ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

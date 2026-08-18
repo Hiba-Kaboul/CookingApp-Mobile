@@ -24,17 +24,17 @@ class CustomBottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
           activeIcon: Icon(Icons.home),
-          label: 'الرئيسية',
+          label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.group_rounded),
           activeIcon: Icon(Icons.group_rounded),
-          label: 'المجتمع',
+          label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add_circle_outline),
           activeIcon: Icon(Icons.add_circle),
-          label: 'إضافة',
+          label: '',
         ),
         BottomNavigationBarItem(
           
@@ -51,13 +51,20 @@ class CustomBottomNavBar extends StatelessWidget {
             color: AppColors
                 .primary, 
           ),
-          label: 'المطبخ الذكي',
+          label: ' ',
+        ),
+           BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart_sharp),
+          activeIcon: Icon(Icons.shopping_cart_sharp),
+          label: '',
+
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
           activeIcon: Icon(Icons.person),
-          label: 'الملف الشخصي',
+          label: ' ',
         ),
+     
       ],
     );
   }

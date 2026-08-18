@@ -7,6 +7,7 @@ import 'package:project2/features/auth/data/models/logout_response_model.dart';
 import 'package:project2/features/auth/data/models/refresh_token_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_request_model.dart';
 import 'package:project2/features/auth/data/models/reset_password_response_model.dart';
+import 'models/refresh_token_model.dart';
 import 'models/register_request_model.dart';
 import 'models/register_response_model.dart';
 import 'models/verify_email_request_model.dart';
@@ -18,7 +19,9 @@ import 'models/login_response_model.dart';
 import 'models/refresh_token_model.dart';
 
 class AuthApi {
-  
+ final String baseUrl = 'http://192.168.1.101/api';
+  // final String baseUrl = 'http://192.168.1.108:8000/api';
+
   // ───────── 1) Register ─────────
   Future<RegisterResponseModel> register({
     required String name,
@@ -34,7 +37,7 @@ class AuthApi {
 
     final response = await http.post(
       Uri.parse('${ApiUrl.baseUrl}/auth/register'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json',},
       body: jsonEncode(request.toJson()),
     );
 
@@ -105,28 +108,6 @@ class AuthApi {
       throw Exception(json['message'] ?? 'تعذر إعادة إرسال الرمز');
     }
   }
-
-  // ───────── 4) Login ─────────
-  // Future<LoginResponseModel> login({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   final request = LoginRequestModel(email: email, password: password);
-
-  //   final response = await http.post(
-  //     Uri.parse('${ApiUrl.baseUrl}/auth/login'),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode(request.toJson()),
-  //   );
-
-  //   final json = jsonDecode(response.body);
-
-  //   if (response.statusCode == 200) {
-  //     return LoginResponseModel.fromJson(json);
-  //   } else {
-  //     throw Exception('البريد الإلكتروني أو كلمة المرور غير صحيحة');
-  //   }
-  // }
 
   Future<LoginResponseModel> login({
     required String email,
@@ -235,7 +216,7 @@ class AuthApi {
           json['message'] ?? 'حدث خطأ أثناء إعادة تعيين كلمة المرور');
     }
   }
-////////////////////////////////////////////////////////////
+
 // ───────── 6) Refresh Token ─────────
 
   Future<RefreshTokenResponseModel> refreshToken({
@@ -258,31 +239,25 @@ class AuthApi {
     }
   }
 
-//////////////////Google 
+//////////////////Google
   Future<LoginResponseModel> loginWithGoogle({required String idToken}) async {
     final response = await http.post(
-      Uri.parse('${ApiUrl.baseUrl}/auth/google'), // نفس الرابط اللي في البوست مان
+      Uri.parse('$baseUrl/auth/google'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
       body: jsonEncode({
-        'id_token': idToken, // نفس المفتاح اللي في البوست مان
+        'id_token': idToken,
       }),
     );
 
     final json = jsonDecode(response.body);
-    
-    // إذا السيرفر رد بنجاح (200 أو 201)
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       return LoginResponseModel.fromJson(json);
     } else {
-      // إذا في خطأ من السيرفر (مثلاً التوكن مو صحيح)
       throw Exception(json['message'] ?? 'فشل تسجيل الدخول بحساب جوجل');
     }
   }
-
-
-
-
 }

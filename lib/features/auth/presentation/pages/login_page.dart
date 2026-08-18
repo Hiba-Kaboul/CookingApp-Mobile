@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../main_navigation/presentation/pages/main_navigation_page.dart';
+import '../../../notification/data/fcm_service.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -41,11 +42,25 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) async {
           if (state is LoginSuccess) {
             await TokenStorage.saveSession(
-              token: state.token,
-              name: state.name,
-             // email: _emailController.text.trim(),
-               email: state.email  ?? ''
+                token: state.token,
+                name: state.name,
+                // email: _emailController.text.trim(),
+                email: state.email ?? '');
+            await FcmService.registerToken();
+            if (!context.mounted) return;
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'مرحباً ${state.name}\n!تم تسجيل الدخول بنجاح',
+                ),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
             );
+
+            if (!context.mounted) return;
+
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -67,16 +82,12 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: AppColors.background,
             appBar: AppBar(
               backgroundColor: AppColors.primary,
+              automaticallyImplyLeading: false,
               centerTitle: true,
               title: const Text(AppStrings.loginTitle,
                   style: AppTextStyles.appBarTitle),
-              leading: const Icon(Icons.search, color: AppColors.buttonText),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: Icon(Icons.menu, color: AppColors.buttonText),
-                )
-              ],
+              
+              
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -167,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     // أزرار السوشيال
                     SocialButtonsRow(
                       onGooglePressed: () {
+                        // print("زر Google انضغط");
                         context.read<AuthBloc>().add(GoogleSignInSubmitted());
                       },
                     ),
