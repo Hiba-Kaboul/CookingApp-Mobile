@@ -2,19 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD
 import 'package:project2/core/utils/deep_link_handler.dart';
-=======
->>>>>>> notifications
 import 'package:project2/features/splash/presentation/pages/splash_page.dart';
 import 'core/constants/app_theme.dart';
 import 'core/constants/themecubit.dart';
 import 'features/notification/data/fcm_service.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -41,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    DeepLinkHandler.listen(navigatorKey);
+    DeepLinkHandler.listen(FcmService.navigatorKey);
   }
 
   @override
@@ -49,7 +42,6 @@ class _MyAppState extends State<MyApp> {
     return BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, themeMode) {
         return MaterialApp(
-          navigatorKey: navigatorKey,
           navigatorKey: FcmService.navigatorKey,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

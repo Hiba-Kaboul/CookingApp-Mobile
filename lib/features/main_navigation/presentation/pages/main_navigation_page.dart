@@ -20,12 +20,9 @@ import '../../../community/data/api/like_unlike_posts_api.dart';
 import '../../../community/data/api/recipes_posts_api.dart';
 import '../../../community/data/api/save_recipe_api.dart';
 import '../../../community/data/api/save_unsave_posts_api.dart';
-<<<<<<< HEAD
 import '../../../community/data/api/share_post_api.dart';
 import '../../../community/data/api/share_recipe_api.dart';
-=======
 import '../../../community/data/api/trending_api.dart';
->>>>>>> notifications
 import '../../../community/data/api/users_api.dart';
 import '../../../notification/data/api/notifications_api.dart';
 import '../../../notification/presentation/bloc/bloc_notifications/notifications_bloc.dart';

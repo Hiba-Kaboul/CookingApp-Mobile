@@ -261,7 +261,6 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
   //   );
   // }
   Widget _buildIngredients(AdminRecipeDetailModel recipe) {
-<<<<<<< HEAD
     return Column(
       children: recipe.ingredients.asMap().entries.map((entry) {
         final index = entry.key;
@@ -301,47 +300,6 @@ class _AdminRecipeDetailPageState extends State<AdminRecipeDetailPage> {
     
   }
   
-=======
-  return Column(
-    children: recipe.ingredients.asMap().entries.map((entry) {
-      final index = entry.key;
-      final item = entry.value;
-
-      return Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.recipeCardGreen,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Row(
-          children: [
-            Checkbox(
-              value: selectedIngredients[index] ?? false,
-              activeColor: AppColors.primary,
-              onChanged: (value) {
-                setState(() {
-                  selectedIngredients[index] = value ?? false;
-                });
-              },
-            ),
-
-            const Spacer(),
-
-            Expanded(
-              child: Text(
-                item,
-                textAlign: TextAlign.right,
-                style: AppTextStyles.title,
-              ),
-            ),
-          ],
-        ),
-      );
-    }).toList(),
-  );
-}
->>>>>>> notifications
 
   Widget _buildSteps(AdminRecipeDetailModel recipe) {
     return Column(

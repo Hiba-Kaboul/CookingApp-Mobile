@@ -23,30 +23,18 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-<<<<<<< HEAD
-                <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-    </intent-filter>
-
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="cookingapp" android:host="posts" />
-        <data android:scheme="cookingapp" android:host="recipes" />
-    </intent-filter>
-</activity>
-        
-        <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
-=======
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="cookingapp" android:host="posts" />
+                <data android:scheme="cookingapp" android:host="recipes" />
+            </intent-filter>
         </activity>
->>>>>>> notifications
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
@@ -73,28 +61,15 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <package android:name="com.whatsapp" />
+        <package android:name="org.telegram.messenger" />
     </queries>
-<<<<<<< HEAD
-    <queries>
-        <intent>
-           <action android:name="android.intent.action.PROCESS_TEXT"/>
-           <data android:mimeType="text/plain"/>
-        </intent>
-
-         <intent>
-           <action android:name="android.intent.action.VIEW" />
-           <data android:scheme="https" />
-        </intent>
-
-        <intent>
-          <action android:name="android.intent.action.VIEW" />
-           <data android:scheme="http" />
-         </intent>
-
-       <package android:name="com.whatsapp" />
-       <package android:name="org.telegram.messenger" />
-</queries>
 </manifest>
-=======
-</manifest>
->>>>>>> notifications

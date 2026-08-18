@@ -13,7 +13,6 @@ import 'package:project2/features/recipe_detail/presentation/widget/recipe_heade
 import 'package:project2/features/recipe_detail/presentation/widget/recipe_tabs_widget.dart';
 
 import '../../../shopping_cart/data/api/add_shopping_list_api.dart';
-import '../../../shopping_cart/data/api/shopping_list_api.dart';
 import '../../../shopping_cart/presentation/bloc/bloc_add_to_shopping/add_shopping_list_bloc.dart';
 import '../../../shopping_cart/presentation/bloc/bloc_add_to_shopping/add_shopping_list_event.dart';
 import '../../../shopping_cart/presentation/bloc/bloc_add_to_shopping/add_shopping_list_state.dart';
@@ -34,14 +33,10 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   @override
   void initState() {
     super.initState();
-
     context.read<RecipeDetailBloc>().add(GetRecipeDetail(widget.id));
   }
 
   bool isFavorite = true;
-
-  int servings = 4;
-
   RecipeTab selectedTab = RecipeTab.ingredients;
   final Map<int, bool> selectedIngredients = {};
 
@@ -50,85 +45,89 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     return BlocProvider(
       create: (context) => AddToShoppingListBloc(AddShoppingItemApi()),
       child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
-            builder: (context, state) {
-              if (state is RecipeDetailLoading) {
-                return const Center(
+        textDirection: TextDirection.rtl,
+        child: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
+          builder: (context, state) {
+            if (state is RecipeDetailLoading) {
+              return const Scaffold(
+                backgroundColor: AppColors.background,
+                body: Center(
                   child: CircularProgressIndicator(),
-                );
-              }
+                ),
+              );
+            }
 
-              if (state is RecipeDetailError) {
-                return Center(
+            if (state is RecipeDetailError) {
+              return Scaffold(
+                backgroundColor: AppColors.background,
+                body: Center(
                   child: Text(state.message),
-                );
-              }
+                ),
+              );
+            }
 
-              if (state is RecipeDetailLoaded) {
-                final recipe = state.recipe;
+            if (state is RecipeDetailLoaded) {
+              final recipe = state.recipe;
 
-                return Scaffold(
-                  backgroundColor: AppColors.background,
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        padding: const EdgeInsets.only(bottom: 120),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            RecipeHeaderWidget(
-                              media: recipe.media,
-                              isFavorite: isFavorite,
-                              onFavorite: () {
-                                setState(() {
-                                  isFavorite = !isFavorite;
-                                });
-                              },
-                              onBack: () {
-                                Navigator.pop(context);
-                              },
+              return Scaffold(
+                backgroundColor: AppColors.background,
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.only(bottom: 120),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          RecipeHeaderWidget(
+                            media: recipe.media,
+                            isFavorite: isFavorite,
+                            onFavorite: () {
+                              setState(() {
+                                isFavorite = !isFavorite;
+                              });
+                            },
+                            onBack: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 18),
+                                Text(
+                                  recipe.title,
+                                  style: AppTextStyles.heading,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  recipe.description,
+                                  style: AppTextStyles.subHeading
+                                      .copyWith(height: 1.6),
+                                ),
+                                const SizedBox(height: 18),
+                                RecipeAuthorWidget(
+                                  userName: recipe.userName,
+                                  userAvatar: recipe.userAvatar,
+                                ),
+                                const SizedBox(height: 18),
+                                _buildStats(recipe),
+                                const SizedBox(height: 20),
+                                RecipeTabsWidget(
+                                  selectedTab: selectedTab,
+                                  onChanged: (tab) {
+                                    setState(() {
+                                      selectedTab = tab;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                                _buildTabContent(recipe),
+                              ],
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 18),
-                                  Text(
-                                    recipe.title,
-                                    style: AppTextStyles.heading,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    recipe.description,
-                                    style: AppTextStyles.subHeading
-                                        .copyWith(height: 1.6),
-                                  ),
-                                  const SizedBox(height: 18),
-                                  RecipeAuthorWidget(
-                                    userName: recipe.userName,
-                                    userAvatar: recipe.userAvatar,
-                                  ),
-                                  const SizedBox(height: 18),
-                                  _buildStats(recipe),
-                                  const SizedBox(height: 20),
-                                  RecipeTabsWidget(
-                                    selectedTab: selectedTab,
-                                    onChanged: (tab) {
-                                      setState(() {
-                                        selectedTab = tab;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  _buildTabContent(recipe),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     Positioned(
@@ -157,20 +156,20 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                 ),
               );
             }
-            return const SizedBox();
+
+            return const Scaffold(
+              backgroundColor: AppColors.background,
+              body: SizedBox(),
+            );
           },
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildStats(RecipeDetailModel recipe) {
     return Row(
       children: [
-        // Expanded(
-        //   child: _statItem(
-        //     Icons.local_fire_department,
-        //     "420 سعرة",
-        //   ),
-        // ),
         const SizedBox(width: 10),
         Expanded(
           child: _statItem(
@@ -244,33 +243,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     }
   }
 
-  // Widget _buildIngredients(RecipeDetailModel recipe) {
-  //   return Column(
-  //     children: recipe.ingredients.map((item) {
-  //       return Container(
-  //         margin: const EdgeInsets.only(bottom: 12),
-  //         padding: const EdgeInsets.all(16),
-  //         decoration: BoxDecoration(
-  //           color: AppColors.recipeCardGreen,
-  //           borderRadius: BorderRadius.circular(18),
-  //         ),
-  //         child: Row(
-  //           children: [
-  //             Text(
-  //               item.quantity,
-  //               style: AppTextStyles.text14_400,
-  //             ),
-  //             const Spacer(),
-  //             Text(
-  //               item.name,
-  //               style: AppTextStyles.title,
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }).toList(),
-  //   );
-  // }
   Widget _buildIngredients(RecipeDetailModel recipe) {
     return Column(
       children: [
@@ -285,13 +257,11 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
             child: Row(
               children: [
                 Checkbox(
-                  value: selectedIngredients[item.id] ??
-                      false, // 👈 صار id بدل index
+                  value: selectedIngredients[item.id] ?? false,
                   activeColor: AppColors.primary,
                   onChanged: (value) {
                     setState(() {
-                      selectedIngredients[item.id] =
-                          value ?? false; // 👈 صار id بدل index
+                      selectedIngredients[item.id] = value ?? false;
                     });
                   },
                 ),
@@ -311,10 +281,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
             ),
           );
         }),
-
         const SizedBox(height: 12),
-
-        // 👇 زر "أضف للسلة" + الاستماع لنتيجة الإضافة
         BlocConsumer<AddToShoppingListBloc, AddToShoppingListState>(
           listener: (context, state) {
             if (state is AddToShoppingListSuccess) {
@@ -362,7 +329,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                       )
                     : const Icon(Icons.shopping_cart_outlined, size: 18),
                 label: Text(
-                    isLoading ? "جاري الإضافة..." : "أضف المحدد لقائمة التسوق"),
+                  isLoading ? "جاري الإضافة..." : "أضف المحدد لقائمة التسوق",
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
