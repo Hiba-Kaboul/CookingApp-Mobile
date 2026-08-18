@@ -130,36 +130,36 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           ],
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: RecipeBottomButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => SmartCookingPage2(
-                                  steps: recipe.steps
-                                      .map((step) => step.description)
-                                      .toList(),
-                                  imageUrl: recipe.media.isNotEmpty
-                                      ? recipe.media.first.url
-                                      : '',
-                                ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: RecipeBottomButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SmartCookingPage2(
+                                steps: recipe.steps
+                                    .map((step) => step.description)
+                                    .toList(),
+                                imageUrl: recipe.media.isNotEmpty
+                                    ? recipe.media.first.url
+                                    : '',
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox();
-            },
-          )),
-    );
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ));
   }
 
   Widget _buildStats(RecipeDetailModel recipe) {
@@ -244,6 +244,33 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     }
   }
 
+  // Widget _buildIngredients(RecipeDetailModel recipe) {
+  //   return Column(
+  //     children: recipe.ingredients.map((item) {
+  //       return Container(
+  //         margin: const EdgeInsets.only(bottom: 12),
+  //         padding: const EdgeInsets.all(16),
+  //         decoration: BoxDecoration(
+  //           color: AppColors.recipeCardGreen,
+  //           borderRadius: BorderRadius.circular(18),
+  //         ),
+  //         child: Row(
+  //           children: [
+  //             Text(
+  //               item.quantity,
+  //               style: AppTextStyles.text14_400,
+  //             ),
+  //             const Spacer(),
+  //             Text(
+  //               item.name,
+  //               style: AppTextStyles.title,
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }).toList(),
+  //   );
+  // }
   Widget _buildIngredients(RecipeDetailModel recipe) {
     return Column(
       children: [

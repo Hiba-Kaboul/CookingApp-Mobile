@@ -20,9 +20,16 @@ import '../../../community/data/api/like_unlike_posts_api.dart';
 import '../../../community/data/api/recipes_posts_api.dart';
 import '../../../community/data/api/save_recipe_api.dart';
 import '../../../community/data/api/save_unsave_posts_api.dart';
+<<<<<<< HEAD
 import '../../../community/data/api/share_post_api.dart';
 import '../../../community/data/api/share_recipe_api.dart';
+=======
+import '../../../community/data/api/trending_api.dart';
+>>>>>>> notifications
 import '../../../community/data/api/users_api.dart';
+import '../../../notification/data/api/notifications_api.dart';
+import '../../../notification/presentation/bloc/bloc_notifications/notifications_bloc.dart';
+import '../../../notification/presentation/bloc/bloc_notifications/notifications_event.dart';
 import '../../../community/presentation/bloc/bloc_liked_recipes/like_recipe_bloc.dart';
 import '../../../community/presentation/bloc/bloc_saved_recipes/save_recipe_bloc.dart';
 import '../../../community/presentation/bloc/bloc_share_post/share_post_bloc.dart';
@@ -32,6 +39,8 @@ import '../../../community/presentation/bloc/bloc_user_posts/users_posts_event.d
 import '../../../community/presentation/bloc/bloc_delete_post/delete_users_posts_bloc.dart';
 import '../../../community/presentation/bloc/bloc_homepage_posts/recipes_bloc.dart';
 import '../../../community/presentation/bloc/bloc_homepage_posts/recipes_event.dart';
+import '../../../community/presentation/bloc/bloc_trending/trending_bloc.dart';
+import '../../../community/presentation/bloc/bloc_trending/trending_event.dart';
 import '../../../community/presentation/bloc/bloc_liked_posts/likeed_unliked_posts_bloc.dart';
 import '../../../community/presentation/bloc/bloc_saved_posts/saved_unsaved_posts_bloc.dart';
 import '../../../community/presentation/bloc/cuisine/cuisine_bloc.dart';
@@ -62,6 +71,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
             BlocProvider(
               create: (_) => RecipesBloc(RecipesApi())..add(GetRecipesEvent()),
             ),
+             BlocProvider(
+      create: (_) => TrendingBloc(TrendingApi())..add(GetTrendingEvent()),
+    ),
             BlocProvider(
               create: (_) => DeleteUsersPostsBloc(DeletePostApi()),
             ),
@@ -88,6 +100,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               BlocProvider(
                 create: (_) => ShareRecipeBloc(ShareRecipeApi()),
               ),
+                BlocProvider(
+      create: (_) => NotificationsBloc(NotificationsApi())
+        ..add(GetNotificationsEvent()),
+    ),
           ],
           child: const HomePage(),
         ),

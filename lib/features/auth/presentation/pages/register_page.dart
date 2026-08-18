@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project2/core/utils/token_storage.dart';
 import 'package:project2/features/auth/presentation/pages/otp_page.dart';
 import 'package:project2/features/main_navigation/presentation/pages/main_navigation_page.dart';
+import '../../../notification/data/fcm_service.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
@@ -90,7 +91,8 @@ class _RegisterPageState extends State<RegisterPage> {
               token: state.token,
               name: state.name,
               email: state.email ?? '',
-            ).then((_) {
+            ).then((_) async {
+              await FcmService.registerToken();
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

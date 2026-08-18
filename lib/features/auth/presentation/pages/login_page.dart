@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../main_navigation/presentation/pages/main_navigation_page.dart';
+import '../../../notification/data/fcm_service.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -45,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 name: state.name,
                 // email: _emailController.text.trim(),
                 email: state.email ?? '');
+            await FcmService.registerToken();
             if (!context.mounted) return;
 
             ScaffoldMessenger.of(context).showSnackBar(

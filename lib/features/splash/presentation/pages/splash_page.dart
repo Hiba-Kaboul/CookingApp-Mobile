@@ -50,6 +50,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/token_storage.dart';
 import '../../../auth/data/auth_api.dart';
 import '../../../main_navigation/presentation/pages/main_navigation_page.dart';
+import '../../../notification/data/fcm_service.dart';
 import '../../../onboarding/presentation/pages/onboarding_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -81,6 +82,7 @@ class _SplashPageState extends State<SplashPage> {
 
       if (newToken != null) {
         await TokenStorage.updateToken(newToken);
+        await FcmService.registerToken();
         nextPage = const MainNavigationPage();
       } else {
         await TokenStorage.clearSession();
@@ -97,6 +99,12 @@ class _SplashPageState extends State<SplashPage> {
       context,
       MaterialPageRoute(builder: (_) => nextPage),
     );
+
+    if (nextPage is MainNavigationPage) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FcmService.openPendingNotification();
+      });
+    }
   }
 
   Future<String?> _refreshToken(String token) async {
