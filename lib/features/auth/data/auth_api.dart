@@ -19,8 +19,6 @@ import 'models/login_response_model.dart';
 import 'models/refresh_token_model.dart';
 
 class AuthApi {
- final String baseUrl = 'http://192.168.1.101/api';
-  // final String baseUrl = 'http://192.168.1.108:8000/api';
 
   // ───────── 1) Register ─────────
   Future<RegisterResponseModel> register({
@@ -242,7 +240,7 @@ class AuthApi {
 //////////////////Google
   Future<LoginResponseModel> loginWithGoogle({required String idToken}) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/google'),
+      Uri.parse('${ApiUrl.baseUrl}/auth/google'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

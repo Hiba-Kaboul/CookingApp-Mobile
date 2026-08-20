@@ -192,6 +192,7 @@ class _NotificationTile extends StatelessWidget {
     if (notification.isComment) return Icons.chat_bubble_outline;
     if (notification.isApproved) return Icons.check_circle_outline;
     if (notification.isRejected) return Icons.cancel_outlined;
+    if (notification.isShopping) return Icons.shopping_cart_outlined;
     if (notification.isRecipe) return Icons.restaurant_menu;
     return notification.isRead
         ? Icons.notifications_none

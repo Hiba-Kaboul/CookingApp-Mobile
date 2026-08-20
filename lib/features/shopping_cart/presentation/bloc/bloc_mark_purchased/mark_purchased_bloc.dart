@@ -1,6 +1,7 @@
 // presentation/bloc/bloc_mark_purchased/mark_purchased_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/api/mark_purchased_api.dart';
+import '../../../../notification/data/fcm_service.dart';
 import 'mark_purchased_event.dart';
 import 'mark_purchased_state.dart';
 
@@ -24,6 +25,7 @@ class MarkPurchasedBloc extends Bloc<MarkPurchasedEvent, MarkPurchasedState> {
 
     try {
       final response = await api.markPurchased(event.ids);
+      await FcmService.cancelShoppingReminders(event.ids);
       emit(MarkPurchasedSuccess(response.updatedCount));
     } catch (e) {
       emit(MarkPurchasedFailure("تعذر تحديث العناصر"));

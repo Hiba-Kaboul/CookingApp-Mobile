@@ -4,6 +4,7 @@ import 'package:project2/features/shopping_cart/presentation/bloc/bloc_add_to_sh
 import 'package:project2/features/shopping_cart/presentation/bloc/bloc_add_to_shopping/add_shopping_list_state.dart';
 
 import '../../../data/api/add_shopping_list_api.dart';
+import '../../../../notification/data/fcm_service.dart';
 
 
 
@@ -31,8 +32,12 @@ class AddToShoppingListBloc
     try {
       // نبعت نداء لكل عنصر محدد، واحد تلو الآخر
       for (final id in event.ingredientIds) {
-        await api.addIngredient(id);
+        final added = await api.addIngredient(id);
         successCount++;
+        await FcmService.scheduleShoppingReminder(
+          itemId: added.data.id,
+          ingredientName: added.data.name,
+        );
       }
 
       emit(AddToShoppingListSuccess(successCount));

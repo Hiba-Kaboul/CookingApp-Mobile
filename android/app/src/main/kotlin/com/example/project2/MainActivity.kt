@@ -26,11 +26,16 @@ class MainActivity: FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
         methodChannel?.setMethodCallHandler { call, result ->
-            if (call.method == "getLaunchData") {
-                result.success(pendingLaunchData)
-                pendingLaunchData = null
-            } else {
-                result.notImplemented()
+            when (call.method) {
+                "getLaunchData" -> {
+                    result.success(pendingLaunchData)
+                    pendingLaunchData = null
+                }
+                "cancelGenericNotifications" -> {
+                    CookingNotificationHelper.cancelGenericDuplicates(this)
+                    result.success(null)
+                }
+                else -> result.notImplemented()
             }
         }
     }

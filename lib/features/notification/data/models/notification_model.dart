@@ -89,9 +89,16 @@ class NotificationModel {
         typeLower.contains('رفض');
   }
 
+  bool get isShopping {
+    final typeLower = type.toLowerCase();
+    return typeLower.contains('shopping');
+  }
+
   bool get isRecipe {
     final typeLower = type.toLowerCase();
-    if (isApproved || isRejected || isLike || isComment) return false;
+    if (isApproved || isRejected || isLike || isComment || isShopping) {
+      return false;
+    }
     return typeLower.contains('recipe') ||
         typeLower.contains('published') ||
         typeLower.contains('new_recipe');
@@ -153,6 +160,8 @@ class NotificationModel {
           typeLower.contains('accept') ||
           typeLower.contains('قبول')) {
         title = 'تم قبول منشورك';
+      } else if (typeLower.contains('shopping')) {
+        title = 'تذكير قائمة التسوق';
       } else if (typeLower.contains('recipe') ||
           typeLower.contains('published')) {
         title = 'وصفة جديدة';
@@ -172,6 +181,8 @@ class NotificationModel {
           typeLower.contains('accept') ||
           typeLower.contains('قبول')) {
         body = 'الأدمن قبل منشورك وصار ظاهر بالمجتمع';
+      } else if (typeLower.contains('shopping')) {
+        body = 'لسا ما اشتريت المكونات اللي بقائمة التسوق';
       } else if (typeLower.contains('recipe') ||
           typeLower.contains('published')) {
         body = 'تم نشر وصفة جديدة';

@@ -53,17 +53,17 @@ object CookingNotificationHelper {
         ensureChannel(context)
 
         val type = extra(extras, "type")
-        val rawTitle = extra(extras, "gcm.notification.title")
+        val osTitle = extra(extras, "gcm.notification.title")
             .ifEmpty { extra(extras, "gcm.n.title") }
-            .ifEmpty { extra(extras, "title") }
-        val rawBody = extra(extras, "gcm.notification.body")
+        val osBody = extra(extras, "gcm.notification.body")
             .ifEmpty { extra(extras, "gcm.n.body") }
+        val rawTitle = osTitle.ifEmpty { extra(extras, "title") }
+        val rawBody = osBody
             .ifEmpty { extra(extras, "body") }
             .ifEmpty { extra(extras, "message") }
 
-        val title = if (isGenericText(rawTitle)) titleFromType(type) else rawTitle
-        val body = if (isGenericText(rawBody)) bodyFromType(type) else rawBody
-
+        val title = if (isMissingOrGeneric(rawTitle)) titleFromType(type) else rawTitle
+        val body = if (isMissingOrGeneric(rawBody)) bodyFromType(type) else rawBody
         val notificationId = messageId.ifEmpty { "$title$body" }.hashCode()
 
         val clickIntent = Intent(context, MainActivity::class.java).apply {
@@ -100,21 +100,45 @@ object CookingNotificationHelper {
             .build()
 
         NotificationManagerCompat.from(context).notify(NOTIFICATION_TAG, notificationId, notification)
-        cancelSystemDuplicates(context)
+        cancelGenericDuplicates(context)
     }
 
-    private fun cancelSystemDuplicates(context: Context) {
-        val handler = Handler(Looper.getMainLooper())
-        val cancel = {
+    fun cancelGenericDuplicates(context: Context) {
+        val run = {
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val now = System.currentTimeMillis()
             for (statusBarNotification in manager.activeNotifications) {
-                if (statusBarNotification.tag != NOTIFICATION_TAG) {
+                if (statusBarNotification.tag == NOTIFICATION_TAG) continue
+                if (now - statusBarNotification.postTime >= 5000) continue
+
+                val extras = statusBarNotification.notification.extras
+                val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString().orEmpty()
+                val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString().orEmpty()
+                val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString().orEmpty()
+                val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString().orEmpty()
+                val tag = statusBarNotification.tag.orEmpty()
+                val isSummary = statusBarNotification.notification.flags and
+                    Notification.FLAG_GROUP_SUMMARY != 0
+                val isFcmCopy = tag.startsWith("FCM") || tag.startsWith("fcm")
+                val isGeneric = isGenericLabel(title) ||
+                    isGenericLabel(text) ||
+                    isGenericLabel(bigText) ||
+                    isGenericLabel(summaryText)
+
+                if (!isSummary && !isFcmCopy && !isGeneric) continue
+
+                if (statusBarNotification.tag == null) {
+                    manager.cancel(statusBarNotification.id)
+                } else {
                     manager.cancel(statusBarNotification.tag, statusBarNotification.id)
                 }
             }
         }
-        handler.postDelayed(cancel, 400)
-        handler.postDelayed(cancel, 1200)
+        run()
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed(run, 400)
+        handler.postDelayed(run, 1200)
+        handler.postDelayed(run, 2500)
     }
 
     private fun extra(extras: Bundle, key: String): String {
@@ -123,17 +147,21 @@ object CookingNotificationHelper {
             ?: ""
     }
 
-    private fun isGenericText(text: String): Boolean {
+    private fun isMissingOrGeneric(text: String): Boolean {
+        return text.trim().isEmpty() || isGenericLabel(text)
+    }
+
+    private fun isGenericLabel(text: String): Boolean {
         val normalized = text.trim()
             .replace("أ", "ا")
             .replace("إ", "ا")
             .replace("آ", "ا")
+            .replace("ى", "ي")
             .lowercase()
-        if (normalized.isEmpty()) return true
-        return normalized == "اشعار جديد" ||
-            normalized == "لديك اشعار جديد" ||
-            normalized == "وصلك اشعار جديد" ||
+        if (normalized.isEmpty()) return false
+        return normalized.contains("اشعار جديد") ||
             normalized.contains("لديك اشعار") ||
+            normalized.contains("وصلك اشعار") ||
             normalized.contains("new notification") ||
             normalized == "notification"
     }
@@ -145,6 +173,7 @@ object CookingNotificationHelper {
             typeLower.contains("comment") -> "تعليق جديد"
             typeLower.contains("reject") || typeLower.contains("declin") || typeLower.contains("رفض") -> "تم رفض منشورك"
             typeLower.contains("approv") || typeLower.contains("accept") || typeLower.contains("قبول") -> "تم قبول منشورك"
+            typeLower.contains("shopping") -> "تذكير قائمة التسوق"
             typeLower.contains("recipe") || typeLower.contains("published") -> "وصفة جديدة"
             else -> "إشعار جديد"
         }
@@ -157,6 +186,7 @@ object CookingNotificationHelper {
             typeLower.contains("comment") -> "شخص علّق على منشورك"
             typeLower.contains("reject") || typeLower.contains("declin") || typeLower.contains("رفض") -> "الأدمن رفض منشورك"
             typeLower.contains("approv") || typeLower.contains("accept") || typeLower.contains("قبول") -> "الأدمن قبل منشورك وصار ظاهر بالمجتمع"
+            typeLower.contains("shopping") -> "لسا ما اشتريت المكونات اللي بقائمة التسوق"
             typeLower.contains("recipe") || typeLower.contains("published") -> "تم نشر وصفة جديدة"
             else -> "وصلك إشعار جديد"
         }
